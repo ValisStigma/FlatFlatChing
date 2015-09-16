@@ -17,9 +17,9 @@ Auch kann er die Fixkosten anpassen. Er kann auch bei nicht befriedigten Forderu
 
 # Szenario Finanzposten
 
-Dario kann im App alle gegenwärtigen an ihn gerichtete Forderungen mit Fälligkeitsdatum ansehen, zusätzlich
-vergangene bis 1 Monat in die Vergangenheit. Diese kann er auch begleichen. Ebenfalls sieht er alle
-ausstehenden Forderungen von ihm gegenüber anderen Personen, und kann diese als erledigt markieren. 
+Dario kann im App alle gegenwärtigen an ihn gerichtete Forderungen mit Fälligkeitsdatum ansehen.
+Diese kann er auch begleichen. Ebenfalls sieht er alle ausstehenden Forderungen von ihm gegenüber
+anderen Personen, und kann diese als erledigt markieren. 
 
 # Szenario Posten Fixkosten
 
