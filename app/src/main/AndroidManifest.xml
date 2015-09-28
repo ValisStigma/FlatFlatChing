@@ -8,13 +8,29 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Flat"
+            android:name=".activities.Flat"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.ExpensesActivity"
+            android:label="@string/title_activity_expenses" >
+        </activity>
+        <activity
+            android:name=".activities.ShoppingListActivity"
+            android:label="@string/title_activity_shopping_list" >
+        </activity>
+        <activity
+            android:name=".activities.BaseActivity"
+            android:label="@string/title_activity_base" >
+        </activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/title_activity_login" >
         </activity>
     </application>
 

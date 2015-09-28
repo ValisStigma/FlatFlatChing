@@ -1,18 +1,59 @@
-package com.flatflatching.flatflatching.Activities;
+package com.flatflatching.flatflatching.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.flatflatching.flatflatching.R;
 
-public class Flat extends AppCompatActivity {
+public class Flat extends BaseActivity {
+
+    private Button shoppingListButton;
+    private Button expensesButton;
+    private Activity self = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flat);
+        shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
+        expensesButton = (Button) findViewById(R.id.expensesButton);
+
+
+        shoppingListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, ShoppingListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        expensesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, ExpensesActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        expensesButton.setHeight(expensesButton.getMeasuredWidth());
+        shoppingListButton.setHeight(shoppingListButton.getMeasuredWidth());
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        expensesButton.setHeight(expensesButton.getMeasuredWidth());
+        shoppingListButton.setHeight(shoppingListButton.getMeasuredWidth());
     }
 
     @Override

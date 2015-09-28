@@ -3,4 +3,14 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="expensesTitle">My Expenses</string>
+    <string name="shoppingListsTitle">Shopping Lists</string>
+    <string name="title_activity_expenses">ExpensesActivity</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="nameTitle">Name</string>
+    <string name="passwordTitle">Password</string>
+    <string name="LoginTitle">Login</string>
+    <string name="FlatIdTitle">Flat ID</string>
 </resources>

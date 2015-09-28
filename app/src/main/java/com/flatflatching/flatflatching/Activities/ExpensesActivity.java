@@ -1,13 +1,12 @@
 package com.flatflatching.flatflatching.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.flatflatching.flatflatching.R;
 
-public class ExpensesActivity extends AppCompatActivity {
+public class ExpensesActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
