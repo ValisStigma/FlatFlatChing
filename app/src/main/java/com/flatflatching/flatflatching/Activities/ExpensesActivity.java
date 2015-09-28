@@ -1,22 +1,24 @@
-package com.flatflatching.flatflatching;
+package com.flatflatching.flatflatching.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class Flat extends AppCompatActivity {
+import com.flatflatching.flatflatching.R;
+
+public class ExpensesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flat);
+        setContentView(R.layout.activity_expenses);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_flat, menu);
+        getMenuInflater().inflate(R.menu.menu_expenses, menu);
         return true;
     }
 
