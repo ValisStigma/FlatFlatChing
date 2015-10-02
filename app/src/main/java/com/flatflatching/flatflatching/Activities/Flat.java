@@ -42,21 +42,6 @@ public class Flat extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        expensesButton.setHeight(expensesButton.getMeasuredWidth());
-        shoppingListButton.setHeight(shoppingListButton.getMeasuredWidth());
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        expensesButton.setHeight(expensesButton.getMeasuredWidth());
-        shoppingListButton.setHeight(shoppingListButton.getMeasuredWidth());
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_flat, menu);

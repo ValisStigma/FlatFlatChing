@@ -6,10 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import ch.hsr.requesthandlers.GetAuthCodeTask;
-import ch.hsr.requesthandlers.GetSurveysTask;
-import ch.hsr.requesthandlers.StartSendAnswerTask;
-import ch.hsr.requesthandlers.StartSurveyActivityTask;
+
 
 import org.json.JSONObject;
 
@@ -32,7 +29,7 @@ public class ServeyQuerier {
      * @param requestParams The parameters for the post-request
      * @param identifier The client-id
      */
-    public void getDefaultSurveys(final ListView theListView,
+/*    public void getDefaultSurveys(final ListView theListView,
             final RelativeLayout relativeLayout, final TextView welcomeTextView,
             final Context theContext, final Activity theActivity, final JSONObject requestParams,
             final String identifier, final ViewGroup viewGroup) {
@@ -62,5 +59,5 @@ public class ServeyQuerier {
 
     public void setUserName(final JSONObject requestParams) {
         new GetAuthCodeTask().execute(requestParams);
-    }
+    }*/
 }
