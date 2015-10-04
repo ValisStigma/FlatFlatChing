@@ -3,33 +3,31 @@ package com.flatflatching.flatflatching.activities;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.common.AccountPicker;
 
-import static com.flatflatching.flatflatching.services.AuthenticatorService.*;
+public class FlatActivity extends BaseActivity {
 
-public class Flat extends BaseActivity {
-
-    private Button shoppingListButton;
-    private Button expensesButton;
     private Activity self = this;
+    private TextView titleTextView;
+    private ViewGroup viewContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flat);
-        shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
-        expensesButton = (Button) findViewById(R.id.expensesButton);
+        Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
+        Button expensesButton = (Button) findViewById(R.id.expensesButton);
+        titleTextView = (TextView) findViewById(R.id.messageShower);
+        viewContainer = (ViewGroup) findViewById(R.id.baseContainer);
 
         shoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,18 +79,17 @@ public class Flat extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == BaseActivity.REQUEST_CODE_PICK_ACCOUNT || requestCode == BaseActivity.REQUEST_PERMISSION){
-            //This data is a result of the chooseAccount method
             if(resultCode == RESULT_OK){
                 String selectedAccountEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                 if(hasConnection()){
-                    AuthenticatorService.getAuth(self, selectedAccountEmail);
+                    AuthenticatorService.getAuth(self, titleTextView, viewContainer, selectedAccountEmail);
                 }
                 else{
-                    //TODO: Case when there is no connection
+                    notifyError(titleTextView, viewContainer, R.string.connection_error);
                 }
             }
             else if(resultCode == RESULT_CANCELED){
-                //TODO: User did choose a valid account
+                notifyError(titleTextView, viewContainer, R.string.internal_error);
             }
         }
     }

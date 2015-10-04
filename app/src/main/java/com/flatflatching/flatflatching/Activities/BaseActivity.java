@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.TouchDetector;
-import com.flatflatching.flatflatching.services.UserProfileService;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
@@ -31,11 +30,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String FLAT_ID = "FLAT_ID";
     public static final String USER_NAME = "USER_NAME";
     public static final int REQUEST_PERMISSION = 1111;
-    public static final String CHANGE_NAME = "ch.hsr.surveyapp.CHANGE_NAME";
-    public static final String RESET_USERNAME = "userNameWasSetButNotSent";
-    public static final String CHANGE = "change";
-    public static final int[] RADIUS_DIST = {5, 10, 30, 100, 0};
-    public static final String SURVEY_DATA = "SurveyData";
     public static final String USER_NAME_GIVEN = "USER_NAME_GIVEN";
     public static final String USER_NAME_FAMILY = "USER_NAME_FAMILY";
     public static final String USER_PROFILE_LINK = "USER_PROFILE_LINK";

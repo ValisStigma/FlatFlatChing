@@ -2,12 +2,16 @@ package com.flatflatching.flatflatching.services;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
+import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -16,37 +20,37 @@ import java.io.IOException;
  */
 public  class AuthenticatorService {
     private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
-    public static void getAuth(Activity activity, String accountName) {
-        new GetUserData(activity, accountName).execute();
+    private static  String accountName;
+    public static void getAuth(Activity activity, TextView messageShower, ViewGroup viewContainer, String aName) {
+        accountName = aName;
+        new GetUserData(activity, messageShower, viewContainer, SCOPE).execute();
     }
-    private static class GetUserData extends AsyncTask<Void,Void,Void> {
+    private static class GetUserData extends AbstractAsyncTask {
         Activity activity;
-        String accountName;
         String status;
         String token;
 
-        GetUserData(Activity activity, String accountName){
+        GetUserData(Activity activity, TextView messageShower, ViewGroup viewContainer, String url){
+            super(activity, messageShower, viewContainer, url);
             this.activity = activity;
-            this.accountName = accountName; //Account Name is email.
         }
 
-
         @Override
-        protected Void doInBackground(Void... params){
+        protected String doInBackground(JSONObject... params){
             try{
-                token = getAccessToken(this.activity,this.accountName, SCOPE);
+                token = getAccessToken(this.activity, accountName, SCOPE);
                 if(token != null){
                     //Access Token sent
                     status = "Access Token Acquired";
+                } else {
+                    reactToError();
                 }
             }
             catch (Exception ex){
-                status = ex.getMessage();
+                reactToError();
             }
-            return null;
+            return token;
         }
-
-
 
         public String getAccessToken(Activity activity,String accountName, String scope){
             try{
@@ -58,20 +62,26 @@ public  class AuthenticatorService {
             }
             catch(GoogleAuthException googleAuthException){
                 status = "Google Auth Exception";
+                reactToError();
             }
             catch(IOException ioException) {
                 status = "IO Exception";
+                reactToError();
             }
             return null;
         }
 
 
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(Void result)  {
             SharedPreferences preferences = activity.getSharedPreferences(BaseActivity.PREFERENCES, 0);
             final SharedPreferences.Editor editor = preferences.edit();
             editor.putString(BaseActivity.ACCOUNT_TOKEN, token);
             editor.apply();
-            UserProfileService.fillUserProfile(activity, token);
+            try {
+                UserProfileService.fillUserProfile(activity, getMessageShower(), getViewContainer(), token);
+            } catch(IOException e) {
+                reactToError();
+            }
         }
 
     }

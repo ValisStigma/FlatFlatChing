@@ -16,19 +16,19 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, String> {
+public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, String> {
     
     private Context context;
     private transient WeakReference<TextView> textReference;
     private transient WeakReference<ViewGroup> viewContainer;
-    private final transient String url;
+    protected final  String url;
     
-    AbstractAsyncTask(final Context context, final TextView textView, final ViewGroup viewGroup, final String url) {
+    public AbstractAsyncTask(final Context context, final TextView textView, final ViewGroup viewGroup, final String url) {
         super();
         this.url = url;
         setContext(context);
-        setViewContainerReference(new WeakReference<ViewGroup>(viewGroup));
-        setMessageShowerReference(new WeakReference<TextView>(textView));
+        setViewContainerReference(new WeakReference<>(viewGroup));
+        setMessageShowerReference(new WeakReference<>(textView));
     }
     
     @Override

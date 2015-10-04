@@ -4,13 +4,16 @@
  */
 package com.flatflatching.flatflatching.services;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.BaseRequest;
+import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -23,18 +26,22 @@ public class UserProfileService {
     private static final String USER_INFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s";
     private static Activity callingActivity;
 
-    public static void fillUserProfile(Activity activity, final String authToken) {
-        String[] params =  {authToken};
+    public static void fillUserProfile(Activity activity, TextView messageShower, ViewGroup viewContainer, final String authToken) {
         callingActivity = activity;
-        new GetUserInfoTask().execute(params);
+        final String requestUrl = String.format(USER_INFO_REQUEST_URL, authToken);
+
+        new GetUserInfoTask(activity, messageShower, viewContainer, requestUrl).execute();
     }
-    private static class GetUserInfoTask extends AsyncTask<String, Void, String> {
+    private static class GetUserInfoTask extends AbstractAsyncTask {
+        GetUserInfoTask(Context context, TextView textView, ViewGroup viewGroup, String url) {
+            super(context, textView, viewGroup, url);
+        }
+
         @Override
-        protected String doInBackground(String... params) {
+        protected String doInBackground(JSONObject... params) {
             String result;
-            final String requestUrl = String.format(USER_INFO_REQUEST_URL, params[0]);
             try {
-                result = new BaseRequest(requestUrl).openRequest().finish();
+                result = new BaseRequest(url).openRequest().finish();
             } catch (IOException e) {
                 result = "";
             }
@@ -46,13 +53,13 @@ public class UserProfileService {
             super.onPostExecute(result);
 
             if (result.isEmpty()) {
-                //TODO: React to error
+                reactToError();
             } else {
                 try {
                     saveProfileInfo(new JSONObject(result));
                     userDataAcquired = true;
                 } catch (JSONException e) {
-                    //TODO: React to error
+                    reactToError();
                 }
             }
         }
@@ -64,7 +71,6 @@ public class UserProfileService {
         final String name = userProfile.getString("name");
         final String profileLink = userProfile.getString("link");
         userProfileBitmap = getBitMap(userProfile.getString("picture"));
-
         SharedPreferences preferences = callingActivity.getSharedPreferences(BaseActivity.PREFERENCES, 0);
         final SharedPreferences.Editor editor = preferences.edit();
         editor.putString(BaseActivity.USER_NAME, name);

@@ -19,4 +19,6 @@
     <string name="email_title">Email</string>
     <string name="title_activity_create_flat">CreateFlatActivity</string>
     <string name="flat_name_question">Wie soll deine WG heissen?</string>
+    <string name="connection_error">Du scheinst keine Internetverbindung zu haben</string>
+    <string name="internal_error">Hoppla, da ist was schief gegangen</string>
 </resources>
