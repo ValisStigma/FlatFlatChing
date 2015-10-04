@@ -9,23 +9,25 @@
 
 
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editTextName"
-        android:hint="@string/nameTitle"
-        android:layout_above="@+id/editTextPassword" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/login_text"
+        android:id="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true" />
 
     <EditText
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:inputType="textEmailAddress"
         android:ems="10"
-        android:hint="@string/passwordTitle"
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editText"
+        android:hint="@string/email_title"
         android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
     <Button
@@ -34,15 +36,24 @@
         android:text="@string/LoginTitle"
         android:id="@+id/buttonLogin"
         android:layout_gravity="end"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/editTextName" />
+        android:layout_above="@+id/buttonCreateFlat"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:textSize="@dimen/button_text_size"
+        android:textColor="@color/white"
+        android:background="@color/green"/>
 
-    <EditText
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_above="@+id/editTextName"
+        android:text="@string/open_own_flat"
+        android:id="@+id/buttonCreateFlat"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/editTextName"
-        android:hint="@string/FlatIdTitle" />
+        android:layout_alignParentEnd="true"
+        android:textSize="@dimen/button_text_size"
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:layout_marginTop="@dimen/space_down"
+        />
 </RelativeLayout>

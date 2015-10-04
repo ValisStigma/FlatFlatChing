@@ -1,7 +1,5 @@
 package com.flatflatching.flatflatching.helpers;
 
-
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,13 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import ch.hsr.surveyapp.R;
+import com.flatflatching.flatflatching.R;
 
 import org.json.JSONObject;
-
-
-
-
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;

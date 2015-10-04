@@ -10,12 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import ch.hsr.customguis.SurveyAdapter;
-import ch.hsr.customguis.SurveyListItem;
-import ch.hsr.helpers.RequestBuilder;
-import ch.hsr.helpers.ServeyQuerier;
-import ch.hsr.surveyapp.R;
-import ch.hsr.surveymodel.Survey;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -127,7 +122,7 @@ public class GetSurveysTask extends AbstractAsyncTask {
                 final ListView listView = getListView();
                 waitLayout.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
-                welcomeTextView.setText(getContext().getResources().getString(R.string.welcome_message));
+                //welcomeTextView.setText(getContext().getResources().getString(R.string.welcome_message));
             } catch (JSONException | IOException e) {
                 reactToError();
             }
@@ -136,7 +131,7 @@ public class GetSurveysTask extends AbstractAsyncTask {
 
     @SuppressLint("SimpleDateFormat")
     private void setupListView(final JSONArray jsonData) throws JSONException {
-        SurveyListItem[] listData = new SurveyListItem[jsonData
+        /*SurveyListItem[] listData = new SurveyListItem[jsonData
                 .length()];
 
         for (int i = 0; i < jsonData.length(); i++) {
@@ -187,6 +182,6 @@ public class GetSurveysTask extends AbstractAsyncTask {
             });
         } catch (IOException e1) {
             reactToError();
-        }
+        }*/
     }
 }

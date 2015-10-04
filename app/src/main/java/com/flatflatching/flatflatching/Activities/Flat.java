@@ -1,14 +1,22 @@
 package com.flatflatching.flatflatching.activities;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
+import com.flatflatching.flatflatching.services.AuthenticatorService;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.common.AccountPicker;
+
+import static com.flatflatching.flatflatching.services.AuthenticatorService.*;
 
 public class Flat extends BaseActivity {
 
@@ -22,7 +30,6 @@ public class Flat extends BaseActivity {
         setContentView(R.layout.activity_flat);
         shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
         expensesButton = (Button) findViewById(R.id.expensesButton);
-
 
         shoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +46,16 @@ public class Flat extends BaseActivity {
                 startActivity(intent);
             }
         });
-    }
+        checkForAuthentication();
 
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -61,5 +76,24 @@ public class Flat extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == BaseActivity.REQUEST_CODE_PICK_ACCOUNT || requestCode == BaseActivity.REQUEST_PERMISSION){
+            //This data is a result of the chooseAccount method
+            if(resultCode == RESULT_OK){
+                String selectedAccountEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                if(hasConnection()){
+                    AuthenticatorService.getAuth(self, selectedAccountEmail);
+                }
+                else{
+                    //TODO: Case when there is no connection
+                }
+            }
+            else if(resultCode == RESULT_CANCELED){
+                //TODO: User did choose a valid account
+            }
+        }
     }
 }

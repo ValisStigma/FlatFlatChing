@@ -22,7 +22,7 @@ import java.util.List;
  * @author www.codejava.net
  *
  */
-class ServerConnector {
+public class ServerConnector {
     private final transient String boundary;
     private static final transient String LINE_FEED = "\r\n";
     private final transient HttpURLConnection httpConn;
@@ -38,7 +38,7 @@ class ServerConnector {
      * @param charset
      * @throws IOException
      */
-    ServerConnector(final String requestUrl, final String charset)
+    public ServerConnector(final String requestUrl, final String charset)
             throws IOException {
         this.charset = charset;
 

@@ -5,7 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import ch.hsr.surveyapp.R;
+
+import com.flatflatching.flatflatching.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,8 +62,8 @@ public class GetAuthCodeTask extends AbstractAsyncTask {
                     authCodeTextView.setVisibility(View.VISIBLE);
                     waitingLayout.setVisibility(View.GONE);
                     final TextView welcomeTextView = getMessageShower();
-                    welcomeTextView.setText(getContext().getResources()
-                            .getString(R.string.authenticate_username_set));
+                   /* welcomeTextView.setText(getContext().getResources()
+                            .getString(R.string.authenticate_username_set));*/
                 } catch (JSONException | IOException e) {
                     reactToError();
                 } 

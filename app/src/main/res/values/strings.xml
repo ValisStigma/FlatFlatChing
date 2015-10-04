@@ -13,4 +13,10 @@
     <string name="passwordTitle">Password</string>
     <string name="LoginTitle">Login</string>
     <string name="FlatIdTitle">Flat ID</string>
+    <string name="server_error">Entschuldige, da ist was schiefgegangen</string>
+    <string name="login_text">Anscheinend benutzt du die App zum ersten Mal. Logge dich einfach mit deiner Emailadresse ein</string>
+    <string name="open_own_flat">WG noch nicht erfasst?</string>
+    <string name="email_title">Email</string>
+    <string name="title_activity_create_flat">CreateFlatActivity</string>
+    <string name="flat_name_question">Wie soll deine WG heissen?</string>
 </resources>
