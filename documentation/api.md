@@ -195,3 +195,109 @@ Saves new notification for invited user.
 "error_message": "User not found!"
 }
 ```
+
+### GET /api/notifications
+
+Notifications are beeing polled
+
+or fancy: https://developers.google.com/cloud-messaging/android/client 
+
+
+### POST /api/accept/invite
+
+User Polls notification for invitations to new WG
+
+if notification recieved and displayed he can accept or decline the invitation:
+
+#### REQUEST JSON Object
+
+Polled message for invitation:
+
+```
+{
+"flat_uuid": "<uuid>",
+"flat_admin_email": "<mail of flat_admin>"
+}
+```
+
+REquest Object:
+
+
+```
+{
+"account_token": "<token>",
+"flat_uuid": "<uuid>",
+"flat_admin_email": "<mail of flat_admin>",
+"user_email": "<email>",
+"invite_accpet": <boolean true for accept, false for decline>
+}
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"flat_uuid": "<uuid>"
+}
+```
+
+#### Error Objects
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 201,
+"error_message": "No invite found"
+}
+```
+
+
+### POST /api/exit
+
+#### REQUEST JSON OBJECT
+
+```
+{
+"account_token": "<token>",
+"flat_uuid": "<uuid>"
+}
+```
+
+
+#### RESPONSE JSON object
+
+```
+{
+"response": "good bye :("
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 202,
+"error_message": "No flat found"
+}
+```
+
+```
+{
+"error_code": 301,
+"error_message": "open finance posts"
+}
+```
