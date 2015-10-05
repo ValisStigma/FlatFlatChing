@@ -81,6 +81,8 @@ public class FlatActivity extends BaseActivity {
         if(requestCode == BaseActivity.REQUEST_CODE_PICK_ACCOUNT || requestCode == BaseActivity.REQUEST_PERMISSION){
             if(resultCode == RESULT_OK){
                 String selectedAccountEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                settings.edit().putString(BaseActivity.CHOSEN_USER_EMAIL, selectedAccountEmail);
+                settings.edit().apply();
                 if(hasConnection()){
                     AuthenticatorService.getAuth(self, titleTextView, viewContainer, selectedAccountEmail);
                 }

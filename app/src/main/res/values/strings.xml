@@ -21,4 +21,11 @@
     <string name="flat_name_question">Wie soll deine WG heissen?</string>
     <string name="connection_error">Du scheinst keine Internetverbindung zu haben</string>
     <string name="internal_error">Hoppla, da ist was schief gegangen</string>
+    <string name="wgTitle">WG</string>
+    <string name="recordNewFlatTitle">Alternativ kannst du hier noch eure Adresse für Rechnungen hinterlegen</string>
+    <string name="streetTitle">Strasse</string>
+    <string name="streetNumberTitle">Nr</string>
+    <string name="cityTitle">Ort</string>
+    <string name="postCodeTitle">Plz</string>
+    <string name="recordNewFlatTitleButton">WG erstellen</string>
 </resources>

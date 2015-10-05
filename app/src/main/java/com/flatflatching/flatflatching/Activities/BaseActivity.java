@@ -3,6 +3,8 @@ package com.flatflatching.flatflatching.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -34,6 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String USER_NAME_FAMILY = "USER_NAME_FAMILY";
     public static final String USER_PROFILE_LINK = "USER_PROFILE_LINK";
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
+    public static final String USER_IMAGE_URL = "USER_IMAGE_URL";
+    public static final String CHOSEN_USER_EMAIL = "CHOSEN_USER_EMAIL";
 
     protected SharedPreferences settings;
     protected String uuid;
@@ -44,6 +49,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected TouchDetector touchDetector;
     protected TextView titleTextView;
     protected ViewGroup container;
+
+    protected boolean checkForUserEmail() {
+        String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
+        if(userEmail.isEmpty()) {
+            tryAuthenticate();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    protected String getUserEmail() {
+        return settings.getString(CHOSEN_USER_EMAIL, "");
+    }
 
     protected void checkForUuid() {
         uuid = settings.getString(UUID, "");
@@ -147,7 +166,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
 
-    private void pickUserAccount() {
+    protected void pickUserAccount() {
         Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null,
                 new String[]{GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE}, true, null, null, null, null);
         startActivityForResult(googlePicker, BaseActivity.REQUEST_CODE_PICK_ACCOUNT);
@@ -160,5 +179,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected String getUserName() {
         return settings.getString(USERNAME, "");
+    }
+
+    public Bitmap getBitMap(){
+        Bitmap bitmapImage = null;
+        try {
+            InputStream in = new java.net.URL(settings.getString(USER_IMAGE_URL, "")).openStream();
+            bitmapImage = BitmapFactory.decodeStream(in);
+            return bitmapImage;
+        } catch (Exception e) {
+            //TODO: React to error
+        }
+        return bitmapImage;
     }
 }

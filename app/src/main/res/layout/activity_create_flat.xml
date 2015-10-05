@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.flatflatching.flatflatching.activities.CreateFlatActivity">
+    tools:context="com.flatflatching.flatflatching.activities.CreateFlatActivity"
+    android:id="@+id/createFlatLayoutContainer">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,16 +21,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/flat_name_question"
-            android:id="@+id/textView"/>
+            android:id="@+id/textViewMessageHolder"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2"
+            android:id="@+id/editTextFlatTitle"
             android:layout_marginTop="@dimen/space_down"
-            android:hint="WG" />
-
-
+            android:hint="@string/wgTitle" />
 
     </LinearLayout>
 
@@ -47,8 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Alternativ kannst du hier noch eure Adresse für Rechnungen hinterlegen"
-            android:id="@+id/textView2"
+            android:text="@string/recordNewFlatTitle"
+            android:id="@+id/textViewNewFlatTitle"
             android:layout_marginTop="@dimen/space_down"/>
 
         <LinearLayout
@@ -60,15 +59,15 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
-                android:hint="Strasse"
+                android:id="@+id/editTextStreetName"
+                android:hint="@string/streetTitle"
                 android:layout_weight="2.25" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText4"
-                android:hint="Nr"
+                android:id="@+id/editTextStreetNumber"
+                android:hint="@string/streetNumberTitle"
                 android:layout_weight="0.67" />
         </LinearLayout>
 
@@ -81,15 +80,15 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText5"
+                android:id="@+id/editTextCityName"
                 android:layout_weight="2.25"
-                android:hint="Ort" />
+                android:hint="@string/cityTitle" />
 
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText6"
-                android:hint="Plz"
+                android:id="@+id/editTextPostCode"
+                android:hint="@string/postCodeTitle"
                 android:layout_weight="0.67" />
 
         </LinearLayout>
@@ -99,7 +98,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="WG erstellen"
+        android:text="@string/recordNewFlatTitleButton"
         android:textSize="@dimen/button_text_size"
         android:id="@+id/buttonLogin"
         android:layout_alignParentBottom="true"
