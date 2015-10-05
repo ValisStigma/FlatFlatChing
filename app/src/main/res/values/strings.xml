@@ -28,4 +28,9 @@
     <string name="cityTitle">Ort</string>
     <string name="postCodeTitle">Plz</string>
     <string name="recordNewFlatTitleButton">WG erstellen</string>
+    <string name="title_activity_manage_flat_mates">ManageFlatMatesActivity</string>
+    <string name="newFlatMateTitle">Neuer Mitbewohner?</string>
+    <string name="NewFlatMateTask">Lade ihn doch über seinen Googleaccount ein</string>
+    <string name="inviteTitle">Einladen</string>
+    <string name="flatMateTitle">Flatmates</string>
 </resources>

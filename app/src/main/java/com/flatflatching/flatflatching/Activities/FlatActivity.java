@@ -26,6 +26,7 @@ public class FlatActivity extends BaseActivity {
         setContentView(R.layout.activity_flat);
         Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
         Button expensesButton = (Button) findViewById(R.id.expensesButton);
+        Button flateMateButtion = (Button) findViewById(R.id.flatMatesButton);
         titleTextView = (TextView) findViewById(R.id.messageShower);
         viewContainer = (ViewGroup) findViewById(R.id.baseContainer);
 
@@ -41,6 +42,13 @@ public class FlatActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(self, ExpensesActivity.class);
+                startActivity(intent);
+            }
+        });
+        flateMateButtion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, ManageFlatMatesActivity.class);
                 startActivity(intent);
             }
         });
