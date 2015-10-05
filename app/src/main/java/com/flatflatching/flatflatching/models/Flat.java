@@ -1,7 +1,6 @@
 package com.flatflatching.flatflatching.models;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rafael on 28.09.2015.

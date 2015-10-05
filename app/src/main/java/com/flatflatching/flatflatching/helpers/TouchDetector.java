@@ -20,7 +20,7 @@ public class TouchDetector {
      *  determines the direction of the swipe.
      * @param coordinateTouch X-coordinate of the touchdown
      * @param coordinateLeave X-coordinate of the liftoff
-     * @return
+     * @return SwipeDirection the swipedirection
      */
     public SwipeDirection getHorizontalSwipeDirection(final float coordinateTouch, final float coordinateLeave) {
         SwipeDirection result = SwipeDirection.noSwipe;

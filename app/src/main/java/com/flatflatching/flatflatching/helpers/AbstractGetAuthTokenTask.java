@@ -1,13 +1,10 @@
 package com.flatflatching.flatflatching.helpers;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
-import com.flatflatching.flatflatching.services.UserProfileService;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -49,6 +46,8 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
             if(token != null){
                 //Access Token sent
                 status = Status.tokenAcquired;
+                handleToken(token);
+                postToken();
             } else {
                 status = Status.IOException;
             }
@@ -59,6 +58,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
             status = Status.IOException;
         }
         return token;
+
     }
 
     protected void onPostExecute(Void result)  {
@@ -80,7 +80,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         }
     }
 
-    public String getAccessToken(Activity activity,String accountName, String scope){
+    protected String getAccessToken(Activity activity,String accountName, String scope){
         try{
             return GoogleAuthUtil.getToken(activity, accountName, scope);
         }
@@ -97,4 +97,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         return null;
     }
 
+    protected abstract void handleToken(final String token);
+
+    protected abstract void postToken();
 }

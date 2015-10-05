@@ -32,6 +32,16 @@ public  class AuthenticatorService {
             }
         }
 
+        @Override
+        protected void handleToken(String token) {
+
+        }
+
+        @Override
+        protected void postToken() {
+
+        }
+
         protected void saveToken() {
             SharedPreferences preferences = activity.getSharedPreferences(BaseActivity.PREFERENCES, 0);
             final SharedPreferences.Editor editor = preferences.edit();

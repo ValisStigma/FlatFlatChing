@@ -46,13 +46,13 @@ public class GpsTracker extends Service implements LocationListener {
     public GpsTracker(final Context context) {
         super();
         setContext(context);
-        getLocation();
+        //getLocation();
     }
  
     /** Gets the current location of the user.
      * @return the current Location
      */
-    public final Location getLocation() {
+    /*public final Location getLocation() {
         try {
             setLocationManager((LocationManager) getContext()
                     .getSystemService(LOCATION_SERVICE));
@@ -89,7 +89,7 @@ public class GpsTracker extends Service implements LocationListener {
         }
  
         return location;
-    }
+    }*/
     
     private void setCoordinates() throws IOException {
         if (location == null) {

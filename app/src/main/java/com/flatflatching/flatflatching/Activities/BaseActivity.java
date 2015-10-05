@@ -14,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.flatflatching.flatflatching.helpers.RequestBuilder;
-import com.flatflatching.flatflatching.helpers.TouchDetector;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
@@ -45,10 +43,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String accountToken;
     protected String userName;
     protected String flatId;
-    protected RequestBuilder requestBuilder;
-    protected TouchDetector touchDetector;
-    protected TextView titleTextView;
-    protected ViewGroup container;
 
     protected boolean checkForUserEmail() {
         String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");

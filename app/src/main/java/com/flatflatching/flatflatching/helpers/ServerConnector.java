@@ -34,8 +34,8 @@ public class ServerConnector {
      * This constructor initializes a new HTTP POST request with content type is
      * set to multipart/form-data.
      * 
-     * @param requestUrl
-     * @param charset
+     * @param requestUrl the requestendpoint
+     * @param charset the charset used
      * @throws IOException
      */
     public ServerConnector(final String requestUrl, final String charset)
@@ -68,10 +68,10 @@ public class ServerConnector {
      *            field value
      */
     public void addFormField(final String name, final String value) {
-        writer.append("--" + boundary).append(LINE_FEED);
-        writer.append("Content-Disposition: form-data; name=\"" + name + "\"")
+        writer.append("--").append(boundary).append(LINE_FEED);
+        writer.append("Content-Disposition: form-data; name=\"").append(name).append("\"")
                 .append(LINE_FEED);
-        writer.append("Content-Type: text/plain; charset=" + charset).append(
+        writer.append("Content-Type: text/plain; charset=").append(charset).append(
                 LINE_FEED);
         writer.append(LINE_FEED);
         writer.append(value).append(LINE_FEED);
@@ -85,13 +85,13 @@ public class ServerConnector {
      *            field name
      * @param value
      *            field value
-     * @param contentType
+     * @param contentType the contenttype which is used
      */
     public void addFormField(final String name, final String value, final String contentType) { // NO_UCD (unused code)
-        writer.append("--" + boundary).append(LINE_FEED);
-        writer.append("Content-Disposition: form-data; name=\"" + name + "\"")
+        writer.append("--").append(boundary).append(LINE_FEED);
+        writer.append("Content-Disposition: form-data; name=\"").append(name).append("\"")
                 .append(LINE_FEED);
-        writer.append("Content-Type: " + contentType + "; charset=" + charset)
+        writer.append("Content-Type: ").append(contentType).append("; charset=").append(charset)
                 .append(LINE_FEED);
         writer.append(LINE_FEED);
         writer.append(value).append(LINE_FEED);
@@ -110,14 +110,11 @@ public class ServerConnector {
     public void addFilePart(final String fieldName, final File uploadFile) // NO_UCD (unused code)
             throws IOException {
         final String fileName = uploadFile.getName();
-        writer.append("--" + boundary).append(LINE_FEED);
-        writer.append(
-                "Content-Disposition: form-data; name=\"" + fieldName
-                        + "\"; filename=\"" + fileName + "\"")
+        writer.append("--").append(boundary).append(LINE_FEED);
+        writer.append("Content-Disposition: form-data; name=\"").
+                append(fieldName).append("\"; filename=\"").append(fileName).append("\"")
                 .append(LINE_FEED);
-        writer.append(
-                "Content-Type: "
-                        + URLConnection.guessContentTypeFromName(fileName))
+        writer.append("Content-Type: ").append(URLConnection.guessContentTypeFromName(fileName))
                 .append(LINE_FEED);
         writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
         writer.append(LINE_FEED);
@@ -146,7 +143,7 @@ public class ServerConnector {
      *            - value of the header field
      */
     public void addHeaderField(final String name, final String value) { // NO_UCD (unused code)
-        writer.append(name + ": " + value).append(LINE_FEED);
+        writer.append(name).append(": ").append(value).append(LINE_FEED);
         writer.flush();
     }
 
@@ -158,10 +155,10 @@ public class ServerConnector {
      * @throws IOException
      */
     public List<String> finish() throws IOException {
-        final List<String> response = new ArrayList<String>();
+        final List<String> response = new ArrayList<>();
 
         writer.append(LINE_FEED).flush();
-        writer.append("--" + boundary + "--").append(LINE_FEED);
+        writer.append("--").append(boundary).append("--").append(LINE_FEED);
         writer.close();
 
         // checks server's status code first

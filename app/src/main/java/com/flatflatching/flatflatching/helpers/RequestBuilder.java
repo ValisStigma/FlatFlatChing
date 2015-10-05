@@ -6,21 +6,12 @@ import com.flatflatching.flatflatching.models.Flat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.UUID;
-
 public class RequestBuilder {
 
-    private static final String CLIENT_ID = "client_id";
     private String userName;
 
     public RequestBuilder(){
     }
-
-
-
-
-
-
 
 
     public JSONObject getRegisterRequest(final String accountName) throws JSONException {

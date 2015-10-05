@@ -35,11 +35,11 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
     protected String doInBackground(final JSONObject... jsonObject) {
         String result = "";
         final StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < jsonObject.length; i++) {
+        for (JSONObject aJsonObject : jsonObject) {
             try {
                 final ServerConnector serverConnector = new ServerConnector(
                         url, "UTF-8");
-                serverConnector.addFormField("data", jsonObject[i].toString());
+                serverConnector.addFormField("data", aJsonObject.toString());
                 final List<String> response = serverConnector.finish();
                 stringBuilder.setLength(0);
                 for (final String line : response) {
