@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
@@ -43,15 +44,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String accountToken;
     protected String userName;
     protected String flatId;
+    protected ViewGroup layoutContainer;
+    protected TextView messageShower;
 
-    protected boolean checkForUserEmail() {
+    protected void checkForUserEmail() {
         String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
         if(userEmail.isEmpty()) {
             tryAuthenticate();
-            return false;
         } else {
-            return true;
+            register(userEmail);
         }
+    }
+
+    protected void register(final String userEmail) {
+        AuthenticatorService.register(this,messageShower, layoutContainer, userEmail);
     }
 
     protected String getUserEmail() {

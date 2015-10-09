@@ -46,7 +46,7 @@ public class GetSurveysTask extends AbstractAsyncTask {
                 relativeLayout));
         setActivity(activity);
         setUuid(uuid);
-        setRequestBuilder(getUuid());
+        setRequestBuilder();
     }
 
     private String getUuid() {
@@ -103,8 +103,8 @@ public class GetSurveysTask extends AbstractAsyncTask {
         return requestBuilder;
     }
     
-    private void setRequestBuilder(final String uuid) {
-        this.requestBuilder = new RequestBuilder(uuid);
+    private void setRequestBuilder() {
+        this.requestBuilder = new RequestBuilder();
     }
 
     @Override

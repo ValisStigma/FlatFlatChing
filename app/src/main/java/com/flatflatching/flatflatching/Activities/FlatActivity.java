@@ -17,8 +17,7 @@ import com.flatflatching.flatflatching.services.AuthenticatorService;
 public class FlatActivity extends BaseActivity {
 
     private Activity self = this;
-    private TextView titleTextView;
-    private ViewGroup viewContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +26,8 @@ public class FlatActivity extends BaseActivity {
         Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
         Button expensesButton = (Button) findViewById(R.id.expensesButton);
         Button flateMateButtion = (Button) findViewById(R.id.flatMatesButton);
-        titleTextView = (TextView) findViewById(R.id.messageShower);
-        viewContainer = (ViewGroup) findViewById(R.id.baseContainer);
+        messageShower = (TextView) findViewById(R.id.messageShower);
+        layoutContainer = (ViewGroup) findViewById(R.id.baseContainer);
 
         shoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +91,14 @@ public class FlatActivity extends BaseActivity {
                 settings.edit().putString(BaseActivity.CHOSEN_USER_EMAIL, selectedAccountEmail);
                 settings.edit().apply();
                 if(hasConnection()){
-                    AuthenticatorService.getAuth(self, titleTextView, viewContainer, selectedAccountEmail);
+                    AuthenticatorService.getAuth(self, messageShower, layoutContainer, selectedAccountEmail);
                 }
                 else{
-                    notifyError(titleTextView, viewContainer, R.string.connection_error);
+                    notifyError(messageShower, layoutContainer, R.string.connection_error);
                 }
             }
             else if(resultCode == RESULT_CANCELED){
-                notifyError(titleTextView, viewContainer, R.string.internal_error);
+                notifyError(messageShower, layoutContainer, R.string.internal_error);
             }
         }
     }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
-
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -108,7 +107,7 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
             }
             final TextView titleText = getMessageShower();
             titleText.setVisibility(View.VISIBLE);
-            titleText.setText(R.string.server_error);
+            titleText.setText(getContext().getString(R.string.server_error));
         } catch (IOException e) {
             Log.d("this", e.getMessage());
         }  

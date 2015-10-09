@@ -9,14 +9,15 @@ import org.json.JSONObject;
 public class RequestBuilder {
 
     private String userName;
-
+    private final String ACCOUNT_NAME = "account_name";
+    private final String ACCOUNT_TOKEN = "account_token";
     public RequestBuilder(){
     }
 
 
     public JSONObject getRegisterRequest(final String accountName) throws JSONException {
         final JSONObject requestParams = new JSONObject();
-        requestParams.put("account_name", accountName);
+        requestParams.put(ACCOUNT_NAME, accountName);
         return requestParams;
     }
 
@@ -31,7 +32,7 @@ public class RequestBuilder {
     }
     private JSONObject getCreateFlatRequest(final String accountToken, final String flatName) throws JSONException {
         final JSONObject requestParams = new JSONObject();
-        requestParams.put("account_token", accountToken);
+        requestParams.put(ACCOUNT_TOKEN, accountToken);
         requestParams.put("flat_name", flatName);
         return requestParams;
     }
@@ -50,6 +51,15 @@ public class RequestBuilder {
         return requestParams;
     }
 
+    public JSONObject getInvitationRequest(final String accountToken,
+                                           final String flatId, final String userEmail) throws JSONException {
+
+        final JSONObject requestParams = new JSONObject();
+        requestParams.put(accountToken, accountToken);
+        requestParams.put("flat_uuid", flatId);
+        requestParams.put("user_email", userEmail);
+        return requestParams;
+    }
     private String getUserName() {
         return userName;
     }
