@@ -23,6 +23,12 @@ import java.util.List;
  *
  */
 public class ServerConnector {
+
+    public enum Method {
+        GET,
+        POST
+    }
+
     private final transient String boundary;
     private static final transient String LINE_FEED = "\r\n";
     private final transient HttpURLConnection httpConn;
@@ -38,7 +44,7 @@ public class ServerConnector {
      * @param charset the charset used
      * @throws IOException
      */
-    public ServerConnector(final String requestUrl, final String charset)
+    public ServerConnector(final String requestUrl, final String charset, final Method method)
             throws IOException {
         this.charset = charset;
 
@@ -48,6 +54,14 @@ public class ServerConnector {
         final URL url = new URL(requestUrl);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
+        switch (method) {
+            case GET:
+                httpConn.setDoOutput(false);
+                break;
+            case POST:
+                httpConn.setDoOutput(true);
+                break;
+        }
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
         httpConn.setRequestProperty("Content-Type",

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
+import com.flatflatching.flatflatching.services.RequestService;
 
 import org.json.JSONObject;
 
@@ -16,30 +17,40 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
     
     protected BaseActivity activity;
     protected final  String url;
+    protected enum Status  {
+        notReady,
+        running,
+        requestFailed,
+        userRecoverableError,
+        okay
+    }
+    protected ServerConnector.Method method = ServerConnector.Method.GET;
+    protected String exceptionMessage;
+    protected Status status;
     public AbstractAsyncTask(final BaseActivity activity, final String url) {
         super();
+        status = Status.notReady;
+        exceptionMessage = activity.getString(R.string.server_error);
         this.url = url;
         this.activity = activity;
     }
-    
+    public AbstractAsyncTask doesPost() {
+        this.method = ServerConnector.Method.POST;
+        return this;
+    }
+
     @Override
     protected String doInBackground(final JSONObject... jsonObject) {
+        status = Status.running;
         String result = "";
-        final StringBuilder stringBuilder = new StringBuilder();
-        for (JSONObject aJsonObject : jsonObject) {
-            try {
-                final ServerConnector serverConnector = new ServerConnector(
-                        url, "UTF-8");
-                serverConnector.addFormField("data", aJsonObject.toString());
-                final List<String> response = serverConnector.finish();
-                stringBuilder.setLength(0);
-                for (final String line : response) {
-                    stringBuilder.append(line);
-                }
-                result = stringBuilder.toString();
-            } catch (IOException e) {
-                result = "";
+        try {
+            if(jsonObject == null || jsonObject.length == 0) {
+                result = RequestService.sendRequest(this.method, url);
+            } else {
+                result = RequestService.sendRequestWithData(this.method, url, jsonObject[0].toString());
             }
+        } catch(IOException e) {
+            status = Status.requestFailed;
         }
         return result;
     }
@@ -55,10 +66,14 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         }
         final TextView titleText = activity.getMessageShower();
         titleText.setVisibility(View.VISIBLE);
-        titleText.setText(activity.getString(R.string.server_error));
+        titleText.setText(exceptionMessage);
     }
 
     protected void persistToPreferences(String key, String value) {
         activity.persistToPreferences(key, value);
+    }
+
+    protected void persistObject(String key, Object obj) throws IOException {
+        activity.persistObject(key, obj);
     }
 }

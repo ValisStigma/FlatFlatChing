@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flatflatching.flatflatching.helpers.InternalStorage;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -38,6 +40,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     static final int REQUEST_CODE_PICK_ACCOUNT = 1000;
     public static final String USER_IMAGE_URL = "USER_IMAGE_URL";
     public static final String CHOSEN_USER_EMAIL = "CHOSEN_USER_EMAIL";
+    public static final String FLAT_NAME = "FLAT_NAME";
+    public static final String FLAT = "FLAT";
+    public static final String FLAT_ADDRESS = "FLAT_ADDRESS";
+    public static final String STREET_NAME = "STREET_NAME";
+    public static final String HOUSE_NUMBER = "HOUSE_NUMBER";
+    public static final String CITY = "CITY";
+    public static final String PLZ = "PLZ";
 
     protected SharedPreferences settings;
     protected String uuid;
@@ -46,7 +55,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected String flatId;
     protected ViewGroup layoutContainer;
     protected TextView messageShower;
-
     public ViewGroup getLayoutContainer() {
         return layoutContainer;
     }
@@ -61,6 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         editor.apply();
 
     }
+
     protected void checkForUserEmail() {
         String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
         if(userEmail.isEmpty()) {
@@ -71,7 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void register(final String userEmail) {
-        AuthenticatorService.register(this,messageShower, layoutContainer, userEmail);
+        AuthenticatorService.register(this, userEmail);
     }
 
     protected String getUserEmail() {
@@ -183,4 +192,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return bitmapImage;
     }
+    public void persistObject(String key, Object obj) throws IOException {
+        InternalStorage.writeObject(this, key, obj);
+    }
+
+    public Object getObject(String key) throws IOException, ClassNotFoundException {
+        return InternalStorage.readObject(this, key);
+    }
 }
+

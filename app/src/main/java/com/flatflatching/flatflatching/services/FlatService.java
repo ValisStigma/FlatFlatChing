@@ -1,17 +1,20 @@
 package com.flatflatching.flatflatching.services;
 
+import android.util.Log;
+
+import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
+import com.flatflatching.flatflatching.models.Address;
 import com.flatflatching.flatflatching.models.Flat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by rafael on 05.10.2015.
@@ -20,16 +23,27 @@ import java.util.List;
 public class FlatService {
     private static String ownUrl = "";
     private static String inviteUrl = "";
+    private static String getFlatInfoUrl = "";
+    private static RequestBuilder requestBuilder = new RequestBuilder();
 
     public static void createFlat(BaseActivity activity, String chosenEmail, Flat flat) {
         new CreateFlatTask(activity, chosenEmail, flat).execute();
     }
 
+    public static void getFlatInfo(BaseActivity activity, String flatId) {
+        try {
+            JSONObject params = requestBuilder.getFlatInfoRequest(flatId);
+            new GetFlatInfoTask(activity, getFlatInfoUrl).execute(params);
+        } catch (JSONException e) {
+            activity.notifyError(R.string.server_error);
+        }
+    }
     public static void inviteFlatMate(BaseActivity activity, String flatId, String email) {
         new InviteFlatMateTask(activity, flatId, email).execute();
     }
 
     private static class GetFlatInfoTask extends AbstractAsyncTask {
+
         public GetFlatInfoTask(BaseActivity activity, String url) {
             super(activity, url);
         }
@@ -40,39 +54,51 @@ public class FlatService {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if(status == Status.requestFailed || result.isEmpty()) {
+                reactToError();
+            } else {
+                try {
+                    persistFlatInfo(result);
+                } catch (JSONException e) {
+                    exceptionMessage = "Infos über WG nicht einholbbar";
+                    reactToError();
+                }
+            }
         }
 
-/*        {
-            "flat_name": "<name>",
-                "flat_address": {
-            "flat_address_street": "<strasse>",
-                    "flat_address_number": <number>,
-                    "flat_address_plz": <plz>,
-                    "flat_address_place": "<ortsname>",
-                    "flat_address_land": "<landname>"
-        }
-        }*/
+        private void persistFlatInfo(String res) throws JSONException {
+            JSONObject response = new JSONObject(res);
+            final String name = response.getString("flat_name");
+            activity.persistToPreferences(BaseActivity.FLAT_NAME, name);
+            try {
+                final JSONObject jsonAddress = response.getJSONObject("flat_address");
+                final String streetName = jsonAddress.getString("flat_address_street");
+                final String houseNumber = jsonAddress.getString("flat_address_number");
+                final String plz = jsonAddress.getString("flat_address_plz");
+                final String city = jsonAddress.getString("flat_address_place");
+                if(!streetName.isEmpty() && !houseNumber.isEmpty() && !plz.isEmpty() && !city.isEmpty()) {
+                    final Address address = new Address(streetName, houseNumber, plz, city);
+                    persistObject(BaseActivity.FLAT, address);
 
+                }
+            } catch (JSONException e) {
+                //Swallow JSONException because address not mandatory
+                Log.d("address_error", "Incomplete address for " + name);
+            } catch (IOException e) {
+                Log.d("address_error", "Unable to store address for " + name);
+            }
+
+        }
 
     }
     private  static class InviteFlatMateTask extends AbstractGetAuthTokenTask {
         private final String flatId;
         private final String email;
-        private enum Status {
-            authFailed,
-            noAdmin,
-            userNotFound,
-            requestFailed,
-            notCompleted,
-            okay
-        }
-        private Status status;
 
         public InviteFlatMateTask(BaseActivity activity, String flatId, String email) {
             super(activity, inviteUrl);
             this.flatId = flatId;
             this.email = email;
-            status = Status.notCompleted;
         }
 
         @Override
@@ -97,16 +123,17 @@ public class FlatService {
                     if(result == null) {
                         status = Status.requestFailed;
                     } else {
+                        status = Status.requestFailed;
                         int errorCode = result.getInt("error_code");
                         switch (errorCode) {
                             case 1:
-                                status = Status.authFailed;
+                                exceptionMessage = "Du bist noch nicht registriert";
                                 break;
                             case 2:
-                                status = Status.noAdmin;
+                                exceptionMessage = "Du bist kein WG Admin";
                                 break;
                             case 11:
-                                status = Status.userNotFound;
+                                exceptionMessage = "Diese Email-addresse ist ungültig";
                                 break;
                         }
                     }
@@ -124,20 +151,13 @@ public class FlatService {
             try {
                 params = requestBuilder.getInvitationRequest(token, flatId, email).toString();
             } catch (JSONException e) {
+                status = Status.requestFailed;
                 return result;
             }
-            final StringBuilder stringBuilder = new StringBuilder();
             try {
-                final ServerConnector serverConnector = new ServerConnector(
-                        inviteUrl, "UTF-8");
-                serverConnector.addFormField("data", params);
-                final List<String> response = serverConnector.finish();
-                for (final String line : response) {
-                    stringBuilder.append(line);
-                }
-                result = stringBuilder.toString();
-            } catch (IOException i) {
-                result = "";
+                result = RequestService.sendRequestWithData(ServerConnector.Method.POST, inviteUrl, params);
+            } catch (IOException e) {
+                status = Status.requestFailed;
             }
             return result;
         }
@@ -145,19 +165,8 @@ public class FlatService {
         @Override
         protected void onPostExecute(final String result) {
             super.onPostExecute(result);
-            switch (status) {
-                case authFailed:
-                    reactToError();
-                    break;
-                case noAdmin:
-                    reactToError();
-                    break;
-                case userNotFound:
-                    reactToError();
-                    break;
-                case notCompleted:
-                    reactToError();
-                    break;
+            if(status == Status.requestFailed) {
+                reactToError();
             }
         }
     }
@@ -166,19 +175,9 @@ public class FlatService {
     private static class CreateFlatTask extends AbstractGetAuthTokenTask {
         private Flat flat;
 
-        private enum Status {
-            authFailed,
-            incompleteAdress,
-            requestFailed,
-            notCompleted,
-            okay
-        }
-        private Status status;
-
         public CreateFlatTask(BaseActivity activity, String url, Flat flat) {
             super(activity, url);
             this.flat = flat;
-            status = Status.notCompleted;
         }
 
         @Override
@@ -212,22 +211,22 @@ public class FlatService {
                         int errCode = res.getInt("error_code");
                         switch (errCode) {
                             case 1:
-                                status = Status.authFailed;
+                                exceptionMessage = "Du bist kein Admin";
                                 break;
                             case 111:
-                                status = Status.incompleteAdress;
+                                exceptionMessage = "Du hast keine Strasse angegeben";
                                 break;
                             case 112:
-                                status = Status.incompleteAdress;
+                                exceptionMessage = "Du hast keine Hausnummer angegeben";
                                 break;
                             case 113:
-                                status = Status.incompleteAdress;
+                                exceptionMessage = "Du hast keine Ortschaft angegeben";
                                 break;
                             case 114:
-                                status = Status.incompleteAdress;
+                                exceptionMessage = "Du hast keine Postleitzahl angegeben";
                                 break;
                             case 115:
-                                status = Status.incompleteAdress;
+                                exceptionMessage = "Du hast kein Land angegeben";
                                 break;
                         }
                     } catch (JSONException i) {
@@ -245,20 +244,13 @@ public class FlatService {
                 params = requestBuilder.getCreateFlatRequest(token, flat).toString();
 
             } catch (JSONException e) {
+                status = Status.requestFailed;
                 return result;
             }
-            final StringBuilder stringBuilder = new StringBuilder();
             try {
-                final ServerConnector serverConnector = new ServerConnector(
-                        ownUrl, "UTF-8");
-                serverConnector.addFormField("data", params);
-                final List<String> response = serverConnector.finish();
-                for (final String line : response) {
-                    stringBuilder.append(line);
-                }
-                result = stringBuilder.toString();
-            } catch (IOException i) {
-                result = "";
+                result = RequestService.sendRequestWithData(ServerConnector.Method.POST, ownUrl, params);
+            } catch (IOException e) {
+                status = Status.requestFailed;
             }
             return result;
         }

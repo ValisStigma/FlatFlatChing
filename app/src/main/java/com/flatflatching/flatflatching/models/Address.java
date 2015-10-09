@@ -1,15 +1,17 @@
 package com.flatflatching.flatflatching.models;
 
+import java.io.Serializable;
+
 /**
  * Created by rafael on 05.10.2015.
  */
-public class Address {
+public class Address implements Serializable {
     private String streetName;
     private String streetNumber;
     private String city;
     private String zipCode;
 
-    public Address(final String streetName, final String streetNumber, final String city, final String zipCode) {
+    public Address(final String streetName, final String streetNumber, final String city, final String zipCode)  {
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.city = city;

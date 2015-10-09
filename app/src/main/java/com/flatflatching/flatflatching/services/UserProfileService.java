@@ -2,14 +2,10 @@
  * Created by rafael on 04.10.2015.
  */
 package com.flatflatching.flatflatching.services;
-import android.content.SharedPreferences;
-
 import com.flatflatching.flatflatching.activities.BaseActivity;
-import com.flatflatching.flatflatching.helpers.BaseRequest;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.IOException;
 
 public class UserProfileService {
     public static boolean userDataAcquired = false;
@@ -24,17 +20,6 @@ public class UserProfileService {
     private static class GetUserInfoTask extends AbstractAsyncTask {
         GetUserInfoTask(BaseActivity context, String url) {
             super(context, url);
-        }
-
-        @Override
-        protected String doInBackground(JSONObject... params) {
-            String result;
-            try {
-                result = new BaseRequest(url).openRequest().finish();
-            } catch (IOException e) {
-                result = "";
-            }
-            return result;
         }
 
         @Override

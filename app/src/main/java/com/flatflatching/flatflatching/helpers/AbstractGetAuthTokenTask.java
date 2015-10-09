@@ -2,6 +2,7 @@ package com.flatflatching.flatflatching.helpers;
 
 import android.app.Activity;
 
+import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -16,15 +17,7 @@ import java.io.IOException;
  */
 public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
     private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
-    protected enum Status {
-        notReady,
-        userRecoverableError,
-        IOException,
-        googleAuthException,
-        tokenAcquired
-    }
 
-    protected Status status;
     protected String token;
     String chosenEmail;
     UserRecoverableAuthException userException;
@@ -33,25 +26,27 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         super(activity, SCOPE);
         this.status = Status.notReady;
         this.chosenEmail = chosenEmail;
+
     }
 
     @Override
     protected String doInBackground(JSONObject... params){
         try{
+            status = Status.running;
             token = getAccessToken(activity, chosenEmail, SCOPE);
             if(token != null){
                 //Access Token sent
-                status = Status.tokenAcquired;
+                status = Status.okay;
                 handleToken(token);
                 postToken();
             } else {
-                status = Status.IOException;
+                status = Status.requestFailed;
             }
 
         }
         catch (Exception ex){
             token = null;
-            status = Status.IOException;
+            status = Status.requestFailed;
         }
         return token;
 
@@ -59,16 +54,10 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
 
     protected void onPostExecute(Void result)  {
         switch (status) {
-            case notReady:
-                reactToError();
-                break;
             case userRecoverableError:
                 activity.startActivityForResult(userException.getIntent(), BaseActivity.REQUEST_PERMISSION);
                 break;
-            case googleAuthException:
-                reactToError();
-                break;
-            case IOException:
+            case requestFailed:
                 reactToError();
                 break;
             default:
@@ -84,11 +73,8 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
             status = Status.userRecoverableError;
             userException = userRecoverableError;
         }
-        catch(GoogleAuthException googleAuthException){
-            status = Status.googleAuthException;
-        }
-        catch(IOException ioException) {
-            status = Status.IOException;
+        catch(GoogleAuthException | IOException googleAuthException){
+            status = Status.requestFailed;
         }
         return null;
     }
