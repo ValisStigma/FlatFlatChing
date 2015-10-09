@@ -301,3 +301,108 @@ REquest Object:
 "error_message": "open finance posts"
 }
 ```
+
+
+### /api/set/admin
+
+Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möchte. Es kann mehrere Admins geben, sprich der alte verliert keine Rechte.
+
+#### REQUEST JSON Object
+
+```
+{
+"account_token": "<token>",
+"user_email": "<mail of the promoted>"
+}
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"response": "Done!"
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 2,
+"error_message": "Authentication failed! No admin"
+}
+```
+
+```
+{
+"error_code": 11,
+"error_message": "User not found!"
+}
+```
+
+-------------------------------------------------------------
+
+
+
+-------------------------------------------------------------
+
+### --GETTER API--
+
+
+### GET /api/get/flat
+
+Hohlt daten der WG. Falls benötigt.
+
+#### Parameters
+
+flat_uuid=<uuid>
+
+#### RESPONSE JSON Object
+
+```
+{
+"flat_name": "<name>",
+"flat_address": {
+    "flat_address_street": "<strasse>",
+    "flat_address_number": <number>,
+    "flat_address_plz": <plz>,
+    "flat_address_place": "<ortsname>",
+    "flat_address_land": "<landname>"
+}
+}
+```
+
+
+### GET /api/get/flat/members
+
+Hohlt daten der WG. Falls benötigt.
+
+#### Parameters
+
+flat_uuid=<uuid>
+
+#### RESPONSE JSON Object
+
+Liste mit User-Daten
+
+```
+[
+{
+"email": "<mail@juser>",
+"isAdmin": boolean
+},
+{
+"email": "<mail>",
+"isAdmin": boolean
+}
+]
+```
+
