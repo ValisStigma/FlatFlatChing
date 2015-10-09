@@ -1,12 +1,5 @@
 package com.flatflatching.flatflatching.services;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
@@ -24,19 +17,19 @@ import java.util.List;
  * Created by rafael on 02.10.2015.
  */
 public  class AuthenticatorService {
-    public static void getAuth(Activity activity, TextView messageShower, ViewGroup viewContainer, String chosenEmail) {
-        new GetUserData(activity, messageShower, viewContainer, chosenEmail).execute();
+    public static void getAuth(BaseActivity activity, String chosenEmail) {
+        new GetUserData(activity, chosenEmail).execute();
     }
 
-    public static void register(Activity activity, TextView messageShower, ViewGroup viewContainer, String chosenEmail) {
-        new RegisterUser(activity, messageShower, viewContainer, chosenEmail);
+    public static void register(BaseActivity activity, String chosenEmail) {
+        new RegisterUser(activity, chosenEmail);
     }
 
     private static class RegisterUser extends AbstractAsyncTask {
         private final String registerUrl = "";
         private final String email;
-        public RegisterUser(Activity activity, TextView messageShower, ViewGroup viewContainer, String chosenEmail) {
-            super(activity, messageShower, viewContainer, chosenEmail);
+        public RegisterUser(BaseActivity activity, String chosenEmail) {
+            super(activity, chosenEmail);
             email = chosenEmail;
 
         }
@@ -81,10 +74,7 @@ public  class AuthenticatorService {
                         reactToError();
                     } else {
                         final String flatId = flats.getString(flats.length() - 1);
-                        SharedPreferences preferences = getContext().getSharedPreferences(BaseActivity.PREFERENCES, 0);
-                        final SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(BaseActivity.FLAT_ID, flatId);
-                        editor.apply();
+                        activity.persistToPreferences(BaseActivity.FLAT_ID, flatId);
                     }
                 } catch (JSONException e) {
                     reactToError();
@@ -95,8 +85,8 @@ public  class AuthenticatorService {
 
     private static class GetUserData extends AbstractGetAuthTokenTask {
 
-        GetUserData(Activity activity, TextView messageShower, ViewGroup viewContainer, String url){
-            super(activity, messageShower, viewContainer, url);
+        GetUserData(BaseActivity activity, String url){
+            super(activity, url);
         }
         @Override
         protected void onPostExecute(Void result)  {
@@ -119,15 +109,8 @@ public  class AuthenticatorService {
         }
 
         protected void saveToken() {
-            SharedPreferences preferences = activity.getSharedPreferences(BaseActivity.PREFERENCES, 0);
-            final SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(BaseActivity.ACCOUNT_TOKEN, token);
-            editor.apply();
-            try {
-                UserProfileService.fillUserProfile(activity, getMessageShower(), getViewContainer(), token);
-            } catch(IOException e) {
-                reactToError();
-            }
+            persistToPreferences(BaseActivity.ACCOUNT_TOKEN, token);
+            UserProfileService.fillUserProfile(activity, token);
         }
     }
 }

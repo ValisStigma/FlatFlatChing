@@ -1,9 +1,7 @@
 package com.flatflatching.flatflatching.services;
 
-import android.app.Activity;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
+import com.flatflatching.flatflatching.activities.BaseActivity;
+import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
@@ -23,14 +21,40 @@ public class FlatService {
     private static String ownUrl = "";
     private static String inviteUrl = "";
 
-    public static void createFlat(Activity activity, TextView messageShower, ViewGroup viewContainer, String chosenEmail, Flat flat) {
-        new CreateFlatTask(activity, messageShower, viewContainer, chosenEmail, flat).execute();
+    public static void createFlat(BaseActivity activity, String chosenEmail, Flat flat) {
+        new CreateFlatTask(activity, chosenEmail, flat).execute();
     }
 
-    public static void inviteFlatMate(Activity activity, TextView messageShower, ViewGroup viewContainer, String flatId, String email) {
-        new InviteFlatMateTask(activity, messageShower, viewContainer, flatId, email).execute();
+    public static void inviteFlatMate(BaseActivity activity, String flatId, String email) {
+        new InviteFlatMateTask(activity, flatId, email).execute();
     }
 
+    private static class GetFlatInfoTask extends AbstractAsyncTask {
+        public GetFlatInfoTask(BaseActivity activity, String url) {
+            super(activity, url);
+        }
+
+        // flat_uuid=
+        //RESPONSE JSON Object
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+        }
+
+/*        {
+            "flat_name": "<name>",
+                "flat_address": {
+            "flat_address_street": "<strasse>",
+                    "flat_address_number": <number>,
+                    "flat_address_plz": <plz>,
+                    "flat_address_place": "<ortsname>",
+                    "flat_address_land": "<landname>"
+        }
+        }*/
+
+
+    }
     private  static class InviteFlatMateTask extends AbstractGetAuthTokenTask {
         private final String flatId;
         private final String email;
@@ -44,8 +68,8 @@ public class FlatService {
         }
         private Status status;
 
-        public InviteFlatMateTask(Activity activity, TextView messageShower, ViewGroup viewContainer, String flatId, String email) {
-            super(activity, messageShower, viewContainer, inviteUrl);
+        public InviteFlatMateTask(BaseActivity activity, String flatId, String email) {
+            super(activity, inviteUrl);
             this.flatId = flatId;
             this.email = email;
             status = Status.notCompleted;
@@ -142,9 +166,19 @@ public class FlatService {
     private static class CreateFlatTask extends AbstractGetAuthTokenTask {
         private Flat flat;
 
-        public CreateFlatTask(Activity activity, TextView textView, ViewGroup viewGroup, String url, Flat flat) {
-            super(activity, textView, viewGroup, url);
+        private enum Status {
+            authFailed,
+            incompleteAdress,
+            requestFailed,
+            notCompleted,
+            okay
+        }
+        private Status status;
+
+        public CreateFlatTask(BaseActivity activity, String url, Flat flat) {
+            super(activity, url);
             this.flat = flat;
+            status = Status.notCompleted;
         }
 
         @Override
@@ -164,8 +198,45 @@ public class FlatService {
         }
 
         private void handleFlatResponse(String response) {
-
+            JSONObject res = null;
+            try{
+                res = new JSONObject(response);
+                String flatId = res.getString("flat_uuid");
+                persistToPreferences(BaseActivity.FLAT_ID, flatId);
+                status =  Status.okay;
+            } catch (JSONException e) {
+                if(res == null) {
+                    status = Status.requestFailed;
+                } else {
+                    try {
+                        int errCode = res.getInt("error_code");
+                        switch (errCode) {
+                            case 1:
+                                status = Status.authFailed;
+                                break;
+                            case 111:
+                                status = Status.incompleteAdress;
+                                break;
+                            case 112:
+                                status = Status.incompleteAdress;
+                                break;
+                            case 113:
+                                status = Status.incompleteAdress;
+                                break;
+                            case 114:
+                                status = Status.incompleteAdress;
+                                break;
+                            case 115:
+                                status = Status.incompleteAdress;
+                                break;
+                        }
+                    } catch (JSONException i) {
+                        status = Status.requestFailed;
+                    }
+                }
+            }
         }
+
         private String registerFlat(final String token) {
             String params;
             String result = "";

@@ -1,11 +1,7 @@
 package com.flatflatching.flatflatching.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +14,7 @@ import com.flatflatching.flatflatching.services.FlatService;
 public class ManageFlatMatesActivity extends BaseActivity {
 
     private EditText newFlatMateEmail;
-    private Activity self;
+    private BaseActivity self;
 
 
     @Override
@@ -33,16 +29,16 @@ public class ManageFlatMatesActivity extends BaseActivity {
         inviteFlatMate.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  final String emailAdress = newFlatMateEmail.toString();
+                  final String emailAddress = newFlatMateEmail.toString();
                   final String flatId = settings.getString(BaseActivity.FLAT_ID, "");
 
-                  if(android.util.Patterns.EMAIL_ADDRESS.matcher(emailAdress).matches() && !flatId.isEmpty()) {
-                        FlatService.inviteFlatMate(self, messageShower, layoutContainer, flatId , emailAdress );
+                  if(android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches() && !flatId.isEmpty()) {
+                        FlatService.inviteFlatMate(self, flatId , emailAddress );
                   } else if(!flatId.isEmpty()) {
                       Snackbar.make(findViewById(android.R.id.content), "Ungültige Emailadresse", Snackbar.LENGTH_LONG)
                               .show();
                   } else {
-                      register(emailAdress);
+                      register(emailAddress);
                   }
               }
           }

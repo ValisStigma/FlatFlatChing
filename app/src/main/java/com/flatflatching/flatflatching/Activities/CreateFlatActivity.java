@@ -1,12 +1,10 @@
 package com.flatflatching.flatflatching.activities;
 
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -27,9 +25,7 @@ public class CreateFlatActivity extends BaseActivity {
     private EditText streetNumberEditText;
     private EditText cityEditText;
     private EditText postCodeEditText;
-    private TextView messageShower;
-    private ViewGroup viewContainer;
-    private Activity self;
+    private BaseActivity self;
     private String chosenEmail;
 
     @Override
@@ -37,7 +33,7 @@ public class CreateFlatActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_flat);
         self = this;
-        viewContainer = (RelativeLayout) findViewById(R.id.createFlatLayoutContainer);
+        layoutContainer = (RelativeLayout) findViewById(R.id.createFlatLayoutContainer);
         flatTitleEditText = (EditText) findViewById(R.id.editTextFlatTitle);
         streetNameEditText = (EditText) findViewById(R.id.editTextStreetName);
         streetNumberEditText = (EditText) findViewById(R.id.editTextStreetNumber);
@@ -74,11 +70,11 @@ public class CreateFlatActivity extends BaseActivity {
     }
     private void registerFlat(Flat flat) {
         if(hasConnection()){
-            FlatService.createFlat(self, messageShower, viewContainer, chosenEmail, flat);
-            AuthenticatorService.getAuth(self, messageShower, viewContainer, chosenEmail);
+            FlatService.createFlat(self, chosenEmail, flat);
+            AuthenticatorService.getAuth(self, chosenEmail);
         }
         else{
-            notifyError(messageShower, viewContainer, R.string.connection_error);
+            notifyError(R.string.connection_error);
         }
     }
 
@@ -109,7 +105,7 @@ public class CreateFlatActivity extends BaseActivity {
                 createFlat();
             }
             else if(resultCode == RESULT_CANCELED){
-                notifyError(messageShower, viewContainer, R.string.internal_error);
+                notifyError(R.string.internal_error);
             }
         }
     }

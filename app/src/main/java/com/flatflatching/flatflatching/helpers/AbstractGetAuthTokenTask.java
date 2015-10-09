@@ -1,8 +1,6 @@
 package com.flatflatching.flatflatching.helpers;
 
 import android.app.Activity;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -26,15 +24,13 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         tokenAcquired
     }
 
-    protected  Activity activity;
     protected Status status;
     protected String token;
     String chosenEmail;
     UserRecoverableAuthException userException;
 
-    public AbstractGetAuthTokenTask(Activity activity, TextView messageShower, ViewGroup viewContainer, String chosenEmail){
-        super(activity, messageShower, viewContainer, SCOPE);
-        this.activity = activity;
+    public AbstractGetAuthTokenTask(BaseActivity activity, String chosenEmail){
+        super(activity, SCOPE);
         this.status = Status.notReady;
         this.chosenEmail = chosenEmail;
     }
@@ -42,7 +38,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
     @Override
     protected String doInBackground(JSONObject... params){
         try{
-            token = getAccessToken(this.activity, chosenEmail, SCOPE);
+            token = getAccessToken(activity, chosenEmail, SCOPE);
             if(token != null){
                 //Access Token sent
                 status = Status.tokenAcquired;

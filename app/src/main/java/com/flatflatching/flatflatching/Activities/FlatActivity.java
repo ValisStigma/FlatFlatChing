@@ -16,7 +16,7 @@ import com.flatflatching.flatflatching.services.AuthenticatorService;
 
 public class FlatActivity extends BaseActivity {
 
-    private Activity self = this;
+    private BaseActivity self = this;
 
 
     @Override
@@ -91,14 +91,14 @@ public class FlatActivity extends BaseActivity {
                 settings.edit().putString(BaseActivity.CHOSEN_USER_EMAIL, selectedAccountEmail);
                 settings.edit().apply();
                 if(hasConnection()){
-                    AuthenticatorService.getAuth(self, messageShower, layoutContainer, selectedAccountEmail);
+                    AuthenticatorService.getAuth(self, selectedAccountEmail);
                 }
                 else{
-                    notifyError(messageShower, layoutContainer, R.string.connection_error);
+                    notifyError(R.string.connection_error);
                 }
             }
             else if(resultCode == RESULT_CANCELED){
-                notifyError(messageShower, layoutContainer, R.string.internal_error);
+                notifyError(R.string.internal_error);
             }
         }
     }

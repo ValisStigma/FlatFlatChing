@@ -1,33 +1,25 @@
 package com.flatflatching.flatflatching.helpers;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
+import com.flatflatching.flatflatching.activities.BaseActivity;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, String> {
     
-    private Context context;
-    private transient WeakReference<TextView> textReference;
-    private transient WeakReference<ViewGroup> viewContainer;
+    protected BaseActivity activity;
     protected final  String url;
-    
-    public AbstractAsyncTask(final Context context, final TextView textView, final ViewGroup viewGroup, final String url) {
+    public AbstractAsyncTask(final BaseActivity activity, final String url) {
         super();
         this.url = url;
-        setContext(context);
-        setViewContainerReference(new WeakReference<>(viewGroup));
-        setMessageShowerReference(new WeakReference<>(textView));
+        this.activity = activity;
     }
     
     @Override
@@ -51,65 +43,22 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         }
         return result;
     }
-    
-    protected void setMessageShowerReference(final WeakReference<TextView> textView) {
-        this.textReference = textView;
-    }
-    
-    protected WeakReference<TextView> getMessageShowReference() {
-        return this.textReference;
-    }
-    
-    protected TextView getMessageShower() throws IOException {
-        final TextView textView = getMessageShowReference().get();
-        if (textView == null) {
-            throw new IOException();
-        }
-        return textView;
-    }
-    
-    private void setViewContainerReference(final WeakReference<ViewGroup> viewGroup) {
-        this.viewContainer = viewGroup;
-    }
-    
-    private WeakReference<ViewGroup> getViewContainerReference() {
-        return this.viewContainer;
-    }
-    
-    protected ViewGroup getViewContainer() throws IOException {
-        final ViewGroup viewGroup = getViewContainerReference().get();
-        if (viewGroup == null) {
-            throw new IOException();
-        }
-        return viewGroup;
-    }
-    
-    protected Context getContext() {
-        return context;
-    }
 
-    private void setContext(final Context context) {
-        this.context = context;
-    }
-    
     protected boolean hasConnection() {
-        final ConnectivityManager connMgr = (ConnectivityManager) getContext().getSystemService(
-            Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
+        return activity.hasConnection();
     }
     
     protected void reactToError() {
-        try {
-            final ViewGroup surveyContainer = getViewContainer();
-            for (int i = 0; i < surveyContainer.getChildCount(); i++) {
-                surveyContainer.getChildAt(i).setVisibility(View.GONE);
-            }
-            final TextView titleText = getMessageShower();
-            titleText.setVisibility(View.VISIBLE);
-            titleText.setText(getContext().getString(R.string.server_error));
-        } catch (IOException e) {
-            Log.d("this", e.getMessage());
-        }  
+        final ViewGroup layoutContainer = activity.getLayoutContainer();
+        for (int i = 0; i < layoutContainer.getChildCount(); i++) {
+            layoutContainer.getChildAt(i).setVisibility(View.GONE);
+        }
+        final TextView titleText = activity.getMessageShower();
+        titleText.setVisibility(View.VISIBLE);
+        titleText.setText(activity.getString(R.string.server_error));
+    }
+
+    protected void persistToPreferences(String key, String value) {
+        activity.persistToPreferences(key, value);
     }
 }

@@ -47,6 +47,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ViewGroup layoutContainer;
     protected TextView messageShower;
 
+    public ViewGroup getLayoutContainer() {
+        return layoutContainer;
+    }
+
+    public TextView getMessageShower() {
+        return messageShower;
+    }
+
+    public void persistToPreferences(String key, String value) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(key, value);
+        editor.apply();
+
+    }
     protected void checkForUserEmail() {
         String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
         if(userEmail.isEmpty()) {
@@ -100,10 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         final java.util.UUID deviceUuid = new UUID(androidId.hashCode(),
                 ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
         final String newUuid = deviceUuid.toString();
-        final SharedPreferences.Editor editor = settings.edit();
-        uuid = newUuid;
-        editor.putString(UUID, uuid);
-        editor.apply();
+        persistToPreferences(UUID, newUuid);
     }
 
     @Override
@@ -124,47 +135,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     /** Used to notify Users of an error.
      * For this app implemented as a method which hides all GUI-elements except a textview and shows an error
      * message in it
-     * @param textView the textView in which the errormessage shall be shown
-     * @param container the basic viewgroup which holds all other gui-elements
      * @param stringId the id of the error-message
      */
-    public void notifyError(final TextView textView, final ViewGroup container, final int stringId) {
-        for (int i = 0; i < container.getChildCount(); i++) {
-            container.getChildAt(i).setVisibility(View.GONE);
+    public void notifyError(final int stringId) {
+        for (int i = 0; i < layoutContainer.getChildCount(); i++) {
+            layoutContainer.getChildAt(i).setVisibility(View.GONE);
         }
-        textView.setVisibility(View.VISIBLE);
-        textView.setText(stringId);
+        messageShower.setVisibility(View.VISIBLE);
+        messageShower.setText(stringId);
     }
 
-//    protected void registerUserName() {
-//        final Intent surveyIntent = new Intent(this,
-//                EnterNameActivity.class);
-//        surveyIntent.putExtra(CHANGE_NAME, "");
-//        startActivity(surveyIntent);
-//    }
-//
-//
-//
-      protected void tryAuthenticate() {
-          if(hasConnection()) {
-              if(isGoogleServicesAvailable()) {
-                  pickUserAccount();
-              } else {
-                  //TODO:Google services is not available
-              }
+    protected void tryAuthenticate() {
+      if(hasConnection()) {
+          if(isGoogleServicesAvailable()) {
+              pickUserAccount();
           } else {
-              //TODO: There is no internet connection
+              //TODO:Google services is not available
           }
+      } else {
+          //TODO: There is no internet connection
       }
-//
-//    protected void changeUserName() {
-//        final Intent surveyIntent = new Intent(this,
-//                EnterNameActivity.class);
-//        surveyIntent.putExtra(CHANGE_NAME, "change");
-//        startActivity(surveyIntent);
-//    }
-
-
+    }
 
     protected void pickUserAccount() {
         Intent googlePicker = AccountPicker.newChooseAccountIntent(null, null,
