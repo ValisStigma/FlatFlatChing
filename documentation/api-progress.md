@@ -39,7 +39,7 @@ Implementiert: Ja
 Getestet: Nein
 
 ### /api/get/flat/members
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 

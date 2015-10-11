@@ -10,7 +10,9 @@ import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
 import com.flatflatching.flatflatching.models.Address;
 import com.flatflatching.flatflatching.models.Flat;
+import com.flatflatching.flatflatching.models.FlatMate;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,6 +26,8 @@ public class FlatService {
     private static String ownUrl = "";
     private static String inviteUrl = "";
     private static String getFlatInfoUrl = "";
+    private static String getFlatMemberInfoUrl = "";
+
     private static RequestBuilder requestBuilder = new RequestBuilder();
 
     public static void createFlat(BaseActivity activity, String chosenEmail, Flat flat) {
@@ -38,18 +42,57 @@ public class FlatService {
             activity.notifyError(R.string.server_error);
         }
     }
+
+    public static void getFlatMemberInfo(BaseActivity activity, String flatId) {
+        try{
+            JSONObject params = requestBuilder.getFlatInfoRequest(flatId);
+            new GetFlatInfoTask(activity, getFlatInfoUrl).execute(params);
+        } catch (JSONException e) {
+            activity.notifyError(R.string.server_error);
+        }
+    }
     public static void inviteFlatMate(BaseActivity activity, String flatId, String email) {
         new InviteFlatMateTask(activity, flatId, email).execute();
     }
 
+    private static class GetFlatMemberInfoTask extends AbstractAsyncTask {
+
+        public GetFlatMemberInfoTask(BaseActivity activity, String url) {
+            super(activity, url);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if(status == Status.requestFailed || result.isEmpty()) {
+                reactToError();
+            } else {
+                try {
+                    persistFlatMemberInfo(result);
+                } catch (JSONException | IOException e) {
+                    exceptionMessage = "Infos über WG-Bewohner nicht einholbbar";
+                    reactToError();
+                }
+            }
+        }
+
+        private void persistFlatMemberInfo(String res) throws JSONException, IOException {
+            JSONArray response = new JSONArray(res);
+            for(int i = 0; i < response.length(); i++) {
+                JSONObject flatMember = response.getJSONObject(i);
+                final boolean isAdmin = flatMember.getBoolean("isAdmin");
+                final String email = flatMember.getString("email");
+                final FlatMate flatMate = new FlatMate(email, isAdmin);
+                activity.persistObject(email, flatMate);
+
+            }
+        }
+    }
     private static class GetFlatInfoTask extends AbstractAsyncTask {
 
         public GetFlatInfoTask(BaseActivity activity, String url) {
             super(activity, url);
         }
-
-        // flat_uuid=
-        //RESPONSE JSON Object
 
         @Override
         protected void onPostExecute(String result) {
