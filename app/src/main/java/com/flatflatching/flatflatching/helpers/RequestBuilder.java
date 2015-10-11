@@ -12,6 +12,7 @@ public class RequestBuilder {
     private final String ACCOUNT_NAME = "account_name";
     private final String ACCOUNT_TOKEN = "account_token";
     private final String FLAT_ID = "flat_uuid";
+    private final String USER_EMAIL = "user_email";
 
     public RequestBuilder(){
     }
@@ -59,13 +60,20 @@ public class RequestBuilder {
         final JSONObject requestParams = new JSONObject();
         requestParams.put(ACCOUNT_TOKEN, accountToken);
         requestParams.put(FLAT_ID, flatId);
-        requestParams.put("user_email", userEmail);
+        requestParams.put(USER_EMAIL, userEmail);
         return requestParams;
     }
 
     public JSONObject getFlatInfoRequest(final String flatId) throws JSONException {
         final JSONObject requestParams = new JSONObject();
         requestParams.put(FLAT_ID, flatId);
+        return requestParams;
+    }
+
+    public JSONObject getSetFlatAdminRequest(final String token, final String userEmail) throws JSONException {
+        final JSONObject requestParams = new JSONObject();
+        requestParams.put(ACCOUNT_TOKEN, token);
+        requestParams.put(USER_EMAIL, userEmail);
         return requestParams;
     }
     private String getUserName() {

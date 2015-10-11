@@ -27,6 +27,7 @@ public class FlatService {
     private static String inviteUrl = "";
     private static String getFlatInfoUrl = "";
     private static String getFlatMemberInfoUrl = "";
+    private static String setFlatAdminUrl = "";
 
     private static RequestBuilder requestBuilder = new RequestBuilder();
 
@@ -46,13 +47,17 @@ public class FlatService {
     public static void getFlatMemberInfo(BaseActivity activity, String flatId) {
         try{
             JSONObject params = requestBuilder.getFlatInfoRequest(flatId);
-            new GetFlatInfoTask(activity, getFlatInfoUrl).execute(params);
+            new GetFlatMemberInfoTask(activity, getFlatMemberInfoUrl).execute(params);
         } catch (JSONException e) {
             activity.notifyError(R.string.server_error);
         }
     }
     public static void inviteFlatMate(BaseActivity activity, String flatId, String email) {
         new InviteFlatMateTask(activity, flatId, email).execute();
+    }
+
+    public static void setAdmin(BaseActivity activity, String userEmail) {
+        new SetFlatAdminTask(activity, userEmail).execute();
     }
 
     private static class GetFlatMemberInfoTask extends AbstractAsyncTask {
@@ -214,6 +219,77 @@ public class FlatService {
         }
     }
 
+    private static class SetFlatAdminTask extends AbstractGetAuthTokenTask {
+        private final String userEmail;
+        public SetFlatAdminTask(BaseActivity activity, final String userEmail) {
+            super(activity, setFlatAdminUrl);
+            this.userEmail = userEmail;
+        }
+
+        @Override
+        protected void handleToken(String token) {
+            String response = setAdminRequest(token);
+            handleSetAdminResponse(response);
+        }
+
+        private void handleSetAdminResponse(String response) {
+            JSONObject res = null;
+            try{
+                res = new JSONObject(response);
+                String state = res.getString("response");
+                if(state.equals("Done")) {
+                    status = Status.okay;
+                } else {
+                    status = Status.requestFailed;
+                }
+            } catch (JSONException e) {
+                if(res == null) {
+                    status = Status.requestFailed;
+                } else {
+                    try {
+                        int errCode = res.getInt("error_code");
+                        switch (errCode) {
+                            case 1:
+                                exceptionMessage = "Authentifizierung fehlgeschlagen";
+                                break;
+                            case 2:
+                                exceptionMessage = "Du bist kein Admin";
+                                break;
+                            case 11:
+                                exceptionMessage = "User wurde nicht gefunden";
+                                break;
+                        }
+                    } catch (JSONException i) {
+                        status = Status.requestFailed;
+                    }
+                }
+            }
+        }
+
+        private String setAdminRequest(String token) {
+            String params;
+            String result = "";
+            RequestBuilder requestBuilder = new RequestBuilder();
+            try {
+                params = requestBuilder.getSetFlatAdminRequest(token, userEmail).toString();
+
+            } catch (JSONException e) {
+                status = Status.requestFailed;
+                return result;
+            }
+            try {
+                result = RequestService.sendRequestWithData(ServerConnector.Method.POST, setFlatAdminUrl, params);
+            } catch (IOException e) {
+                status = Status.requestFailed;
+            }
+            return result;
+        }
+
+        @Override
+        protected void postToken() {
+
+        }
+    }
 
     private static class CreateFlatTask extends AbstractGetAuthTokenTask {
         private Flat flat;

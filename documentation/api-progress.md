@@ -19,8 +19,8 @@ Implementiert: Ja
 Getestet: Nein
 
 ### /api/notifications
-Implementiert: Nein
-Getestet: Nein
+Implementiert: Concept not ready
+Getestet: Concept not ready
 
 ### /api/accept/invite
 Implementiert: Nein
@@ -31,7 +31,7 @@ Implementiert: Nein
 Getestet: Nein
 
 ### /api/set/admin
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 ### /api/get/flat
