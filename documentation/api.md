@@ -350,7 +350,61 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 
 -------------------------------------------------------------
 
+### POST /api/expense/create/static
 
+#### REQUEST JSON Object
+
+```
+{
+"account_token": "<token>",
+"expnese_name": "<name>",
+"expense_amount": <amaount>,
+"expense_users": [<list of user objects below>]
+}
+
+
+//Users all division keys added must be 100
+
+{
+"user_email": "<mail>",
+"division_key": number between 0 and 100
+}
+
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"response": "Done!",
+"expense_id": "<uuid>"
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 11,
+"error_message": "User not found!",
+"error_data": "useremail"
+}
+```
+
+```
+{
+"error_code": 17,
+"error_message": "Division Keys not valid"
+}
+```
 
 -------------------------------------------------------------
 
@@ -405,4 +459,6 @@ Liste mit User-Daten
 }
 ]
 ```
+
+------------------------------
 
