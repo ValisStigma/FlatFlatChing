@@ -28,6 +28,8 @@ public class FlatService {
     private static String getFlatInfoUrl = "";
     private static String getFlatMemberInfoUrl = "";
     private static String setFlatAdminUrl = "";
+    private static String deleteFlatUrl = "";
+    private static String answerInvitationUrl = "";
 
     private static RequestBuilder requestBuilder = new RequestBuilder();
 
@@ -58,6 +60,14 @@ public class FlatService {
 
     public static void setAdmin(BaseActivity activity, String userEmail) {
         new SetFlatAdminTask(activity, userEmail).execute();
+    }
+
+    public static void deleteFlat(BaseActivity activity, String flatId) {
+        new DeleteFlatTask(activity, flatId, deleteFlatUrl).execute();
+    }
+
+    public static void answerInvitation(BaseActivity activity, String userEmail, String flatAdminEmail, String flatId, boolean accept)  {
+        new AnswerInvitationTask(activity, flatId, userEmail, flatAdminEmail,accept).execute();
     }
 
     private static class GetFlatMemberInfoTask extends AbstractAsyncTask {
@@ -291,6 +301,155 @@ public class FlatService {
         }
     }
 
+    private static class DeleteFlatTask extends AbstractGetAuthTokenTask {
+        private String flatId;
+
+        public DeleteFlatTask(BaseActivity activity, String flatId, String deleteFlatUrl) {
+            super(activity, deleteFlatUrl);
+        }
+
+        @Override
+        protected void handleToken(String token) {
+            String response = deleteFlat(token);
+            handleFlatResponse(response);
+
+        }
+
+        private void handleFlatResponse(String response) {
+            JSONObject res = null;
+            try{
+                res = new JSONObject(response);
+                String responseMessage = res.getString("response");
+                if(responseMessage.equals("good bye :(")) {
+                    status = Status.okay;
+                } else {
+                    status = Status.requestFailed;
+                }
+                status =  Status.okay;
+            } catch (JSONException e) {
+                if(res == null) {
+                    status = Status.requestFailed;
+                } else {
+                    try {
+                        int errCode = res.getInt("error_code");
+                        switch (errCode) {
+                            case 1:
+                                exceptionMessage = "Du bist kein Admin";
+                                break;
+                            case 202:
+                                exceptionMessage = "Diese WG wurde nicht gefunden";
+                                break;
+                            case 301:
+                                exceptionMessage = "Es gibt noch offene Finanzposten";
+                                break;
+                        }
+                    } catch (JSONException i) {
+                        status = Status.requestFailed;
+                    }
+                }
+            }
+        }
+
+        @Override
+        protected void postToken() {
+
+        }
+
+        private String deleteFlat(final String token) {
+            String params;
+            String result = "";
+            RequestBuilder requestBuilder = new RequestBuilder();
+            try {
+                params = requestBuilder.getDeleteFlatRequest(token, flatId).toString();
+
+            } catch (JSONException e) {
+                status = Status.requestFailed;
+                return result;
+            }
+            try {
+                result = RequestService.sendRequestWithData(ServerConnector.Method.POST, deleteFlatUrl, params);
+            } catch (IOException e) {
+                status = Status.requestFailed;
+            }
+            return result;
+        }
+
+    }
+
+    private static class AnswerInvitationTask extends AbstractGetAuthTokenTask {
+        private String flatId;
+        private String userEmail;
+        private String adminEmail;
+        private boolean accept;
+        public AnswerInvitationTask(BaseActivity activity, String flatId, String userEmail, String adminEmail, boolean accept) {
+            super(activity, answerInvitationUrl);
+            this.flatId = flatId;
+            this.userEmail = userEmail;
+            this.adminEmail = adminEmail;
+            this.accept = accept;
+        }
+
+        @Override
+        protected void handleToken(String token) {
+            String response = answerInvitation(token);
+            handleInvitationResponse(response);
+        }
+
+        private void handleInvitationResponse(String response) {
+            JSONObject res = null;
+            try{
+                res = new JSONObject(response);
+                String flatId = res.getString("flat_uuid");
+                if(!flatId.isEmpty()) {
+                    status = Status.okay;
+                } else {
+                    status = Status.requestFailed;
+                }
+            } catch (JSONException e) {
+                if(res == null) {
+                    status = Status.requestFailed;
+                } else {
+                    try {
+                        int errCode = res.getInt("error_code");
+                        switch (errCode) {
+                            case 1:
+                                exceptionMessage = "Login ist voll gefailt";
+                                break;
+                            case 201:
+                                exceptionMessage = "Keine Einladung gefunden";
+                                break;
+                        }
+                    } catch (JSONException i) {
+                        status = Status.requestFailed;
+                    }
+                }
+            }
+        }
+
+        private String answerInvitation(String token) {
+            String params;
+            String result = "";
+            RequestBuilder requestBuilder = new RequestBuilder();
+            try {
+                params = requestBuilder.getAnswerInvitationRequest(token, flatId, userEmail, adminEmail, accept).toString();
+
+            } catch (JSONException e) {
+                status = Status.requestFailed;
+                return result;
+            }
+            try {
+                result = RequestService.sendRequestWithData(ServerConnector.Method.POST, answerInvitationUrl, params);
+            } catch (IOException e) {
+                status = Status.requestFailed;
+            }
+            return result;
+        }
+
+        @Override
+        protected void postToken() {
+
+        }
+    }
     private static class CreateFlatTask extends AbstractGetAuthTokenTask {
         private Flat flat;
 

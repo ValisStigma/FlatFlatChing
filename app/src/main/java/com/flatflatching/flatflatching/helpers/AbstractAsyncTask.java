@@ -7,11 +7,8 @@ import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.services.RequestService;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.List;
 
 public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, String> {
     

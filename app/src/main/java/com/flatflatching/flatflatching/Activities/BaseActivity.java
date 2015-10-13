@@ -9,11 +9,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.InternalStorage;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -48,6 +52,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String CITY = "CITY";
     public static final String PLZ = "PLZ";
 
+
     protected SharedPreferences settings;
     protected String uuid;
     protected String accountToken;
@@ -61,6 +66,22 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public TextView getMessageShower() {
         return messageShower;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void persistToPreferences(String key, String value) {
@@ -129,6 +150,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedState) {
         super.onCreate(savedState);
+
         settings = getSharedPreferences(PREFERENCES, 0);
     }
 
@@ -200,4 +222,3 @@ public abstract class BaseActivity extends AppCompatActivity {
         return InternalStorage.readObject(this, key);
     }
 }
-

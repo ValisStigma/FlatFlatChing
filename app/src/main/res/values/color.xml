@@ -8,4 +8,6 @@
     <color name="red">#7c031d</color>
     <color name="blue">#000fd5</color>
     <color name="brown">#e4791a</color>
+    <color name="ColorPrimary">#236a02</color>
+    <color name="ColorPrimaryDark">#206002</color>
 </resources>

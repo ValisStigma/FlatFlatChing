@@ -23,15 +23,31 @@ Implementiert: Concept not ready
 Getestet: Concept not ready
 
 ### /api/accept/invite
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 ### /api/exit
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 ### /api/set/admin
 Implementiert: Ja
+Getestet: Nein
+
+### /api/expense/create/static
+Implementiert: Ja
+Getestet: Nein
+
+### /api/expense/create/variable
+Implementiert: Ja
+Getestet: Nein
+
+### /api/expense/payback/static
+Implementiert: Nein
+Getestet: Nein
+
+### /api/expense/payback/variable
+Implementiert: Nein
 Getestet: Nein
 
 ### /api/get/flat
@@ -41,6 +57,11 @@ Getestet: Nein
 ### /api/get/flat/members
 Implementiert: Ja
 Getestet: Nein
+
+### /api/get/expenses
+Implementiert: Nein
+Getestet: Nein
+
 
 
 ##Server
@@ -77,10 +98,30 @@ Getestet: Nein
 Implementiert: Nein
 Getestet: Nein
 
+### /api/expense/create/static
+Implementiert: Nein
+Getestet: Nein
+
+### /api/expense/create/variable
+Implementiert: Nein
+Getestet: Nein
+
+### /api/expense/payback/static
+Implementiert: Nein
+Getestet: Nein
+
+### /api/expense/payback/variable
+Implementiert: Nein
+Getestet: Nein
+
 ### /api/get/flat
 Implementiert: Nein
 Getestet: Nein
 
 ### /api/get/flat/members
+Implementiert: Nein
+Getestet: Nein
+
+### /api/get/expenses
 Implementiert: Nein
 Getestet: Nein

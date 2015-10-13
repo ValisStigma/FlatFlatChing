@@ -1,15 +1,13 @@
 package com.flatflatching.flatflatching.activities;
 
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
@@ -25,10 +23,11 @@ public class FlatActivity extends BaseActivity {
         setContentView(R.layout.activity_flat);
         Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
         Button expensesButton = (Button) findViewById(R.id.expensesButton);
-        Button flateMateButtion = (Button) findViewById(R.id.flatMatesButton);
+        Button flatMateButton = (Button) findViewById(R.id.flatMatesButton);
         messageShower = (TextView) findViewById(R.id.messageShower);
         layoutContainer = (ViewGroup) findViewById(R.id.baseContainer);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
+        setSupportActionBar(toolbar);
         shoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +43,7 @@ public class FlatActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        flateMateButtion.setOnClickListener(new View.OnClickListener() {
+        flatMateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(self, ManageFlatMatesActivity.class);
@@ -52,35 +51,11 @@ public class FlatActivity extends BaseActivity {
             }
         });
         checkForAuthentication();
-
-
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-
-
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_flat, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

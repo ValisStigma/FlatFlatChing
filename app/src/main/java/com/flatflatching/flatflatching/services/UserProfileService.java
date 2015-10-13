@@ -24,7 +24,6 @@ public class UserProfileService {
 
         @Override
         protected void onPostExecute(final String result) {
-            super.onPostExecute(result);
             if (result.isEmpty()) {
                 reactToError();
             } else {

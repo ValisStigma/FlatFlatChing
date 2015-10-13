@@ -76,6 +76,9 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         catch(GoogleAuthException | IOException googleAuthException){
             status = Status.requestFailed;
         }
+        catch(Exception e) {
+            status = Status.requestFailed;
+        }
         return null;
     }
 

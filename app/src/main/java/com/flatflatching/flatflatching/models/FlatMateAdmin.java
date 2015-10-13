@@ -5,6 +5,6 @@ package com.flatflatching.flatflatching.models;
  */
 public class FlatMateAdmin extends FlatMate {
     FlatMateAdmin(String name) {
-        super(name);
+        super(name, true);
     }
 }

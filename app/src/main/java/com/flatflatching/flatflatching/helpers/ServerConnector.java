@@ -29,12 +29,13 @@ public class ServerConnector {
         POST
     }
 
-    private final transient String boundary;
-    private static final transient String LINE_FEED = "\r\n";
-    private final transient HttpURLConnection httpConn;
-    private final transient String charset;
-    private final transient OutputStream outputStream;
-    private final transient PrintWriter writer;
+    private final String boundary;
+    private static final String LINE_FEED = "\r\n";
+    private final HttpURLConnection httpConn;
+    private final String charset;
+    private OutputStream outputStream;
+    private PrintWriter writer;
+    private Method method;
 
     /** 
      * This constructor initializes a new HTTP POST request with content type is
@@ -47,30 +48,29 @@ public class ServerConnector {
     public ServerConnector(final String requestUrl, final String charset, final Method method)
             throws IOException {
         this.charset = charset;
-
+        this.method = method;
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
 
         final URL url = new URL(requestUrl);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
-        switch (method) {
+        switch (this.method) {
             case GET:
                 httpConn.setDoOutput(false);
                 break;
             case POST:
                 httpConn.setDoOutput(true);
+                httpConn.setRequestProperty("Content-Type",
+                        "multipart/form-data; boundary=" + boundary);
+                httpConn.setRequestProperty("User-Agent", "CodeJava Agent");
+                outputStream = httpConn.getOutputStream();
+                writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
+                        true);
                 break;
         }
-        httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
-        httpConn.setRequestProperty("Content-Type",
-                "multipart/form-data; boundary=" + boundary);
-        httpConn.setRequestProperty("User-Agent", "CodeJava Agent");
-        httpConn.setRequestProperty("Test", "Bonjour");
-        outputStream = httpConn.getOutputStream();
-        writer = new PrintWriter(new OutputStreamWriter(outputStream, charset),
-                true);
+
     }
 
     /**
@@ -170,10 +170,13 @@ public class ServerConnector {
      */
     public List<String> finish() throws IOException {
         final List<String> response = new ArrayList<>();
+        if(this.method == Method.POST) {
+            writer.append(LINE_FEED).flush();
+            writer.append("--").append(boundary).append("--").append(LINE_FEED);
+            writer.close();
+        }
 
-        writer.append(LINE_FEED).flush();
-        writer.append("--").append(boundary).append("--").append(LINE_FEED);
-        writer.close();
+
 
         // checks server's status code first
         final int status = httpConn.getResponseCode();

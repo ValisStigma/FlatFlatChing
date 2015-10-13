@@ -4,6 +4,7 @@ import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,8 @@ public class CreateFlatActivity extends BaseActivity {
         cityEditText = (EditText) findViewById(R.id.editTextCityName);
         postCodeEditText = (EditText) findViewById(R.id.editTextPostCode);
         messageShower = (TextView) findViewById(R.id.textViewNewFlatTitle);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
+        setSupportActionBar(toolbar);
         final Button createFlatButton = (Button) findViewById(R.id.buttonCreateFlat);
         createFlatButton.setOnClickListener(new View.OnClickListener() {
                 @Override

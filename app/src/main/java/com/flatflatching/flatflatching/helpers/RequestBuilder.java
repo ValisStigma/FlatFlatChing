@@ -3,8 +3,11 @@ package com.flatflatching.flatflatching.helpers;
 import com.flatflatching.flatflatching.models.Address;
 import com.flatflatching.flatflatching.models.Flat;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class RequestBuilder {
 
@@ -76,6 +79,59 @@ public class RequestBuilder {
         requestParams.put(USER_EMAIL, userEmail);
         return requestParams;
     }
+
+    public JSONObject getDeleteFlatRequest(final String token, final String flatId) throws JSONException {
+        final JSONObject requestParams = new JSONObject();
+        requestParams.put(ACCOUNT_TOKEN, token);
+        requestParams.put(FLAT_ID, flatId);
+        return requestParams;
+    }
+
+    public JSONObject getAnswerInvitationRequest(final String token, final String flatId,
+                                                 final String userEmail, final String adminEmail,
+                                                 final boolean accept) throws JSONException {
+        final JSONObject requestParams = new JSONObject();
+        requestParams.put(ACCOUNT_TOKEN, token);
+        requestParams.put(FLAT_ID, flatId);
+        requestParams.put("flat_admin_email", adminEmail);
+        requestParams.put(USER_EMAIL, userEmail);
+        requestParams.put("invite_accept", accept);
+        return requestParams;
+    }
+
+    public JSONObject getCreateVariableExpenseRequest(final String token, final String flatId, final String expenseName, final double expenseAmount,
+                                                      final Date expenseEnd, final JSONArray expenseUsers) throws JSONException {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put(ACCOUNT_TOKEN, token);
+        requestParams.put(FLAT_ID, flatId);
+        requestParams.put("expense_name", expenseName);
+        requestParams.put("expense_amount", expenseAmount);
+        requestParams.put("expense_end", expenseEnd);
+        requestParams.put("expense_users", expenseUsers);
+        return requestParams;
+    }
+    public JSONObject getCreateStaticExpenseRequest(final String token, final String flatId,
+                                                    final String expenseName, final double expenseAmount,
+                                                    final Date expenseEnd, final int expenseInterval,
+                                                    final JSONArray expenseUsers) throws JSONException {
+        JSONObject requestParams = getCreateVariableExpenseRequest(token, flatId, expenseName, expenseAmount, expenseEnd, expenseUsers);
+        requestParams.put("expense_interval", expenseInterval);
+        return requestParams;
+
+    }
+
+    public JSONObject getUserEmail(final String userEmail) throws JSONException {
+        JSONObject variableUser = new JSONObject();
+        variableUser.put(USER_EMAIL, userEmail);
+        return variableUser;
+    }
+    public JSONObject getStaticUserObject(final String userEmail, final double divisionKey) throws JSONException {
+        JSONObject staticUser = new JSONObject();
+        staticUser.put(USER_EMAIL, userEmail);
+        staticUser.put("division_key", divisionKey);
+        return staticUser;
+    }
+
     private String getUserName() {
         return userName;
     }
