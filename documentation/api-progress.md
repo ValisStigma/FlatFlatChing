@@ -43,11 +43,11 @@ Implementiert: Ja
 Getestet: Nein
 
 ### /api/expense/payback/static
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 ### /api/expense/payback/variable
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 ### /api/get/flat
@@ -59,7 +59,7 @@ Implementiert: Ja
 Getestet: Nein
 
 ### /api/get/expenses
-Implementiert: Nein
+Implementiert: Ja
 Getestet: Nein
 
 

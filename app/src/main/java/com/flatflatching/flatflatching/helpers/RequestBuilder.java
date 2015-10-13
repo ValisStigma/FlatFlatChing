@@ -132,6 +132,21 @@ public class RequestBuilder {
         return staticUser;
     }
 
+    public JSONObject getPayBackStaticExpenseRequest(final String token, final String flatId, final String expenseId, final String userEmail) throws JSONException {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put(ACCOUNT_TOKEN, token);
+        requestParams.put(FLAT_ID, flatId);
+        requestParams.put("expense_id", expenseId);
+        requestParams.put(USER_EMAIL, userEmail);
+        return requestParams;
+    }
+
+    public JSONObject getExpensesRequest(final String flatId, final String userEmail) throws JSONException {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put(USER_EMAIL, userEmail);
+        requestParams.put(FLAT_ID, flatId);
+        return requestParams;
+    }
     private String getUserName() {
         return userName;
     }
