@@ -357,8 +357,11 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 ```
 {
 "account_token": "<token>",
+"flat_uuid": "<uuid>",
 "expnese_name": "<name>",
 "expense_amount": <amaount>,
+"expense_end": timestamplong,
+"expense_interval": interval_in_seconds(or not set),
 "expense_users": [<list of user objects below>]
 }
 
@@ -403,6 +406,176 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 {
 "error_code": 17,
 "error_message": "Division Keys not valid"
+}
+```
+
+```
+{
+"error_code": 202,
+"error_message": "No flat found"
+}
+```
+
+
+### POST /api/expense/create/variable
+
+#### REQUEST JSON Object
+
+```
+{
+"account_token": "<token>",
+"flat_uuid": "<uuid>",
+"expnese_name": "<name>",
+"expense_amount": <amaount>,
+"expense_end": timestamplong,
+"expense_users": ["<list of user-emails objects below>"]
+}
+
+
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"response": "Done!",
+"expense_id": "<uuid>"
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 11,
+"error_message": "User not found!",
+"error_data": "useremail"
+}
+```
+
+```
+{
+"error_code": 202,
+"error_message": "No flat found"
+}
+```
+
+
+### POST /api/expense/payback/static
+
+#### REQUEST JSON Object
+
+```
+{
+"account_token": "<token>",
+"flat_uuid": "<uuid>",
+"expnese_id": "<uuid>",
+"user_email": <mail>
+}
+
+
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"response": "Done!"
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 11,
+"error_message": "User not found!"
+}
+```
+
+```
+{
+"error_code": 701,
+"error_message": "expense not found"
+}
+```
+
+```
+{
+"error_code": 202,
+"error_message": "No flat found"
+}
+```
+
+
+
+### POST /api/expense/payback/variable
+
+#### REQUEST JSON Object
+
+```
+{
+"account_token": "<token>",
+"flat_uuid": "<uuid>",
+"expnese_id": "<uuid>",
+"user_email": <mail>
+}
+
+
+```
+
+#### RESPONSE JSON Object
+
+```
+{
+"response": "Done!"
+}
+```
+
+
+#### Error Messages
+
+```
+{
+"error_code": 1,
+"error_message": "Authentication failed!"
+}
+```
+
+```
+{
+"error_code": 11,
+"error_message": "User not found!"
+}
+```
+
+```
+{
+"error_code": 701,
+"error_message": "expense not found"
+}
+```
+
+```
+{
+"error_code": 202,
+"error_message": "No flat found"
 }
 ```
 
@@ -459,6 +632,27 @@ Liste mit User-Daten
 }
 ]
 ```
+
+### GET /api/get/expenses
+
+#### PARAMS
+
+flat_uuid=<uuid>
+user_email=<mail>
+
+#### RESPONSE
+
+Hohlt alle expenses für einen user
+
+liste mit solchen objekten:
+
+```
+{
+
+}
+```
+
+
 
 ------------------------------
 
