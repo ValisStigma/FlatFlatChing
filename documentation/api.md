@@ -648,10 +648,31 @@ liste mit solchen objekten:
 
 ```
 {
-
+"expense_uuid": "<uuid>",
+"expense_name": "name",
+"expense_end": timestamp,
+"expense_amount": <amount>,
+"expense_user_amount": <money_the_user_must_pay>,
+"expense_type": "static/variable",
+"expense_users": [list of objects below]
 }
 ```
 
+User Objects static
+```
+{
+"user_mail": "mail",
+"division_key": number(see /api/expense/create/static)
+}
+```
+
+
+User Objects variable
+```
+{
+"user_mail": "mail"
+}
+```
 
 
 ------------------------------
