@@ -9,6 +9,7 @@ Getestet: Depricated
 ###/api/register
 Implementiert: Ja
 Getestet: Nein
+ServerImpl: Ja
 
 ### /api/create
 Implementiert: Ja

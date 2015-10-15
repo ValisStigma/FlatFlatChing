@@ -43,7 +43,6 @@ Dieses Token wird bei den anderen Requests mitgegeben um so den account zu authe
 
 ```
 {
-"account_token": "generated token",
 "flat_uuids": ["<list with uuids or empty list>"]
 }
 ```
