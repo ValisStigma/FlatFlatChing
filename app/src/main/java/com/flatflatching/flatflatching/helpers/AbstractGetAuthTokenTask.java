@@ -33,7 +33,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         try{
             status = Status.running;
             token = getAccessToken(activity, chosenEmail, SCOPE);
-            if(token != null){
+            if(token != null && status != Status.userRecoverableError){
                 //Access Token sent
                 status = Status.okay;
                 handleToken(token);
