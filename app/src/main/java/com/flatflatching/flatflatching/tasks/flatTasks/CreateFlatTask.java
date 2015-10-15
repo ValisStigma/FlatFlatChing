@@ -1,6 +1,5 @@
 package com.flatflatching.flatflatching.tasks.flatTasks;
 
-import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.ExceptionParser;

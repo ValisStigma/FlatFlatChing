@@ -60,6 +60,9 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
             case requestFailed:
                 reactToError();
                 break;
+            case okay:
+                //is okay
+                break;
             default:
                 throw new UnsupportedOperationException("Not implemented this case");
         }

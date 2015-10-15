@@ -1,4 +1,4 @@
-package com.flatflatching.flatflatching.CustomLayouts;
+package com.flatflatching.flatflatching.customLayouts;
 
 /**
  * Created by rafael on 29.09.2015.

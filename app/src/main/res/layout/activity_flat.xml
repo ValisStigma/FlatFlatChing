@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:weightSum="1">
-        <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
+        <com.flatflatching.flatflatching.customLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -38,8 +38,8 @@
                 android:background="@drawable/fancybutton_green"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>
-        </com.flatflatching.flatflatching.CustomLayouts.SquareLayout>
-        <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
+        </com.flatflatching.flatflatching.customLayouts.SquareLayout>
+        <com.flatflatching.flatflatching.customLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -53,7 +53,7 @@
                 android:background="@drawable/fancybutton_red"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>
-        </com.flatflatching.flatflatching.CustomLayouts.SquareLayout>
+        </com.flatflatching.flatflatching.customLayouts.SquareLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:weightSum="1">
-        <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
+        <com.flatflatching.flatflatching.customLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -75,8 +75,8 @@
                 android:background="@drawable/fancybutton_blue"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>
-        </com.flatflatching.flatflatching.CustomLayouts.SquareLayout>
-        <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
+        </com.flatflatching.flatflatching.customLayouts.SquareLayout>
+        <com.flatflatching.flatflatching.customLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
@@ -90,7 +90,7 @@
                 android:background="@drawable/fancybutton_brown"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>
-        </com.flatflatching.flatflatching.CustomLayouts.SquareLayout>
+        </com.flatflatching.flatflatching.customLayouts.SquareLayout>
     </LinearLayout>
 
 </LinearLayout>
