@@ -81,6 +81,7 @@ public class FlatActivity extends BaseActivity {
     @Override
     public void checkPreConditions() {
         if(isAuthenticated()) {
+            AuthenticatorService.register(self, getUserEmail());
             checkForFlatInfo();
         } else {
             tryAuthenticate();
