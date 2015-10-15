@@ -1,12 +1,13 @@
-reqres = {
-    req: null,
-    res: null
-};
+var reqres = {};
+var internal = {};
 
 reqres.registerReqRes = function registerReqRes(req, res, next){
-    reqres.res = res;
-    reqres.req = req;
+    internal._res = res;
+    internal._req = req;
     next();
 };
+
+reqres.req = function(){return internal._req};
+reqres.res = function(){return internal._res};
 
 module.exports = reqres;

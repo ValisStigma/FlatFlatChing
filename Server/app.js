@@ -4,9 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require("express-session");
+
+var reqres = require(path.resolve("components/reqres.js"));
+
 var db = require(path.resolve("components/db-handler.js"));
-var registerReqRes = require(path.resolve("components/reqres.js")).registerReqRes;
-var session = require("express-session")
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -29,7 +31,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(registerReqRes);
+app.use(reqres.registerReqRes);
+
+
 
 app.use('/', routes);
 app.use('/api', users);
