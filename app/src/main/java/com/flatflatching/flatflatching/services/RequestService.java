@@ -9,10 +9,13 @@ import com.flatflatching.flatflatching.helpers.ServerConnector.Method;
  * Created by rafael on 09.10.2015.
  *
  */
-public class RequestService {
+public final class RequestService {
     //All methods are Blocking: only use in Asynctask
-    private static final String charSet = "UTF-8";
+    private static final String CHAR_SET = "UTF-8";
 
+    private RequestService() {
+
+    }
     public static String sendRequest(Method method, String requestUrl) throws IOException {
         ServerConnector serverConnector = getServerConnector(method, requestUrl);
         return getResponse(serverConnector);
@@ -25,7 +28,7 @@ public class RequestService {
     }
 
     private static ServerConnector getServerConnector(Method method, String requestUrl) throws IOException {
-        return new ServerConnector(requestUrl, charSet, method);
+        return new ServerConnector(requestUrl, CHAR_SET, method);
     }
 
     private static String getResponse(ServerConnector serverConnector) throws IOException {

@@ -1,5 +1,8 @@
 package com.flatflatching.flatflatching.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,18 +10,23 @@ import java.util.List;
  * Created by rafael on 28.09.2015.
  */
 public class VariableExpense extends Expense {
-    public VariableExpense(String name, double amount) {
+
+    public VariableExpense(final JSONObject jsonExpense) throws JSONException {
+        super(jsonExpense);
+    }
+    public VariableExpense(final String name, final double amount) {
         super(name, amount);
     }
 
-    public VariableExpense(String name, double amount, List<FlatMate> contributors) {
+    public VariableExpense(final String name, final double amount, final List<FlatMate> contributors) {
         super(name, amount, contributors);
     }
 
     public VariableExpense(final String name, final Date dueDate, final double amount, final double toPay, final List<FlatMate> contributors) {
         super(name, dueDate, amount, toPay, contributors);
     }
-        @Override
+
+    @Override
     public ExpenseType getExpenseType() {
         return ExpenseType.Variable;
     }

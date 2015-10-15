@@ -11,7 +11,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, String> {
-    
+
+    @Override
+    protected void onPostExecute(String result) {
+
+    }
     protected BaseActivity activity;
     protected final  String url;
     protected enum Status  {
@@ -31,7 +35,8 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         this.url = url;
         this.activity = activity;
     }
-    public AbstractAsyncTask doesPost() {
+
+    public final AbstractAsyncTask doesPost() {
         this.method = ServerConnector.Method.POST;
         return this;
     }
@@ -56,7 +61,7 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         return activity.hasConnection();
     }
     
-    protected void reactToError() {
+    protected final void reactToError() {
         final ViewGroup layoutContainer = activity.getLayoutContainer();
         for (int i = 0; i < layoutContainer.getChildCount(); i++) {
             layoutContainer.getChildAt(i).setVisibility(View.GONE);
@@ -66,11 +71,11 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         titleText.setText(exceptionMessage);
     }
 
-    protected void persistToPreferences(String key, String value) {
+    protected final void persistToPreferences(String key, String value) {
         activity.persistToPreferences(key, value);
     }
 
-    protected void persistObject(String key, Object obj) throws IOException {
+    protected final void persistObject(String key, Object obj) throws IOException {
         activity.persistObject(key, obj);
     }
 }

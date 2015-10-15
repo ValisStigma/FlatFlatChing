@@ -2,7 +2,6 @@ package com.flatflatching.flatflatching.helpers;
 
 import android.app.Activity;
 
-import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
@@ -52,7 +51,8 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
 
     }
 
-    protected void onPostExecute(Void result)  {
+    @Override
+    protected void onPostExecute(String result)  {
         switch (status) {
             case userRecoverableError:
                 activity.startActivityForResult(userException.getIntent(), BaseActivity.REQUEST_PERMISSION);
@@ -65,7 +65,7 @@ public abstract class AbstractGetAuthTokenTask extends AbstractAsyncTask{
         }
     }
 
-    protected String getAccessToken(Activity activity,String accountName, String scope){
+    protected final String getAccessToken(Activity activity,String accountName, String scope){
         try{
             return GoogleAuthUtil.getToken(activity, accountName, scope);
         }

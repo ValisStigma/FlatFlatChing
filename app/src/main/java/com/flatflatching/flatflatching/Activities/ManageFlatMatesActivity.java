@@ -9,7 +9,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
@@ -53,6 +52,16 @@ public class ManageFlatMatesActivity extends BaseActivity {
           }
 
         );
+
+    }
+
+    @Override
+    public void setWaitingLayout() {
+
+    }
+
+    @Override
+    public void reactToSuccess() {
 
     }
 

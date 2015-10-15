@@ -13,8 +13,11 @@ import org.json.JSONObject;
 /**
  * Created by rafael on 02.10.2015.
  */
-public  class AuthenticatorService {
-    private static final String registerUrl = "";
+public final class AuthenticatorService {
+    private static final String REGISTER_URL = "";
+    private AuthenticatorService() {
+
+    }
     public static void getAuth(BaseActivity activity, String chosenEmail) {
         new GetUserData(activity, chosenEmail).execute();
     }
@@ -25,14 +28,14 @@ public  class AuthenticatorService {
             params = new RequestBuilder().getRegisterRequest(chosenEmail);
             new RegisterUser(activity).execute(params);
         } catch (JSONException e) {
-            activity.notifyError(R.string.server_error);
+            activity.notifyError(activity.getResources().getString(R.string.server_error));
         }
         new RegisterUser(activity);
     }
 
     private static class RegisterUser extends AbstractAsyncTask {
         public RegisterUser(BaseActivity activity) {
-            super(activity, registerUrl);
+            super(activity, REGISTER_URL);
         }
 
         @Override

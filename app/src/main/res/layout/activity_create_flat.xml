@@ -3,13 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/background"
     tools:context="com.flatflatching.flatflatching.activities.CreateFlatActivity"
-    >
+    android:id="@+id/createFlatLayoutContainer"
+
+>
     <include
         layout="@layout/tool_bar"
         />
+    <TextView
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/server_error"
+        android:id="@+id/textViewMessageHolder"
+        android:visibility="gone"/>
 <RelativeLayout
-    style="@style/backgroundPane"
-    android:id="@+id/createFlatLayoutContainer">
+    style="@style/backgroundPane">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,12 +34,14 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/flat_name_question"
-            android:id="@+id/textViewMessageHolder"/>
+            android:id="@+id/textViewTitle"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextFlatTitle"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:layout_marginTop="@dimen/space_down"
             android:hint="@string/wgTitle" />
 
@@ -51,6 +63,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/recordNewFlatTitle"
             android:id="@+id/textViewNewFlatTitle"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:layout_marginTop="@dimen/space_down"/>
 
         <LinearLayout
@@ -64,6 +78,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextStreetName"
                 android:hint="@string/streetTitle"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:layout_weight="2.25" />
 
             <EditText
@@ -71,6 +87,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextStreetNumber"
                 android:hint="@string/streetNumberTitle"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:layout_weight="0.67" />
         </LinearLayout>
 
@@ -85,6 +103,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextCityName"
                 android:layout_weight="2.25"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:hint="@string/cityTitle" />
 
             <EditText
@@ -92,6 +112,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextPostCode"
                 android:hint="@string/postCodeTitle"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:layout_weight="0.67" />
 
         </LinearLayout>
@@ -103,11 +125,20 @@
         android:layout_height="wrap_content"
         android:text="@string/recordNewFlatTitleButton"
         android:textSize="@dimen/button_text_size"
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonCreateFlat"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@color/green"
         android:textColor="@color/white" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarCreateFlat"
+        android:visibility="gone"
+        android:layout_above="@+id/buttonCreateFlat"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
 </LinearLayout>

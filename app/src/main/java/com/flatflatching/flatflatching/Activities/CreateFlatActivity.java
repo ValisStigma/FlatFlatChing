@@ -1,6 +1,5 @@
 package com.flatflatching.flatflatching.activities;
 
-import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -8,13 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.models.Address;
 import com.flatflatching.flatflatching.models.Flat;
-import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.flatflatching.flatflatching.services.FlatService;
 
 import java.io.IOException;
@@ -28,56 +27,66 @@ public class CreateFlatActivity extends BaseActivity {
     private EditText postCodeEditText;
     private BaseActivity self;
     private String chosenEmail;
-
+    private Button createFlatButton;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_flat);
         self = this;
-        layoutContainer = (RelativeLayout) findViewById(R.id.createFlatLayoutContainer);
+        chosenEmail = getUserEmail();
+        layoutContainer = (LinearLayout) findViewById(R.id.createFlatLayoutContainer);
         flatTitleEditText = (EditText) findViewById(R.id.editTextFlatTitle);
         streetNameEditText = (EditText) findViewById(R.id.editTextStreetName);
         streetNumberEditText = (EditText) findViewById(R.id.editTextStreetNumber);
         cityEditText = (EditText) findViewById(R.id.editTextCityName);
         postCodeEditText = (EditText) findViewById(R.id.editTextPostCode);
-        messageShower = (TextView) findViewById(R.id.textViewNewFlatTitle);
+        messageShower = (TextView) findViewById(R.id.textViewMessageHolder);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
         setSupportActionBar(toolbar);
-        final Button createFlatButton = (Button) findViewById(R.id.buttonCreateFlat);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarCreateFlat);
+        createFlatButton = (Button) findViewById(R.id.buttonCreateFlat);
         createFlatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     createFlat();
-
 
                 }
             }
         );
     }
 
+    @Override
+    public void setWaitingLayout() {
+        createFlatButton.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void reactToSuccess() {
+        Intent intent = new Intent(self, FlatActivity.class);
+        startActivityForResult(intent, FlatActivity.FLAT_WAS_CREATED);
+    }
+
     private void createFlat() {
-        chosenEmail = getUserEmail();
-        if(chosenEmail.isEmpty()) {
-            pickUserAccount();
-        } else {
-            Flat flat;
-            try {
-                flat = parseFlat();
-            } catch(IOException e) {
-                Snackbar.make(findViewById(android.R.id.content), "Gib der WG einen Namen", Snackbar.LENGTH_LONG)
-                        .show();
-                return;
-            }
-            registerFlat(flat);
+        Flat flat;
+        try {
+            flat = parseFlat();
+        } catch(IOException e) {
+            Snackbar.make(findViewById(android.R.id.content), "Gib der WG einen Namen", Snackbar.LENGTH_LONG)
+                    .show();
+            return;
         }
+        registerFlat(flat);
     }
     private void registerFlat(Flat flat) {
         if(hasConnection()){
+            setWaitingLayout();
             FlatService.createFlat(self, chosenEmail, flat);
-            AuthenticatorService.getAuth(self, chosenEmail);
+
         }
         else{
-            notifyError(R.string.connection_error);
+            notifyError(getResources().getString(R.string.connection_error));
         }
     }
 
@@ -97,20 +106,4 @@ public class CreateFlatActivity extends BaseActivity {
             return new Flat(flatName);
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == BaseActivity.REQUEST_CODE_PICK_ACCOUNT || requestCode == BaseActivity.REQUEST_PERMISSION){
-            if(resultCode == RESULT_OK){
-                String selectedAccountEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-                settings.edit().putString(BaseActivity.CHOSEN_USER_EMAIL, selectedAccountEmail);
-                settings.edit().apply();
-                createFlat();
-            }
-            else if(resultCode == RESULT_CANCELED){
-                notifyError(R.string.internal_error);
-            }
-        }
-    }
-
 }

@@ -15,15 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/messageShower"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textSize="@dimen/button_text_size"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:weightSum="1">
         <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:id="@+id/layoutExpenseButton"
             >
             <Button
                 android:layout_width="match_parent"
@@ -38,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:id="@+id/layoutShoppingListButton"
             >
             <Button
                 android:layout_width="match_parent"
@@ -53,11 +59,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:weightSum="1">
         <com.flatflatching.flatflatching.CustomLayouts.SquareLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:id="@+id/layoutFlatMatesButton"
             >
             <Button
                 android:layout_width="match_parent"
@@ -72,12 +80,13 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="0.5"
+            android:id="@+id/layoutCreateFlatButton"
             >
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Placeholder"
-                android:id="@+id/placeholder"
+                android:text="@string/create_flat_title"
+                android:id="@+id/createFlatButton"
                 android:background="@drawable/fancybutton_brown"
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>

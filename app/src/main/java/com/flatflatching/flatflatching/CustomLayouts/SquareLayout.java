@@ -10,8 +10,8 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 public class SquareLayout extends LinearLayout {
-    private final double mScale = 1.0;
-
+    private static final double M_SCALE = 1.0;
+    private static final double HALF = 0.5;
     public SquareLayout(Context context) {
         super(context);
     }
@@ -26,10 +26,10 @@ public class SquareLayout extends LinearLayout {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = MeasureSpec.getSize(heightMeasureSpec);
 
-        if (width > (int)((mScale * height) + 0.5)) {
-            width = (int)((mScale * height) + 0.5);
+        if (width > (int)((M_SCALE * height) + HALF)) {
+            width = (int)((M_SCALE * height) + HALF);
         } else {
-            height = (int)((width / mScale) + 0.5);
+            height = (int)((width / M_SCALE) + HALF);
         }
 
         super.onMeasure(

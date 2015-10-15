@@ -8,7 +8,7 @@ import java.util.Objects;
 public class ShoppingListItem {
     private double price;
     private int amount;
-    private String name;
+    private final String name;
 
     ShoppingListItem(final String name, final double price, final int amount) {
         Objects.requireNonNull(name);
@@ -24,7 +24,7 @@ public class ShoppingListItem {
         return this.price * this.amount;
     }
 
-    private String getName() {
+    public String getName() {
         return this.name;
     }
 }

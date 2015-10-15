@@ -1,5 +1,9 @@
 package com.flatflatching.flatflatching.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +13,12 @@ import java.util.List;
  */
 
 public abstract class Expense {
+
     public enum ExpenseType {
         Variable,
         Static
     }
+
     private double amount;
     private String name;
     private List<FlatMate> contributors = new ArrayList<>();
@@ -20,9 +26,23 @@ public abstract class Expense {
     private double toPay;
     private boolean outstanding = true;
 
+
+
+    public Expense(final JSONObject jsonExpense) throws JSONException {
+        name = jsonExpense.getString("expense_name");
+        dueDate = new Date((long) 1000 * jsonExpense.getInt("expense_end"));
+        amount = jsonExpense.getDouble("expense_amount");
+        toPay = jsonExpense.getDouble("expense_user_amount");
+        final JSONArray expenseContributors = jsonExpense.getJSONArray("expense_users");
+        for (int j = 0; j < expenseContributors.length(); j++) {
+            final JSONObject contributor = expenseContributors.getJSONObject(j);
+            final String userEmail = contributor.getString("user_email");
+            contributors.add(new FlatMate(userEmail, false));
+        }
+    }
     public Expense(final String name, final Date dueDate, final double amount, final double toPay, final List<FlatMate> contributors) {
         this.name = name;
-        this.dueDate = dueDate;
+        this.dueDate = new Date(dueDate.getTime());
         this.amount = amount;
         this.toPay = toPay;
         this.contributors.addAll(contributors);
@@ -39,7 +59,7 @@ public abstract class Expense {
     }
 
     public void setDueDate(final Date dueDate) {
-        this.dueDate = dueDate;
+        this.dueDate = new Date(dueDate.getTime());
     }
 
     public boolean isOutstanding() {
@@ -50,7 +70,21 @@ public abstract class Expense {
         this.outstanding = false;
     }
 
-    abstract public ExpenseType getExpenseType();
+    public abstract ExpenseType getExpenseType();
 
+    public double getAmount() {
+        return amount;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public Date getDueDate() {
+        return new Date(dueDate.getTime());
+    }
+
+    public double getToPay() {
+        return toPay;
+    }
 }

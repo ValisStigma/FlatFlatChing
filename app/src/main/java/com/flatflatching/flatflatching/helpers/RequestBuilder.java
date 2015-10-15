@@ -11,11 +11,10 @@ import java.util.Date;
 
 public class RequestBuilder {
 
-    private String userName;
-    private final String ACCOUNT_NAME = "account_name";
-    private final String ACCOUNT_TOKEN = "account_token";
-    private final String FLAT_ID = "flat_uuid";
-    private final String USER_EMAIL = "user_email";
+    private static final String ACCOUNT_NAME = "account_name";
+    private static final String ACCOUNT_TOKEN = "account_token";
+    private static final String FLAT_ID = "flat_uuid";
+    private static final String USER_EMAIL = "user_email";
 
     public RequestBuilder(){
     }
@@ -147,12 +146,4 @@ public class RequestBuilder {
         requestParams.put(FLAT_ID, flatId);
         return requestParams;
     }
-    private String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(final String userName) {
-        this.userName = userName;
-    }
-    
 }
