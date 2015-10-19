@@ -10,11 +10,19 @@ var res = require(path.resolve("components/reqres.js")).res;
 var handler = {};
 
 handler.loggedIn = function(req, res, next){
-    if(!req.session.user_email){
+    if(!req.body.user_email){
         res.status(401);
         res.json(errors.auth.failed);
+    }else {
+        users.findOne({user_email: req.body.user_email}, function(err, found){
+            if(found && !err){
+                next();
+            }else{
+                res.status(401);
+                res.json(errors.auth.failed);
+            }
+        });
     }
-    next();
 };
 
 handler.registerUser = function(){

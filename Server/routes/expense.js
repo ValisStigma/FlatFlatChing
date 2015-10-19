@@ -30,7 +30,7 @@ function generateExpenseModel(next){
             !expense.expense_end    ||
             !expense.expense_amount ){
 
-            res.json(errors.auth.failed);
+            res().json(errors.auth.failed);
         }else{
             next({
                 expense_uuid: uuid.v4(),
@@ -43,6 +43,26 @@ function generateExpenseModel(next){
     });
 }
 
+function extractUsers(expModel, next){
+    var expense = req().body;
+    if(!Array.isArray(expense.expense_users)){
+        res().json(errors.not_found.user);
+    }else{
+        var notFoundUser;
+        expense.expense_users.forEach(function(user){
+
+        });
+        if(expModel.expense_type === "static"){
+            var div_keys = 0;
+            expense.expense_users.forEach(function(user){
+                div_keys += user.division_key;
+            });
+
+        }
+        next(expModel);
+    }
+}
+
 function createStaticExpense(next){
     var expense = req().body;
     generateExpenseModel(function(expenseModel){
@@ -52,8 +72,9 @@ function createStaticExpense(next){
         } else {
             expenseModel.expense_interval = 0;
         }
+        extractUsers(expenseModel, function(expenseModel){
 
-
+        });
     });
 }
 

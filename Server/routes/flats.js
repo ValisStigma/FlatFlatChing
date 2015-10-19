@@ -29,19 +29,25 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
                 res.json(errors.flat_address.land);
                 error = true;
             }
-            flat_address = req.body.flat_address;
+            flat_address = {
+                flat_address_street: req.body.flat_address.flat_address_street,
+                flat_address_number: req.body.flat_address.flat_address_number,
+                flat_address_plz: req.body.flat_address.flat_address_plz,
+                flat_address_place: req.body.flat_address.flat_address_place,
+                flat_address_land: req.body.flat_address.flat_address_land
+            };
+        }
 
-            if (!error) {
-                flats.insert({
-                    flat_name: req.body.flat_name,
-                    flat_address: flat_address,
-                    flat_uuid: uuid.v4()
-                }, function (err, flat) {
-                    if (!err) {
-                        res.json({flat_uuid: flat.flat_uuid});
-                    }
-                });
-            }
+        if (!error) {
+            flats.insert({
+                flat_name: req.body.flat_name,
+                flat_address: flat_address,
+                flat_uuid: uuid.v4()
+            }, function (err, flat) {
+                if (!err) {
+                    res.json({flat_uuid: flat.flat_uuid});
+                }
+            });
         }
     }
 });
