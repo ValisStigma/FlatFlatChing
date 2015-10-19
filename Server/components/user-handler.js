@@ -17,14 +17,14 @@ handler.loggedIn = function(req, res, next){
     next();
 };
 
-handler.registerUser = function(user_email){
-    users.findOne({user_email: req().body.user_email}, function (err, user) {
+handler.registerUser = function(){
+    users.findOne({user_email: req().body.account_name}, function (err, user) {
         if (err) {
             console.log(err);
             res().json(errors.auth.failed);
         } else {
             if (!user) {
-                users.insert({user_email: req().body.user_email}, function (err, user) {
+                users.insert({user_email: req().body.account_name}, function (err, user) {
                     req().session.user_email = user.user_email;
                     res().json({
                         flat_uuids: []
