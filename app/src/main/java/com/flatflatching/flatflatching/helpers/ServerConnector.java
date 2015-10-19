@@ -27,7 +27,6 @@ public final class ServerConnector {
         } else {
             request = new Request.Builder().url(requestUrl).build();
         }
-
     }
 
     public ServerConnector(final String requestUrl,final String requestData) {
@@ -40,13 +39,6 @@ public final class ServerConnector {
                 .build();
     }
 
-    /**
-     * Completes the request and receives response from the server.
-     * 
-     * @return a list of Strings as response in case the server returned status
-     *         OK, otherwise an exception is thrown.
-     * @throws IOException
-     */
     public String finish() throws IOException {
         Response response = client.newCall(request).execute();
         return response.body().string();

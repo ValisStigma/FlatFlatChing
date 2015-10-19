@@ -57,10 +57,6 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         return result;
     }
 
-    protected final boolean hasConnection() {
-        return activity.hasConnection();
-    }
-    
     protected final void reactToError() {
         final ViewGroup layoutContainer = activity.getLayoutContainer();
         for (int i = 0; i < layoutContainer.getChildCount(); i++) {

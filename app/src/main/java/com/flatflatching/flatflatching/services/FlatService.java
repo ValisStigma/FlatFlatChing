@@ -20,7 +20,7 @@ import org.json.JSONObject;
  */
 
 public final class FlatService {
-    private static final String CREATE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/create");
+    private static final String CREATE_FLAT_URL = String.format(BaseActivity.BASE_URL, "flat/create");
     private static final String INVITE_URL = String.format(BaseActivity.BASE_URL, "api/invite");
     private static final String GET_FLAT_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat");
     private static final String GET_FLAT_MEMBER_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat/members");
