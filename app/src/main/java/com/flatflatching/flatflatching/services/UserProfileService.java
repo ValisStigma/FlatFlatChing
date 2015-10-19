@@ -6,7 +6,6 @@ import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.tasks.userTasks.GetUserInfoTask;
 
 public final class UserProfileService {
-    public static boolean userDataAcquired = false;
     private static final String USER_INFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=%s";
 
     private UserProfileService() {

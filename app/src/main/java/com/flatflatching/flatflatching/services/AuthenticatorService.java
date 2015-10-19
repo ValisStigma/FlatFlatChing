@@ -14,7 +14,7 @@ import org.json.JSONObject;
  * Created by rafael on 02.10.2015.
  */
 public final class AuthenticatorService {
-    private static final String REGISTER_URL = "";
+    private static final String REGISTER_URL = String.format(BaseActivity.BASE_URL, "api/register");
     private AuthenticatorService() {
 
     }
@@ -26,11 +26,10 @@ public final class AuthenticatorService {
         JSONObject params;
         try {
             params = new RequestBuilder().getRegisterRequest(chosenEmail);
-            new RegisterUser(activity).execute(params);
+            new RegisterUser(activity).doesPost().execute(params);
         } catch (JSONException e) {
             activity.notifyError(activity.getResources().getString(R.string.server_error));
         }
-        new RegisterUser(activity);
     }
 
     private static class RegisterUser extends AbstractAsyncTask {

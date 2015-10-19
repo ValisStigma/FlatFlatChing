@@ -2,7 +2,6 @@ package com.flatflatching.flatflatching.tasks.userTasks;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
-import com.flatflatching.flatflatching.services.UserProfileService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +21,6 @@ public class GetUserInfoTask extends AbstractAsyncTask {
         } else {
             try {
                 saveProfileInfo(new JSONObject(result));
-                UserProfileService.userDataAcquired = true;
                 activity.checkPreConditions();
             } catch (JSONException e) {
                 reactToError();

@@ -20,13 +20,13 @@ import org.json.JSONObject;
  */
 
 public final class FlatService {
-    private static final String OWN_URL = "";
-    private static final String INVITE_URL = "";
-    private static final String GET_FLAT_INFO_URL = "";
-    private static final String GET_FLAT_MEMBER_INFO_URL = "";
-    private static final String SET_FLAT_ADMIN_URL = "";
-    private static final String DELETE_FLAT_URL = "";
-    private static final String ANSWER_INVITATION_URL = "";
+    private static final String CREATE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/create");
+    private static final String INVITE_URL = String.format(BaseActivity.BASE_URL, "api/invite");
+    private static final String GET_FLAT_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat");
+    private static final String GET_FLAT_MEMBER_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat/members");
+    private static final String SET_FLAT_ADMIN_URL = String.format(BaseActivity.BASE_URL, "api/set/admin");
+    private static final String DELETE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/exit");
+    private static final String ANSWER_INVITATION_URL = String.format(BaseActivity.BASE_URL, "api/accept/invite");
 
     private FlatService() {
 
@@ -34,7 +34,7 @@ public final class FlatService {
     private static RequestBuilder requestBuilder = new RequestBuilder();
 
     public static void createFlat(final BaseActivity activity, final String ownEmail, final Flat flat) {
-        new CreateFlatTask(activity, ownEmail, OWN_URL, flat).execute();
+        new CreateFlatTask(activity, ownEmail, CREATE_FLAT_URL, flat).execute();
     }
 
     public static void getFlatInfo(BaseActivity activity, String flatId) {

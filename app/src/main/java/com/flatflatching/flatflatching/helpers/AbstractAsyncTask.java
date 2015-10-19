@@ -57,7 +57,7 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         return result;
     }
 
-    protected boolean hasConnection() {
+    protected final boolean hasConnection() {
         return activity.hasConnection();
     }
     

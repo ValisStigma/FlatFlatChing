@@ -57,13 +57,13 @@ public final class CreateFlatActivity extends BaseActivity {
     }
 
     @Override
-    public final void setWaitingLayout() {
+    public void setWaitingLayout() {
         createFlatButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public final void reactToSuccess() {
+    public void reactToSuccess() {
         Intent intent = new Intent(self, FlatActivity.class);
         startActivityForResult(intent, FlatActivity.FLAT_WAS_CREATED);
     }

@@ -37,6 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String FLAT = "FLAT";
     public static final String FLAT_MATE_NAMES = "FLAT_MATE_NAMES";
     public static final int FLAT_WAS_CREATED = 8888;
+    public static final String BASE_URL = "http://152.96.234.237:3000/%s";
     protected SharedPreferences settings;
     protected String userName;
     protected String flatId;
@@ -74,27 +75,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected final void checkForUserEmail() {
-        String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
-        if(userEmail.isEmpty()) {
-        } else {
-            register(userEmail);
-        }
-    }
-
     protected final void register(final String userEmail) {
         AuthenticatorService.register(this, userEmail);
     }
 
     protected final String getUserEmail() {
         return settings.getString(CHOSEN_USER_EMAIL, "");
-    }
-
-    protected void checkForFlatID() {
-        flatId = settings.getString(FLAT_ID, "");
-        if(flatId.isEmpty()) {
-            //TODO: What to do when no flatId is set
-        }
     }
 
     @Override
@@ -125,10 +111,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final boolean isGoogleServicesAvailable(){
         int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         return result == ConnectionResult.SUCCESS;
-    }
-
-    protected final String getUserName() {
-        return settings.getString(USERNAME, "");
     }
 
     public final void persistObject(String key, Object obj) throws IOException {

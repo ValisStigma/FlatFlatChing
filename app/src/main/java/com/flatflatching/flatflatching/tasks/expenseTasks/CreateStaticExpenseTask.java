@@ -34,7 +34,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
         this.flatId = flatId;
         this.expenseName = expenseName;
         this.expenseAmount = expenseAmount;
-        this.expenseEnd = expenseEnd;
+        this.expenseEnd = new Date(expenseEnd.getTime());
         this.expenseInterval = expenseInterval;
         this.userExpenses = new ArrayList<>(userExpenses);
     }

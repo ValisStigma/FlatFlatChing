@@ -20,10 +20,10 @@ import java.util.List;
 //TODO: Change Url of api calls to payback
 public final class ExpenseService {
     private static RequestBuilder requestBuilder = new RequestBuilder();
-    private static final String CREATE_STATIC_EXPENSE_URL = "";
-    private static final String CREATE_VARIABLE_EXPENSE_URL = "";
-    private static final String PAY_BACK_STATIC_EXPENSE_URL = "";
-    private static final String GET_EXPENSES_URL = "";
+    private static final String CREATE_STATIC_EXPENSE_URL = String.format(BaseActivity.BASE_URL, "api/expense/create/static");
+    private static final String CREATE_VARIABLE_EXPENSE_URL = String.format(BaseActivity.BASE_URL, "/api/expense/create/variable");
+    private static final String PAY_BACK_STATIC_EXPENSE_URL = String.format(BaseActivity.BASE_URL, "/api/expense/payback/static");
+    private static final String GET_EXPENSES_URL = String.format(BaseActivity.BASE_URL, "api/get/expenses");
 
     private ExpenseService() {
 
