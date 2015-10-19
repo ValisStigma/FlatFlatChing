@@ -57,7 +57,7 @@ function createStaticExpense(next){
     });
 }
 
-router.post(userHandler.loggedIn, "/create/static", function(req, res, next){
+router.post("/create/static", userHandler.loggedIn, function(req, res, next){
 
 });
 

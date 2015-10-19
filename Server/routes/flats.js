@@ -6,7 +6,7 @@ var userHandler = require(path.resolve("components/user-handler.js"));
 var flats = require(path.resolve("components/db-handler.js")).flats;
 var uuid = require("uuid");
 
-router.post(userHandler.loggedIn, "/create", function (req, res, next) {
+router.post("/create", userHandler.loggedIn, function (req, res, next) {
     if (!req.body.flat_name) {
         res.json(errors.auth.failed);
         res.end();
