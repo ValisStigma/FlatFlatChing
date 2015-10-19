@@ -18,7 +18,7 @@ import com.flatflatching.flatflatching.services.FlatService;
 
 import java.io.IOException;
 
-public class CreateFlatActivity extends BaseActivity {
+public final class CreateFlatActivity extends BaseActivity {
 
     private EditText flatTitleEditText;
     private EditText streetNameEditText;
@@ -57,15 +57,20 @@ public class CreateFlatActivity extends BaseActivity {
     }
 
     @Override
-    public void setWaitingLayout() {
+    public final void setWaitingLayout() {
         createFlatButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void reactToSuccess() {
+    public final void reactToSuccess() {
         Intent intent = new Intent(self, FlatActivity.class);
         startActivityForResult(intent, FlatActivity.FLAT_WAS_CREATED);
+    }
+
+    @Override
+    public void checkPreConditions() {
+
     }
 
     private void createFlat() {

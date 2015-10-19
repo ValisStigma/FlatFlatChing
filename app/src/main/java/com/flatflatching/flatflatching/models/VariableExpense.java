@@ -27,7 +27,7 @@ public class VariableExpense extends Expense {
     }
 
     @Override
-    public ExpenseType getExpenseType() {
+    public final ExpenseType getExpenseType() {
         return ExpenseType.Variable;
     }
 }

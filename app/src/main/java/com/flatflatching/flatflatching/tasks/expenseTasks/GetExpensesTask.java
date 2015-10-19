@@ -3,7 +3,6 @@ package com.flatflatching.flatflatching.tasks.expenseTasks;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.flatflatching.flatflatching.models.Expense;
-import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.models.StaticExpense;
 import com.flatflatching.flatflatching.models.VariableExpense;
 
@@ -12,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by rafael on 14.10.2015.
@@ -24,7 +22,7 @@ public class GetExpensesTask extends AbstractAsyncTask {
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected final void onPostExecute(String result) {
         super.onPostExecute(result);
         if (status == Status.requestFailed || result.isEmpty()) {
             reactToError();

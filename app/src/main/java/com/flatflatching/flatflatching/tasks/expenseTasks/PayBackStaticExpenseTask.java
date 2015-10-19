@@ -28,7 +28,7 @@ public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void handleToken(String token) {
+    protected final void handleToken(String token) {
         String response = payBackExpense(token);
         handleExpenseResponse(response);
     }

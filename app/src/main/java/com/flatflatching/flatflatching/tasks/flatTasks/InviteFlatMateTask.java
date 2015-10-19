@@ -26,7 +26,7 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void handleToken(String token) {
+    protected final void handleToken(String token) {
         final String response = inviteFlatMate(token);
         handleInviteResponse(response);
     }
@@ -80,7 +80,7 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void onPostExecute(final String result) {
+    protected final void onPostExecute(final String result) {
         super.onPostExecute(result);
         if (status == Status.requestFailed) {
             reactToError();

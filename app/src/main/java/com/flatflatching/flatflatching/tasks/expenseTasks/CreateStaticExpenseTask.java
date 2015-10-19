@@ -40,7 +40,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void handleToken(final String token) {
+    protected final void handleToken(final String token) {
         String response = registerExpense(token);
         handleExpenseResponse(response);
     }

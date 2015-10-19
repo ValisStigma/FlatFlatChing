@@ -26,7 +26,7 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void handleToken(final String token) {
+    protected final void handleToken(final String token) {
         String response = registerFlat(token);
         handleFlatResponse(response);
     }
@@ -36,7 +36,7 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
 
     }
     @Override
-    protected void onPostExecute(String result)  {
+    protected final void onPostExecute(String result)  {
         super.onPostExecute(result);
         if(status == Status.okay) {
             activity.reactToSuccess();

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by rafael on 28.09.2015.
  */
-public class ShoppingList {
+public final class ShoppingList {
     private List<ShoppingListItem> itemList = new ArrayList<>();
 
     ShoppingList() {

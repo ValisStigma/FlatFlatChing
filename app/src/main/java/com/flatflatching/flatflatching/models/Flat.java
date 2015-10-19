@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by rafael on 28.09.2015.
  */
-public class Flat {
+public final class Flat {
     private List<FlatMate> inhabitants = new ArrayList<>();
     private String name;
     private Address address;

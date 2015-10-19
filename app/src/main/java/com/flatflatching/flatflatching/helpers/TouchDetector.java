@@ -22,7 +22,7 @@ public class TouchDetector {
      * @param coordinateLeave X-coordinate of the liftoff
      * @return SwipeDirection the swipedirection
      */
-    public SwipeDirection getHorizontalSwipeDirection(final float coordinateTouch, final float coordinateLeave) {
+    public final SwipeDirection getHorizontalSwipeDirection(final float coordinateTouch, final float coordinateLeave) {
         SwipeDirection result = SwipeDirection.noSwipe;
         if (Math.abs(coordinateTouch - coordinateLeave) > MIN_DISTANCE) {
             if (coordinateLeave > coordinateTouch) {
@@ -34,7 +34,7 @@ public class TouchDetector {
         return result;
     }
     
-    public boolean isDownSwipe(final float coordinateTouch, final float coordinateLeave) {
+    public final boolean isDownSwipe(final float coordinateTouch, final float coordinateLeave) {
         return coordinateLeave - coordinateTouch > MIN_DISTANCE ;
     }
 }

@@ -27,7 +27,7 @@ public class StaticExpense extends Expense {
     }
 
     @Override
-    public ExpenseType getExpenseType() {
+    public final ExpenseType getExpenseType() {
         return ExpenseType.Static;
     }
 }

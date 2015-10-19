@@ -1,6 +1,7 @@
 package com.flatflatching.flatflatching.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by rafael on 05.10.2015.
@@ -12,25 +13,29 @@ public class Address implements Serializable {
     private String zipCode;
 
     public Address(final String streetName, final String streetNumber, final String city, final String zipCode)  {
+        Objects.requireNonNull(streetName);
+        Objects.requireNonNull(streetNumber);
+        Objects.requireNonNull(city);
+        Objects.requireNonNull(zipCode);
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.city = city;
         this.zipCode = zipCode;
     }
 
-    public String getStreetName() {
+    public final String getStreetName() {
         return streetName;
     }
 
-    public String getStreetNumber() {
+    public final String getStreetNumber() {
         return streetNumber;
     }
 
-    public String getCity() {
+    public final String getCity() {
         return city;
     }
 
-    public String getZipCode() {
+    public final String getZipCode() {
         return zipCode;
     }
 }

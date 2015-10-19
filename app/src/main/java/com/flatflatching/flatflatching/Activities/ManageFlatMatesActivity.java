@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.services.FlatService;
 
-public class ManageFlatMatesActivity extends BaseActivity {
+public final class ManageFlatMatesActivity extends BaseActivity {
 
     private EditText newFlatMateEmail;
     private BaseActivity self;
@@ -62,6 +62,11 @@ public class ManageFlatMatesActivity extends BaseActivity {
 
     @Override
     public void reactToSuccess() {
+
+    }
+
+    @Override
+    public void checkPreConditions() {
 
     }
 

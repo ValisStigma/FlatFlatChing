@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.flatflatching.flatflatching.R;
 
-public class ShoppingListActivity extends BaseActivity {
+public final class ShoppingListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,11 @@ public class ShoppingListActivity extends BaseActivity {
 
     @Override
     public void reactToSuccess() {
+
+    }
+
+    @Override
+    public void checkPreConditions() {
 
     }
 

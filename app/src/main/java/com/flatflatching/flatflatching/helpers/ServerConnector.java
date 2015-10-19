@@ -22,7 +22,7 @@ import java.util.List;
  * @author www.codejava.net
  *
  */
-public class ServerConnector {
+public final class ServerConnector {
 
     public enum Method {
         GET,
@@ -30,6 +30,7 @@ public class ServerConnector {
     }
 
     private final String boundary;
+    private static final int BUFFER_SIZE = 4096;
     private static final String LINE_FEED = "\r\n";
     private final HttpURLConnection httpConn;
     private final String charset;
@@ -51,10 +52,10 @@ public class ServerConnector {
         this.method = method;
         // creates a unique boundary based on time stamp
         boundary = "===" + System.currentTimeMillis() + "===";
-
         final URL url = new URL(requestUrl);
         httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
+        httpConn.setDoInput(true);
         switch (this.method) {
             case GET:
                 httpConn.setDoOutput(false);
@@ -69,8 +70,6 @@ public class ServerConnector {
                         true);
                 break;
         }
-        httpConn.setDoInput(true);
-
     }
 
     /**
@@ -135,7 +134,7 @@ public class ServerConnector {
         writer.flush();
 
         final FileInputStream inputStream = new FileInputStream(uploadFile);
-        final byte[] buffer = new byte[4096];
+        final byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead = inputStream.read(buffer);
         while (bytesRead != -1) {
             outputStream.write(buffer, 0, bytesRead);
@@ -175,9 +174,6 @@ public class ServerConnector {
             writer.append("--").append(boundary).append("--").append(LINE_FEED);
             writer.close();
         }
-
-
-
         // checks server's status code first
         final int status = httpConn.getResponseCode();
         if (status == HttpURLConnection.HTTP_OK) {
@@ -193,7 +189,6 @@ public class ServerConnector {
         } else {
             throw new IOException("Server returned non-OK status: " + status);
         }
-
         return response;
     }
 }

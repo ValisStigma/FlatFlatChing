@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by rafael on 28.09.2015.
@@ -19,6 +20,7 @@ public abstract class Expense {
         Static
     }
 
+    private static final int MILLISECONDS_IN_SECONDS = 1000;
     private double amount;
     private String name;
     private List<FlatMate> contributors = new ArrayList<>();
@@ -29,8 +31,9 @@ public abstract class Expense {
 
 
     public Expense(final JSONObject jsonExpense) throws JSONException {
+        Objects.requireNonNull(jsonExpense);
         name = jsonExpense.getString("expense_name");
-        dueDate = new Date((long) 1000 * jsonExpense.getInt("expense_end"));
+        dueDate = new Date((long) MILLISECONDS_IN_SECONDS * jsonExpense.getInt("expense_end"));
         amount = jsonExpense.getDouble("expense_amount");
         toPay = jsonExpense.getDouble("expense_user_amount");
         final JSONArray expenseContributors = jsonExpense.getJSONArray("expense_users");
@@ -41,6 +44,9 @@ public abstract class Expense {
         }
     }
     public Expense(final String name, final Date dueDate, final double amount, final double toPay, final List<FlatMate> contributors) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(dueDate);
+        Objects.requireNonNull(contributors);
         this.name = name;
         this.dueDate = new Date(dueDate.getTime());
         this.amount = amount;
@@ -49,42 +55,44 @@ public abstract class Expense {
     }
 
     public Expense(final String name, final double amount) {
+        Objects.requireNonNull(name);
         this.name = name;
         this.amount = amount;
     }
 
     public Expense(final String name, final double amount, final List<FlatMate> contributors) {
         this(name, amount);
+        Objects.requireNonNull(contributors);
         this.contributors.addAll(contributors);
     }
 
-    public void setDueDate(final Date dueDate) {
+    public final void setDueDate(final Date dueDate) {
         this.dueDate = new Date(dueDate.getTime());
     }
 
-    public boolean isOutstanding() {
+    public final boolean isOutstanding() {
         return this.outstanding;
     }
 
-    public void process() {
+    public final void process() {
         this.outstanding = false;
     }
 
     public abstract ExpenseType getExpenseType();
 
-    public double getAmount() {
+    public final double getAmount() {
         return amount;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
-    public Date getDueDate() {
+    public final Date getDueDate() {
         return new Date(dueDate.getTime());
     }
 
-    public double getToPay() {
+    public final double getToPay() {
         return toPay;
     }
 }

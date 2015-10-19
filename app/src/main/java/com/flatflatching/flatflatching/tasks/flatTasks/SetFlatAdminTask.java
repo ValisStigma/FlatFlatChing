@@ -24,7 +24,7 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
-    protected void handleToken(String token) {
+    protected final void handleToken(String token) {
         String response = setAdminRequest(token);
         handleSetAdminResponse(response);
     }

@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Created by rafael on 28.09.2015.
  */
-public class ShoppingListItem {
+public final class ShoppingListItem {
     private double price;
     private int amount;
     private final String name;

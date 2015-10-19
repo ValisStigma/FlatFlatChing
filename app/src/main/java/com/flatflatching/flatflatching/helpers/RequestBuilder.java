@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-public class RequestBuilder {
+public final class RequestBuilder {
 
     private static final String ACCOUNT_NAME = "account_name";
     private static final String ACCOUNT_TOKEN = "account_token";

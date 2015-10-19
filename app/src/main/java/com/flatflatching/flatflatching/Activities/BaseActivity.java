@@ -74,7 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected void checkForUserEmail() {
+    protected final void checkForUserEmail() {
         String userEmail = settings.getString(CHOSEN_USER_EMAIL, "");
         if(userEmail.isEmpty()) {
         } else {
@@ -82,11 +82,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void register(final String userEmail) {
+    protected final void register(final String userEmail) {
         AuthenticatorService.register(this, userEmail);
     }
 
-    protected String getUserEmail() {
+    protected final String getUserEmail() {
         return settings.getString(CHOSEN_USER_EMAIL, "");
     }
 
@@ -107,14 +107,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**Tests if the activity gets internet connection.
      * @return Boolean if connection is available
      */
-    public boolean hasConnection() {
+    public final boolean hasConnection() {
         final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
 
 
-    public void notifyError(String message) {
+    public final void notifyError(String message) {
         for (int i = 0; i < layoutContainer.getChildCount(); i++) {
             layoutContainer.getChildAt(i).setVisibility(View.GONE);
         }
@@ -122,34 +122,34 @@ public abstract class BaseActivity extends AppCompatActivity {
         messageShower.setText(message);
     }
 
-    public boolean isGoogleServicesAvailable(){
+    protected final boolean isGoogleServicesAvailable(){
         int result = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         return result == ConnectionResult.SUCCESS;
     }
 
-    protected String getUserName() {
+    protected final String getUserName() {
         return settings.getString(USERNAME, "");
     }
 
-    public void persistObject(String key, Object obj) throws IOException {
+    public final void persistObject(String key, Object obj) throws IOException {
         InternalStorage.writeObject(this, key, obj);
     }
 
-    public Object getObject(String key) throws IOException, ClassNotFoundException {
+    public final Object getObject(String key) throws IOException, ClassNotFoundException {
         return InternalStorage.readObject(this, key);
     }
 
-    protected boolean isAuthenticated() {
+    protected final boolean isAuthenticated() {
         userName = settings.getString(USER_NAME_GIVEN, "");
         return !userName.isEmpty();
     }
 
-    protected String getFlatName() throws IOException, ClassNotFoundException {
+    protected final String getFlatName() throws IOException, ClassNotFoundException {
         Flat myFlat =(Flat)getObject(BaseActivity.FLAT);
         return myFlat.getName();
     }
 
-    protected boolean isFlatMember() {
+    protected final boolean isFlatMember() {
         try {
             String flatName = getFlatName();
             return !flatName.isEmpty();
@@ -160,14 +160,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected boolean isAdmin() {
+    protected final boolean isAdmin() {
         //TODO:correct implementation
         return true;
     }
 
     public abstract void setWaitingLayout();
     public abstract void reactToSuccess();
-    public void checkPreConditions() {
+    public abstract void checkPreConditions();
 
-    }
+
 }

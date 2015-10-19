@@ -9,7 +9,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-public class SquareLayout extends LinearLayout {
+public final class SquareLayout extends LinearLayout {
     private static final double M_SCALE = 1.0;
     private static final double HALF = 0.5;
     public SquareLayout(Context context) {

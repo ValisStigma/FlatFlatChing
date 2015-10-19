@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by rafael on 28.09.2015.
  */
-public class FlatMate {
+public final class FlatMate {
     private final String name;
     private boolean isAdmin;
 

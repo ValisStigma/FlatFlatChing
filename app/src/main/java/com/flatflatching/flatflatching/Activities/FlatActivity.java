@@ -17,7 +17,7 @@ import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 
-public class FlatActivity extends BaseActivity {
+public final class FlatActivity extends BaseActivity {
 
     private BaseActivity self = this;
     View expenseButtonLayout;

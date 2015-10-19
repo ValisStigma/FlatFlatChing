@@ -21,7 +21,7 @@ public class GetFlatInfoTask extends AbstractAsyncTask {
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected final void onPostExecute(String result) {
         super.onPostExecute(result);
         if (status == Status.requestFailed || result.isEmpty()) {
             reactToError();

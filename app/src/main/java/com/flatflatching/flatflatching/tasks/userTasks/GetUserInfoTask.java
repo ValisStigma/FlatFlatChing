@@ -16,7 +16,7 @@ public class GetUserInfoTask extends AbstractAsyncTask {
     }
 
     @Override
-    protected void onPostExecute(final String result) {
+    protected final void onPostExecute(final String result) {
         if (result.isEmpty()) {
             reactToError();
         } else {
