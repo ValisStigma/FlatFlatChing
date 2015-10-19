@@ -47,7 +47,7 @@ public final class AuthenticatorService {
                     JSONObject response = new JSONObject(result);
                     JSONArray flats = response.getJSONArray("flat_uuids");
                     if(flats == null ||flats.length() == 0) {
-                        reactToError();
+                        //TODO:case no flat yet registered
                     } else {
                         final String flatId = flats.getString(flats.length() - 1);
                         activity.persistToPreferences(BaseActivity.FLAT_ID, flatId);

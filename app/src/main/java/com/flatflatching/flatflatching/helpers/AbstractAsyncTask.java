@@ -19,8 +19,8 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
     protected BaseActivity activity;
     protected final  String url;
     protected enum Status  {
-        notReady,
-        running,
+        running,        notReady,
+
         requestFailed,
         userRecoverableError,
         okay

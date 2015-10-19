@@ -22,22 +22,16 @@ public final class RequestService {
 
     }
     public static String sendRequestWithData(Method method, String requestUrl, String data) throws IOException {
-        ServerConnector serverConnector = getServerConnector(method, requestUrl);
-        serverConnector.addFormField("data", data);
+        ServerConnector serverConnector = new ServerConnector(requestUrl, data);
         return getResponse(serverConnector);
     }
 
     private static ServerConnector getServerConnector(Method method, String requestUrl) throws IOException {
-        return new ServerConnector(requestUrl, CHAR_SET, method);
+        return new ServerConnector(requestUrl,  method);
     }
 
     private static String getResponse(ServerConnector serverConnector) throws IOException {
-        final StringBuilder stringBuilder = new StringBuilder();
-        final List<String> response = serverConnector.finish();
-        for(final String line: response) {
-            stringBuilder.append(line);
-        }
-        return stringBuilder.toString();
+        return serverConnector.finish();
 
     }
 }
