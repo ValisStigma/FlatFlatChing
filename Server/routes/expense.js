@@ -32,13 +32,29 @@ function generateExpenseModel(next){
 
             res.json(errors.auth.failed);
         }else{
-
+            next({
+                expense_uuid: uuid.v4(),
+                expense_name: expense.expense_name,
+                expense_end: expense.expense_end,
+                expense_amount: expense.expense_amount,
+                expense_users: []
+            });
         }
     });
-};
+}
 
-function createStaticExpense(){
+function createStaticExpense(next){
+    var expense = req().body;
+    generateExpenseModel(function(expenseModel){
+        expenseModel.expense_type = "static";
+        if(expense.expense_interval) {
+            expenseModel.expense_interval = expense.expense_interval;
+        } else {
+            expenseModel.expense_interval = 0;
+        }
 
+
+    });
 }
 
 router.post(userHandler.loggedIn, "/create/static", function(req, res, next){
