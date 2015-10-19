@@ -41,7 +41,7 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
         }
         flat_address = req.body.flat_address;
     }
-    if(!error) {
+    if(req.body.flat_name && !error) {
         flats.insert({
             flat_name: req.body.flat_name,
             flat_address: flat_address,
