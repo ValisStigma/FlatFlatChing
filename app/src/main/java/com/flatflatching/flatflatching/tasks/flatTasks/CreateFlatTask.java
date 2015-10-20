@@ -13,9 +13,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-/**
- * Created by rafael on 13.10.2015.
- */
 public class CreateFlatTask extends AbstractGetAuthTokenTask {
     private Flat flat;
     private String createFlatUrl;
@@ -29,6 +26,7 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
     protected final void handleToken(final String token) {
         String response = registerFlat(token);
         handleFlatResponse(response);
+       // FlatService.setAdmin(activity, activity.getUserEmail());
     }
 
     @Override
@@ -75,7 +73,7 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getCreateFlatRequest(token, flat).toString();
+            params = requestBuilder.getCreateFlatRequest(token,activity.getUserEmail(), flat).toString();
 
         } catch (JSONException e) {
             status = Status.requestFailed;

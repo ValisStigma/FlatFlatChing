@@ -14,6 +14,9 @@ public class VariableExpense extends Expense {
     public VariableExpense(final JSONObject jsonExpense) throws JSONException {
         super(jsonExpense);
     }
+    public VariableExpense(final String description, final double amount, final Date dueDate) {
+        super(description, amount, dueDate);
+    }
     public VariableExpense(final String name, final double amount) {
         super(name, amount);
     }

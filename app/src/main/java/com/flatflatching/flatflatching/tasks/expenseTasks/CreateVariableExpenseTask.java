@@ -5,6 +5,8 @@ import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.ExceptionParser;
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
+import com.flatflatching.flatflatching.models.FlatMate;
+import com.flatflatching.flatflatching.models.VariableExpense;
 import com.flatflatching.flatflatching.services.RequestService;
 
 import org.json.JSONArray;
@@ -12,27 +14,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
 
 /**
  * Created by rafael on 14.10.2015.
  */
 public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
     private String flatId;
-    private String expenseName;
-    private double expenseAmount;
-    private Date expenseEnd;
-    private List<String> userEmails;
+    private VariableExpense variableExpense;
 
-    public CreateVariableExpenseTask(BaseActivity activity, String createVariableExpenseUrl, String flatId, String expenseName, double expenseAmount, Date expenseEnd, List<String> userEmails) {
+    public CreateVariableExpenseTask(BaseActivity activity, String createVariableExpenseUrl, String flatId,
+                                     VariableExpense variableExpense) {
         super(activity, createVariableExpenseUrl);
         this.flatId = flatId;
-        this.expenseName = expenseName;
-        this.expenseAmount = expenseAmount;
-        this.expenseEnd = new Date(expenseEnd.getTime());
-        this.userEmails = new ArrayList<>(userEmails);
+        this.variableExpense = variableExpense;
     }
 
     @Override
@@ -52,11 +47,11 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
             JSONArray userExpenses = new JSONArray();
-            for (String email : this.userEmails) {
-                userExpenses.put(requestBuilder.getUserEmail(email));
+            for (FlatMate contributor : this.variableExpense.getContributors()) {
+                userExpenses.put(requestBuilder.getUserEmail(contributor.getName()));
             }
-            params = requestBuilder.getCreateVariableExpenseRequest(token, flatId, expenseName,
-                    expenseAmount, expenseEnd, userExpenses).toString();
+            params = requestBuilder.getCreateVariableExpenseRequest(token, flatId,
+                    activity.getUserEmail(), variableExpense, userExpenses).toString();
 
         } catch (JSONException e) {
             status = Status.requestFailed;

@@ -23,7 +23,6 @@ import java.io.IOException;
 public abstract class BaseActivity extends AppCompatActivity {
 
     public static final String PREFERENCES = "local_preferences";
-    public static final String USERNAME = "USERNAME";
     public static final String FLAT_ID = "FLAT_ID";
     public static final String USER_NAME = "USER_NAME";
     public static final int REQUEST_PERMISSION = 1111;
@@ -37,7 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String FLAT = "FLAT";
     public static final String FLAT_MATE_NAMES = "FLAT_MATE_NAMES";
     public static final int FLAT_WAS_CREATED = 8888;
-    public static final String BASE_URL = "http://152.96.234.237:3000/%s";
+    public static final String INTENT_EXTRAS = "INTENT_EXTRAS";
+    public static final String BASE_URL = "http://192.168.0.106:3000/%s";
     protected SharedPreferences settings;
     protected String userName;
     protected String flatId;
@@ -79,7 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         AuthenticatorService.register(this, userEmail);
     }
 
-    protected final String getUserEmail() {
+    public final String getUserEmail() {
         return settings.getString(CHOSEN_USER_EMAIL, "");
     }
 
@@ -142,6 +142,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    protected final String getFlatId() {
+        return settings.getString(FLAT_ID, "");
+    }
     protected final boolean isAdmin() {
         //TODO:correct implementation
         return true;

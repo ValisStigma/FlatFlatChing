@@ -28,7 +28,11 @@ public abstract class Expense {
     private double toPay;
     private boolean outstanding = true;
 
-
+    public Expense(final String name, final double amount, final Date dueDate) {
+        this(name, amount);
+        Objects.requireNonNull(dueDate);
+        this.dueDate = new Date(dueDate.getTime());
+    }
 
     public Expense(final JSONObject jsonExpense) throws JSONException {
         Objects.requireNonNull(jsonExpense);
@@ -66,6 +70,12 @@ public abstract class Expense {
         this.contributors.addAll(contributors);
     }
 
+    public final List<FlatMate> getContributors() {
+        return new ArrayList<>(this.contributors);
+    }
+    public final void addContributor(final FlatMate flatMate) {
+        this.contributors.add(flatMate);
+    }
     public final void setDueDate(final Date dueDate) {
         this.dueDate = new Date(dueDate.getTime());
     }
@@ -88,8 +98,8 @@ public abstract class Expense {
         return name;
     }
 
-    public final Date getDueDate() {
-        return new Date(dueDate.getTime());
+    public final long getDueDateTimeStamp() {
+        return dueDate.getTime() / MILLISECONDS_IN_SECONDS;
     }
 
     public final double getToPay() {

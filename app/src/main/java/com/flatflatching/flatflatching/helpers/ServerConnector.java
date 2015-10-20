@@ -6,6 +6,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 public final class ServerConnector {
     public enum Method {
@@ -20,7 +22,10 @@ public final class ServerConnector {
     public ServerConnector(final String requestUrl, Method method)
             throws IOException {
         client = new OkHttpClient();
-        if(method == Method.GET)  {
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        client.setCookieHandler(cookieManager);
+        if(method == Method.GET) {
             request = new Request.Builder()
                     .url(requestUrl)
                     .build();
@@ -31,6 +36,9 @@ public final class ServerConnector {
 
     public ServerConnector(final String requestUrl,final String requestData) {
         client = new OkHttpClient();
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+        client.setCookieHandler(cookieManager);
         RequestBody body = RequestBody.create(JSON, requestData);
 
         request = new Request.Builder()

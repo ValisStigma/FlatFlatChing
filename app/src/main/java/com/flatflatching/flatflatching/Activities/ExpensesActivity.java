@@ -1,9 +1,15 @@
 package com.flatflatching.flatflatching.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
 
@@ -15,6 +21,18 @@ public final class ExpensesActivity extends BaseActivity {
         setContentView(R.layout.activity_expenses);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
         setSupportActionBar(toolbar);
+        messageShower = (TextView) findViewById(R.id.messageShower);
+        layoutContainer = (LinearLayout) findViewById(R.id.expensesBackgroundLayout);
+        Button goToNewExpenseButton = (Button) findViewById(R.id.buttonGoToExpenses);
+        final Activity self = this;
+        goToNewExpenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(self, NewExpenseActivity.class);
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override

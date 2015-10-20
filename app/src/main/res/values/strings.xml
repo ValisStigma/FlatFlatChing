@@ -34,4 +34,20 @@
     <string name="flatMateTitle">Flatmates</string>
     <string name="create_flat_title">WG erfassen</string>
     <string name="without_flat_action_description">Erfasse deine eigene WG oder lasse dich von deinen Freunden einladen</string>
+    <string name="titleDescription">Bezeichnung</string>
+    <string name="titleAmount">Betrag</string>
+    <string name="titleDueDate">Fälligkeit</string>
+    <string name="titleContributors">Mitzahlende</string>
+    <string name="staticExpenseTitle">Periodische Ausgabe</string>
+    <string name="titlePeriod">Intervall</string>
+    <string name="createTitle">Erfassen</string>
+    <string name="newExpenseTitle">Neue Ausgabe</string>
+    <string-array name="interval_array">
+        <item>Täglich</item>
+        <item>Wöchentlich</item>
+        <item>Alle 2 Wochen</item>
+        <item>Monatlich</item>
+        <item>Jährlich</item>
+    </string-array>
+
 </resources>

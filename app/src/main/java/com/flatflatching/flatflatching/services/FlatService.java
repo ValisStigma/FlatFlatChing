@@ -39,7 +39,7 @@ public final class FlatService {
 
     public static void getFlatInfo(BaseActivity activity, String flatId) {
         try {
-            JSONObject params = requestBuilder.getFlatInfoRequest(flatId);
+            JSONObject params = requestBuilder.getFlatInfoRequest(flatId, activity.getUserEmail());
             new GetFlatInfoTask(activity, GET_FLAT_INFO_URL).execute(params);
         } catch (JSONException e) {
             activity.notifyError(activity.getResources().getString(R.string.server_error));
@@ -48,7 +48,7 @@ public final class FlatService {
 
     public static void getFlatMemberInfo(BaseActivity activity, String flatId) {
         try{
-            JSONObject params = requestBuilder.getFlatInfoRequest(flatId);
+            JSONObject params = requestBuilder.getFlatInfoRequest(flatId, activity.getUserEmail());
             new GetFlatMemberInfoTask(activity, GET_FLAT_MEMBER_INFO_URL).execute(params);
         } catch (JSONException e) {
             activity.notifyError(activity.getResources().getString(R.string.server_error));

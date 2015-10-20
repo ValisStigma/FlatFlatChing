@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.flatflatching.flatflatching.activities.NewExpenseActivity"
+    style="@style/background"
+    android:id="@+id/newExpenseBackgroundContainer">
+    <include
+        layout="@layout/tool_bar"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/titleAmount"
+        android:id="@+id/messageShower"
+        android:visibility="gone"/>
+    <RelativeLayout
+        style="@style/backgroundPane"
+        android:fitsSystemWindows="true"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextDescription"
+                android:hint="@string/titleDescription"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/editTextAmount"
+                android:hint="@string/titleAmount" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextDueDate"
+                android:hint="@string/titleDueDate" />
+
+
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerContributors"
+                />
+        </LinearLayout>
+
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/staticExpenseTitle"
+            android:id="@+id/checkBoxStaticExpense"
+            android:button="@null"
+            android:gravity="end|center_vertical"
+            android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+            android:visibility="visible"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/flatAdminExpenseArea"
+            android:visibility="visible"
+            android:layout_below="@+id/checkBoxStaticExpense"
+            android:layout_alignParentStart="true">
+            <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/spinnerPeriod"
+        /></LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/createTitle"
+            android:id="@+id/buttonCreateExpense"
+            android:textSize="@dimen/button_text_size"
+            android:textColor="@color/white"
+            android:background="@color/green"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

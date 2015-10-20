@@ -5,6 +5,7 @@ import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.ExceptionParser;
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
+import com.flatflatching.flatflatching.models.StaticExpense;
 import com.flatflatching.flatflatching.models.StaticUserExpense;
 import com.flatflatching.flatflatching.services.RequestService;
 
@@ -14,28 +15,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-/**
- * Created by rafael on 14.10.2015.
- */
 public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
     private String flatId;
-    private String expenseName;
-    private double expenseAmount;
-    private Date expenseEnd;
-    private int expenseInterval;
+    private StaticExpense staticExpense;
     private List<StaticUserExpense> userExpenses;
 
-    public CreateStaticExpenseTask(BaseActivity activity, String createExpenseUrl, String flatId, String expenseName, double expenseAmount,
-                                   Date expenseEnd, int expenseInterval, List<StaticUserExpense> userExpenses) {
+    public CreateStaticExpenseTask(BaseActivity activity, String createExpenseUrl, String flatId, StaticExpense staticExpense, List<StaticUserExpense> userExpenses) {
         super(activity, createExpenseUrl);
         this.flatId = flatId;
-        this.expenseName = expenseName;
-        this.expenseAmount = expenseAmount;
-        this.expenseEnd = new Date(expenseEnd.getTime());
-        this.expenseInterval = expenseInterval;
+        this.staticExpense = staticExpense;
         this.userExpenses = new ArrayList<>(userExpenses);
     }
 
@@ -88,8 +78,8 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
             for (StaticUserExpense expense : this.userExpenses) {
                 userExpenses.put(requestBuilder.getStaticUserObject(expense.getEmail(), expense.getDivisionKey()));
             }
-            params = requestBuilder.getCreateStaticExpenseRequest(token, flatId, expenseName,
-                    expenseAmount, expenseEnd, expenseInterval, userExpenses).toString();
+            params = requestBuilder.getCreateStaticExpenseRequest(token, flatId, activity.getUserEmail(),
+                    staticExpense, userExpenses).toString();
 
         } catch (JSONException e) {
             status = Status.requestFailed;

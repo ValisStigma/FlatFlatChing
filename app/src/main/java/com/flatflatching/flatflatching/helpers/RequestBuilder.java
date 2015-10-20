@@ -1,13 +1,13 @@
 package com.flatflatching.flatflatching.helpers;
 
 import com.flatflatching.flatflatching.models.Address;
+import com.flatflatching.flatflatching.models.Expense;
 import com.flatflatching.flatflatching.models.Flat;
+import com.flatflatching.flatflatching.models.StaticExpense;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 public final class RequestBuilder {
 
@@ -19,33 +19,37 @@ public final class RequestBuilder {
     public RequestBuilder(){
     }
 
-
+    private JSONObject getBaseRequest (final String userEmail) throws JSONException {
+        JSONObject requestParams = new JSONObject();
+        requestParams.put(USER_EMAIL, userEmail);
+        return requestParams;
+    }
     public JSONObject getRegisterRequest(final String accountName) throws JSONException {
         final JSONObject requestParams = new JSONObject();
         requestParams.put(ACCOUNT_NAME, accountName);
         return requestParams;
     }
 
-    public JSONObject getCreateFlatRequest(final String accountToken, Flat flat) throws JSONException {
+    public JSONObject getCreateFlatRequest(final String accountToken, final String userEmail, Flat flat) throws JSONException {
         if(flat.hasAddress()) {
             Address address = flat.getAddress();
-            return getCreateFlatRequestWithAddress(accountToken, flat.getName(), address.getStreetName(), address.getStreetNumber()
+            return getCreateFlatRequestWithAddress(accountToken, userEmail, flat.getName(), address.getStreetName(), address.getStreetNumber()
             ,address.getCity(), address.getZipCode(), "Switzerland");
         } else {
-            return getCreateFlatRequest(accountToken, flat.getName());
+            return getCreateFlatRequest(accountToken, userEmail, flat.getName());
         }
     }
-    private JSONObject getCreateFlatRequest(final String accountToken, final String flatName) throws JSONException {
-        final JSONObject requestParams = new JSONObject();
+    private JSONObject getCreateFlatRequest(final String accountToken, final String userEmail, final String flatName) throws JSONException {
+        final JSONObject requestParams = getBaseRequest(userEmail);
         requestParams.put(ACCOUNT_TOKEN, accountToken);
         requestParams.put("flat_name", flatName);
         return requestParams;
     }
 
-    private JSONObject getCreateFlatRequestWithAddress(final String accountToken, final String flatName,
+    private JSONObject getCreateFlatRequestWithAddress(final String accountToken, final String userEmail, final String flatName,
                                                      final String streetName, final String streetNumber,
                                                      final String plz, final String city, final String country) throws JSONException {
-        JSONObject requestParams = getCreateFlatRequest(accountToken, flatName);
+        JSONObject requestParams = getCreateFlatRequest(accountToken, userEmail, flatName);
         JSONObject address = new JSONObject();
         address.put("flat_address_street", streetName);
         address.put("flat_address_number", streetNumber);
@@ -66,8 +70,8 @@ public final class RequestBuilder {
         return requestParams;
     }
 
-    public JSONObject getFlatInfoRequest(final String flatId) throws JSONException {
-        final JSONObject requestParams = new JSONObject();
+    public JSONObject getFlatInfoRequest(final String flatId, final String userEmail) throws JSONException {
+        final JSONObject requestParams = getBaseRequest(userEmail);
         requestParams.put(FLAT_ID, flatId);
         return requestParams;
     }
@@ -79,8 +83,8 @@ public final class RequestBuilder {
         return requestParams;
     }
 
-    public JSONObject getDeleteFlatRequest(final String token, final String flatId) throws JSONException {
-        final JSONObject requestParams = new JSONObject();
+    public JSONObject getDeleteFlatRequest(final String token, final String flatId, final String userEmail) throws JSONException {
+        final JSONObject requestParams = getBaseRequest(userEmail);
         requestParams.put(ACCOUNT_TOKEN, token);
         requestParams.put(FLAT_ID, flatId);
         return requestParams;
@@ -98,23 +102,22 @@ public final class RequestBuilder {
         return requestParams;
     }
 
-    public JSONObject getCreateVariableExpenseRequest(final String token, final String flatId, final String expenseName, final double expenseAmount,
-                                                      final Date expenseEnd, final JSONArray expenseUsers) throws JSONException {
-        JSONObject requestParams = new JSONObject();
+    public JSONObject getCreateVariableExpenseRequest(final String token, final String userEmail, final String flatId, final Expense variableExpense, final JSONArray expenseUsers) throws JSONException {
+        JSONObject requestParams = getBaseRequest(userEmail);
         requestParams.put(ACCOUNT_TOKEN, token);
         requestParams.put(FLAT_ID, flatId);
-        requestParams.put("expense_name", expenseName);
-        requestParams.put("expense_amount", expenseAmount);
-        requestParams.put("expense_end", expenseEnd);
+        requestParams.put("expense_name", variableExpense.getName());
+        requestParams.put("expense_amount", variableExpense.getAmount());
+        requestParams.put("expense_end", variableExpense.getDueDateTimeStamp());
         requestParams.put("expense_users", expenseUsers);
         return requestParams;
     }
     public JSONObject getCreateStaticExpenseRequest(final String token, final String flatId,
-                                                    final String expenseName, final double expenseAmount,
-                                                    final Date expenseEnd, final int expenseInterval,
+                                                    final String userEmail,
+                                                    final StaticExpense staticExpense,
                                                     final JSONArray expenseUsers) throws JSONException {
-        JSONObject requestParams = getCreateVariableExpenseRequest(token, flatId, expenseName, expenseAmount, expenseEnd, expenseUsers);
-        requestParams.put("expense_interval", expenseInterval);
+        JSONObject requestParams = getCreateVariableExpenseRequest(token, userEmail, flatId, staticExpense, expenseUsers);
+        requestParams.put("expense_interval", staticExpense.getInterval());
         return requestParams;
 
     }

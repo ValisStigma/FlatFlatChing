@@ -79,6 +79,19 @@ public final class FlatActivity extends BaseActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int code = extras.getInt(BaseActivity.INTENT_EXTRAS);
+            switch (code) {
+                case BaseActivity.FLAT_WAS_CREATED:
+                    notifyFlatCreation();
+                break;
+            }
+        }
+    }
+    @Override
     public void checkPreConditions() {
         if(isAuthenticated()) {
             AuthenticatorService.register(self, getUserEmail());
@@ -166,6 +179,7 @@ public final class FlatActivity extends BaseActivity {
     protected void notifyFlatCreation() {
         Snackbar.make(findViewById(android.R.id.content), "WG wurde erstellt", Snackbar.LENGTH_LONG)
                 .show();
+        messageShower.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.VISIBLE);
         shoppingListButtonLayout.setVisibility(View.VISIBLE);
         if(isAdmin()) {

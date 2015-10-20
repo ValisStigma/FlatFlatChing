@@ -65,7 +65,8 @@ public final class CreateFlatActivity extends BaseActivity {
     @Override
     public void reactToSuccess() {
         Intent intent = new Intent(self, FlatActivity.class);
-        startActivityForResult(intent, FlatActivity.FLAT_WAS_CREATED);
+        intent.putExtra(BaseActivity.INTENT_EXTRAS, BaseActivity.FLAT_WAS_CREATED);
+        startActivity(intent);
     }
 
     @Override

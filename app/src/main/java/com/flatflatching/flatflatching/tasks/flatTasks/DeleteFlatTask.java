@@ -69,7 +69,7 @@ public class DeleteFlatTask extends AbstractGetAuthTokenTask {
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getDeleteFlatRequest(token, flatId).toString();
+            params = requestBuilder.getDeleteFlatRequest(token, flatId, activity.getUserEmail()).toString();
 
         } catch (JSONException e) {
             status = Status.requestFailed;
