@@ -9,15 +9,15 @@ var res = require(path.resolve("components/reqres.js")).res;
 
 var handler = {};
 
-handler.loggedIn = function(req, res, next){
-    if(!req.body.user_email){
+handler.loggedIn = function (req, res, next) {
+    if (!req.body.user_email) {
         res.status(401);
         res.json(errors.auth.failed);
-    }else {
-        users.findOne({user_email: req.body.user_email}, function(err, found){
-            if(found && !err){
+    } else {
+        users.findOne({user_email: req.body.user_email}, function (err, found) {
+            if (found && !err) {
                 next();
-            }else{
+            } else {
                 res.status(401);
                 res.json(errors.auth.failed);
             }
@@ -25,7 +25,7 @@ handler.loggedIn = function(req, res, next){
     }
 };
 
-handler.registerUser = function(){
+handler.registerUser = function () {
     users.findOne({user_email: req().body.account_name}, function (err, user) {
         if (err) {
             console.log(err);

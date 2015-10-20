@@ -10,7 +10,7 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
     var error = false;
     if (!req.body.flat_name) {
         res.json(errors.auth.failed);
-    }else {
+    } else {
         var flat_address = {};
         if (req.body.flat_address) {
             if (!req.body.flat_address.flat_address_street) {
