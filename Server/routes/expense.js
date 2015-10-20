@@ -50,16 +50,36 @@ function extractUsers(expModel, next){
     }else{
         var notFoundUser;
         expense.expense_users.forEach(function(user){
-
-        });
-        if(expModel.expense_type === "static"){
-            var div_keys = 0;
-            expense.expense_users.forEach(function(user){
-                div_keys += user.division_key;
+            users.findOne({user_email: user}, function(err, found){
+                if(!found || err){
+                    notFoundUser = user;
+                }
             });
-
+        });
+        if(notFoundUser){
+            var errorMsg = JSON.parse(JSON.stringify(errors.not_found.user));
+            errorMsg.error_data = notFoundUser;
+            res().json(errorMsg);
+        }else {
+            var errorFound = false;
+            if (expModel.expense_type === "static") {
+                var div_keys = 0;
+                expense.expense_users.forEach(function (user) {
+                    if(!user.division_key){
+                        errorFound = true;
+                    }
+                    div_keys += user.division_key;
+                });
+                if(Math.abs(100 - div_keys) > 0.1){
+                    errorFound = true;
+                }
+            }
+            if(errorFound){
+                res().json(errors.expenses.division_keys);
+            }else {
+                next(expModel);
+            }
         }
-        next(expModel);
     }
 }
 
@@ -73,18 +93,46 @@ function createStaticExpense(next){
             expenseModel.expense_interval = 0;
         }
         extractUsers(expenseModel, function(expenseModel){
-
+            next(expenseModel);
         });
     });
 }
 
-router.post("/create/static", userHandler.loggedIn, function(req, res, next){
 
+function createVariableExpense(next){
+    var expense = req().body;
+    generateExpenseModel(function(expenseModel){
+        expenseModel.expense_type = "variable";
+        extractUsers(expenseModel, function(expenseModel){
+            next(expenseModel);
+        });
+    });
+}
+
+
+router.post("/create/static", userHandler.loggedIn, function(req, res, next){
+    createStaticExpense(function(expense){
+        expenses.insert(expense, function(err, found){
+            res.json({
+                "response": "Done!",
+                "expense_id": found.expense_uuid
+            });
+        });
+    });
 });
 
 
 
-
+router.post("/create/variable", userHandler.loggedIn, function(req, res, next){
+    createVariableExpense(function(expense){
+        expenses.insert(expense, function(err, found){
+            res.json({
+                "response": "Done!",
+                "expense_id": found.expense_uuid
+            });
+        });
+    });
+});
 
 
 
