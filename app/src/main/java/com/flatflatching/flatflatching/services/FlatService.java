@@ -20,13 +20,13 @@ import org.json.JSONObject;
  */
 
 public final class FlatService {
-    private static final String CREATE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/create");
-    private static final String INVITE_URL = String.format(BaseActivity.BASE_URL, "api/invite");
-    private static final String GET_FLAT_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat");
-    private static final String GET_FLAT_MEMBER_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat/members");
-    private static final String SET_FLAT_ADMIN_URL = String.format(BaseActivity.BASE_URL, "api/set/admin");
-    private static final String DELETE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/exit");
-    private static final String ANSWER_INVITATION_URL = String.format(BaseActivity.BASE_URL, "api/accept/invite");
+    public static final String CREATE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/create");
+    public static final String INVITE_URL = String.format(BaseActivity.BASE_URL, "api/invite");
+    public static final String GET_FLAT_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat");
+    public static final String GET_FLAT_MEMBER_INFO_URL = String.format(BaseActivity.BASE_URL, "api/get/flat/members");
+    public static final String SET_FLAT_ADMIN_URL = String.format(BaseActivity.BASE_URL, "api/set/admin");
+    public static final String DELETE_FLAT_URL = String.format(BaseActivity.BASE_URL, "api/exit");
+    public static final String ANSWER_INVITATION_URL = String.format(BaseActivity.BASE_URL, "api/accept/invite");
 
     private FlatService() {
 

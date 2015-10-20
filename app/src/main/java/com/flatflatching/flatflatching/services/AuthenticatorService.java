@@ -39,8 +39,7 @@ public final class AuthenticatorService {
 
         @Override
         protected void onPostExecute(final String result) {
-            super.onPostExecute(result);
-            if (result.isEmpty()) {
+            super.onPostExecute(result);if (result.isEmpty()) {
                 reactToError();
             } else {
                 try {

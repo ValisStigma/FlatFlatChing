@@ -132,14 +132,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected final boolean isFlatMember() {
-        try {
-            String flatName = getFlatName();
-            return !flatName.isEmpty();
-        } catch (IOException e) {
-            return false;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+        String flatId = getFlatId();
+        return !flatId.isEmpty();
     }
 
     protected final String getFlatId() {

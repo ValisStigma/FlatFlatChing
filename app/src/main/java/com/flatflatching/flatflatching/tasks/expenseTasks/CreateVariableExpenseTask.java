@@ -7,6 +7,7 @@ import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.models.VariableExpense;
+import com.flatflatching.flatflatching.services.ExpenseService;
 import com.flatflatching.flatflatching.services.RequestService;
 
 import org.json.JSONArray;
@@ -23,9 +24,9 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
     private String flatId;
     private VariableExpense variableExpense;
 
-    public CreateVariableExpenseTask(BaseActivity activity, String createVariableExpenseUrl, String flatId,
+    public CreateVariableExpenseTask(BaseActivity activity, String flatId,
                                      VariableExpense variableExpense) {
-        super(activity, createVariableExpenseUrl);
+        super(activity, activity.getUserEmail());
         this.flatId = flatId;
         this.variableExpense = variableExpense;
     }
@@ -50,15 +51,15 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
             for (FlatMate contributor : this.variableExpense.getContributors()) {
                 userExpenses.put(requestBuilder.getUserEmail(contributor.getName()));
             }
-            params = requestBuilder.getCreateVariableExpenseRequest(token, flatId,
-                    activity.getUserEmail(), variableExpense, userExpenses).toString();
+            params = requestBuilder.getCreateVariableExpenseRequest(token,
+                    activity.getUserEmail(), flatId, variableExpense, userExpenses).toString();
 
         } catch (JSONException e) {
             status = Status.requestFailed;
             return result;
         }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, ExpenseService.CREATE_VARIABLE_EXPENSE_URL, params);
         } catch (IOException e) {
             status = Status.requestFailed;
         }

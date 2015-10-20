@@ -6,9 +6,6 @@ import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by rafael on 14.10.2015.
- */
 public class GetUserInfoTask extends AbstractAsyncTask {
     public GetUserInfoTask(BaseActivity activity, String url) {
         super(activity, url);

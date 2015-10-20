@@ -7,6 +7,7 @@ import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
 import com.flatflatching.flatflatching.models.StaticExpense;
 import com.flatflatching.flatflatching.models.StaticUserExpense;
+import com.flatflatching.flatflatching.services.ExpenseService;
 import com.flatflatching.flatflatching.services.RequestService;
 
 import org.json.JSONArray;
@@ -22,8 +23,8 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
     private StaticExpense staticExpense;
     private List<StaticUserExpense> userExpenses;
 
-    public CreateStaticExpenseTask(BaseActivity activity, String createExpenseUrl, String flatId, StaticExpense staticExpense, List<StaticUserExpense> userExpenses) {
-        super(activity, createExpenseUrl);
+    public CreateStaticExpenseTask(BaseActivity activity, String flatId, StaticExpense staticExpense, List<StaticUserExpense> userExpenses) {
+        super(activity, activity.getUserEmail());
         this.flatId = flatId;
         this.staticExpense = staticExpense;
         this.userExpenses = new ArrayList<>(userExpenses);
@@ -86,7 +87,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
             return result;
         }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, ExpenseService.CREATE_STATIC_EXPENSE_URL, params);
         } catch (IOException e) {
             status = Status.requestFailed;
         }

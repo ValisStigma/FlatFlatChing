@@ -5,6 +5,8 @@ import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.ExceptionParser;
 import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
+import com.flatflatching.flatflatching.models.Expense;
+import com.flatflatching.flatflatching.services.ExpenseService;
 import com.flatflatching.flatflatching.services.RequestService;
 
 import org.json.JSONException;
@@ -12,19 +14,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-/**
- * Created by rafael on 14.10.2015.
- */
 public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
     private String flatId;
     private String expenseId;
     private String userEmail;
-
-    public PayBackStaticExpenseTask(BaseActivity activity, String payBackStaticExpenseUrl, String flatId, String expenseId, String userEmail) {
-        super(activity, payBackStaticExpenseUrl);
+    private Expense.ExpenseType expenseType;
+    public PayBackStaticExpenseTask(BaseActivity activity, Expense.ExpenseType expenseType, String flatId, String expenseId, String userEmail) {
+        super(activity, activity.getUserEmail());
         this.flatId = flatId;
         this.expenseId = expenseId;
         this.userEmail = userEmail;
+        this.expenseType = expenseType;
     }
 
     @Override
@@ -49,8 +49,17 @@ public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
             status = Status.requestFailed;
             return result;
         }
+        String serverUrl = "";
+        switch (this.expenseType) {
+            case Static:
+                serverUrl = ExpenseService.PAY_BACK_STATIC_EXPENSE_URL;
+                break;
+            case Variable:
+                serverUrl = ExpenseService.PAY_BACK_VARIABLE_EXPENSE_URL;
+                break;
+        }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, serverUrl, params);
         } catch (IOException e) {
             status = Status.requestFailed;
         }
