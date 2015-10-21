@@ -47,6 +47,8 @@ function extractUsers(expModel, next) {
     var expense = req().body;
     if (!Array.isArray(expense.expense_users)) {
         res().json(errors.not_found.user);
+    }else if(expense.expense_users.length === 0){
+        res().json(errors.not_found.user);
     } else {
         var notFoundUser;
         expense.expense_users.forEach(function (user) {
@@ -75,8 +77,9 @@ function extractUsers(expModel, next) {
                 }
             }
             if (errorFound) {
-                res().json(errors.expenses.division_keys);
+                res().json(errors.finance.division_keys);
             } else {
+                expModel.expense_users = expense.expense_users;
                 next(expModel);
             }
         }
