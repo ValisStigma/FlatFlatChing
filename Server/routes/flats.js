@@ -4,6 +4,7 @@ var path = require("path");
 var errors = require(path.resolve("components/errors.js"));
 var userHandler = require(path.resolve("components/user-handler.js"));
 var flats = require(path.resolve("components/db-handler.js")).flats;
+var users = require(path.resolve("components/db-handler.js")).users;
 var uuid = require("uuid");
 
 router.post("/create", userHandler.loggedIn, function (req, res, next) {
@@ -45,7 +46,9 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
                 flat_uuid: uuid.v4()
             }, function (err, flat) {
                 if (!err) {
-                    res.json({flat_uuid: flat.flat_uuid});
+                    users.update({user_email: req.body.user_email}, {$set: {_current_flat: flat.flat_uuid, _is_admin: true}}, function(){
+                        res.json({flat_uuid: flat.flat_uuid});
+                    });
                 }
             });
         }

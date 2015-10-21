@@ -39,15 +39,10 @@ handler.registerUser = function () {
                     });
                 });
             } else {
-                flats.find({"flat_members.user_email": user.user_email}, function (err, flats) {
-                    var flat_uuids = [];
-                    flats.forEach(function (entry) {
-                        flat_uuids.push(entry.flat_uuid);
-                    });
-                    req().session.user_email = user.user_email;
-                    res().json({
-                        flat_uuids: flat_uuids
-                    });
+                var flat_uuids = [user._current_flat];
+                req().session.user_email = user.user_email;
+                res().json({
+                    flat_uuids: flat_uuids
                 });
             }
         }
