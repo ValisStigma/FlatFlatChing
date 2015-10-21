@@ -8,6 +8,7 @@ var uuid = require("uuid");
 var req = require(path.resolve("components/reqres.js")).req;
 var res = require(path.resolve("components/reqres.js")).res;
 var expenses = require(path.resolve("components/db-handler.js")).expenses;
+var users = require(path.resolve("components/db-handler.js")).users;
 
 function ifRequestFlatExists(next) {
     var expense = req().body;
