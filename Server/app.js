@@ -13,6 +13,7 @@ var db = require(path.resolve("components/db-handler.js"));
 var flatRouts = require('./routes/flats');
 var users = require('./routes/users');
 var expenses = require("./routes/expense");
+var getters = require("./routes/getter");
 
 var app = express();
 
@@ -38,6 +39,8 @@ app.use(reqres.registerReqRes);
 app.use('/api', flatRouts);
 app.use('/api', users);
 app.use('/api/expense', expenses);
+app.use('/api/get', getters);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

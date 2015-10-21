@@ -29,10 +29,11 @@ function generateExpenseModel(next) {
     var expense = req().body;
     ifRequestFlatExists(function () {
         if (!expense.expense_name || !expense.expense_end || !expense.expense_amount) {
-
+            console.log(expense.expense_amount, expense.expense_end, expense. expense_name);
             res().json(errors.auth.failed);
         } else {
             next({
+                expense_flat: expense.flat_uuid,
                 expense_uuid: uuid.v4(),
                 expense_name: expense.expense_name,
                 expense_end: expense.expense_end,
