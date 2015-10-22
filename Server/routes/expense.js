@@ -37,6 +37,7 @@ function generateExpenseModel(next) {
                 expense_uuid: uuid.v4(),
                 expense_name: expense.expense_name,
                 expense_end: expense.expense_end,
+                expnese_start: (Date.now() / 1000),
                 expense_amount: expense.expense_amount,
                 expense_users: [],
                 _paybacks: []

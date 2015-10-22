@@ -14,7 +14,40 @@ router.get("/expenses", function (req, res, next) {
             expense_flat: req.query.flat_uuid,
             "expense_users.user_email": req.query.user_email
         }, function (err, found) {
-            res.json(found);
+            if(!Array.isArray(found)){
+                res.json([]);
+            }else {
+                var expenses = [];
+                found.forEach(function(ind, expense){
+                    if(expense.expense_type === "static"){
+                        var paybacktimes = 0;
+                        var oldDate = expense.expense_start;
+                        while(oldDate < (Date.now() / 1000)) {
+                            paybacktimes++;
+                            oldDate += expense.expense_interval;
+                        }
+                        expenses._paybacks.forEach(function(i, payback){
+                            if(payback.payback_user === req.query.user_email){
+                                if(paybacktimes>0){
+                                    expenses.push(expense);
+                                }
+                                paybacktimes--;
+                            }
+                        });
+                    }else{
+                        var foundUser = false;
+                        expense._paybacks.forEach(function(i, payback){
+                            if(payback.payback_user === req.query.user_email){
+                                foundUser = true;
+                            }
+                        });
+                        if(!foundUser){
+                            expenses.push(expense);
+                        }
+                    }
+                });
+                res.json(expenses);
+            }
         })
     });
 });
