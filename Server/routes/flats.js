@@ -46,7 +46,7 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
                 flat_uuid: uuid.v4()
             }, function (err, flat) {
                 if (!err) {
-                    users.update({user_email: req.body.user_email}, {$set: {_current_flat: flat.flat_uuid, _is_admin: true}}, function(){
+                    users.update({user_email: req.body.user_email}, {$set: {_current_flat: flat.flat_uuid, _is_admin: true}}, {}, function(){
                         res.json({flat_uuid: flat.flat_uuid});
                     });
                 }

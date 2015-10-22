@@ -38,7 +38,8 @@ function generateExpenseModel(next) {
                 expense_name: expense.expense_name,
                 expense_end: expense.expense_end,
                 expense_amount: expense.expense_amount,
-                expense_users: []
+                expense_users: [],
+                _paybacks: []
             });
         }
     });
@@ -137,5 +138,30 @@ router.post("/create/variable", userHandler.loggedIn, function (req, res, next) 
     });
 });
 
+function payback(){
+    ifRequestFlatExists(function(){
+        expenses.findOne({expense_uuid: req.body.expense_id}, function(err, found){
+            if(found){
+                found._paybacks.push({
+                    payback_time: (Date.now() / 1000),
+                    payback_user: req.body.user_email
+                });
+                res().json({
+                    "response": "Done!"
+                });
+            }else{
+                res().json(errors.not_found.expense);
+            }
+        });
+    });
+}
+
+router.post("/payback/variable", userHandler.loggedIn, function(req,res,next){
+    payback();
+});
+
+router.post("/payback/variable", userHandler.loggedIn, function(req,res,next){
+    payback();
+});
 
 module.exports = router;
