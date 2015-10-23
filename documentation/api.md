@@ -158,7 +158,7 @@ Der Nutzer erhält darauffolgend eine Benachrichtigung. Über welche er die Einl
 {
 "account_token": "<savedToken>",
 "flat_uuid": "<saved uuid>",
-"user_email": "<email to be invited>"
+"email": "<email to be invited>"
 }
 ```
 
@@ -227,7 +227,7 @@ REquest Object:
 "account_token": "<token>",
 "flat_uuid": "<uuid>",
 "flat_admin_email": "<mail of flat_admin>",
-"user_email": "<email>",
+"email": "<email>",
 "invite_accpet": <boolean true for accept, false for decline>
 }
 ```
@@ -431,6 +431,12 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 }
 
 
+```
+
+```
+{
+"user_email": "<mail>"
+}
 ```
 
 #### RESPONSE JSON Object
