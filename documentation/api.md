@@ -311,7 +311,7 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 ```
 {
 "account_token": "<token>",
-"user_email": "<mail of the promoted>"
+"email": "<mail of the promoted>"
 }
 ```
 
