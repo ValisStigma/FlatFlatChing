@@ -6,6 +6,8 @@ var userHandler = require(path.resolve("components/user-handler.js"));
 var flats = require(path.resolve("components/db-handler.js")).flats;
 var users = require(path.resolve("components/db-handler.js")).users;
 var uuid = require("uuid");
+var getUserExpenses = require(path.resolve("components/flat-handler.js")).getUserExpenses;
+
 
 router.post("/create", userHandler.loggedIn, function (req, res, next) {
     var error = false;
@@ -53,6 +55,36 @@ router.post("/create", userHandler.loggedIn, function (req, res, next) {
             });
         }
     }
+});
+
+
+router.post("/set/admin", userHandler.loggedIn, function (req, res, next) {
+    users.findOne({user_email: req.body.user_email}, function(err, found){
+        if(found){
+            if(found._is_admin){
+                users.update({user_email: req.body.email}, {$set: {_is_admin: true}}, {}, function(){
+                    res.json({
+                        "response": "Done!"
+                    });
+                });
+            }
+        }
+    });
+});
+
+
+router.post("/exit", userHandler.loggedIn, function(req, res, next){
+    getUserExpenses(req.body.flat_uuid, req.body.user_email, function(expenses){
+        if(expenses.length > 0){
+            res.json(errors.finance.open_posts);
+        }else{
+            users.update({user_email: req.body.user_email}, {$set: {_is_admin: false}, $unset: {_current_flat: true}}, {}, function(){
+                res.json({
+                    "response": "good bye :("
+                });
+            });
+        }
+    });
 });
 
 module.exports = router;
