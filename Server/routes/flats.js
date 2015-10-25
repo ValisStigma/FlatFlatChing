@@ -7,6 +7,7 @@ var flats = require(path.resolve("components/db-handler.js")).flats;
 var users = require(path.resolve("components/db-handler.js")).users;
 var uuid = require("uuid");
 var getUserExpenses = require(path.resolve("components/flat-handler.js")).getUserExpenses;
+var ifRequestFlatExists = require(path.resolve("components/flat-handler.js")).ifRequestFlatExists;
 
 
 router.post("/create", userHandler.loggedIn, function (req, res, next) {
@@ -84,6 +85,16 @@ router.post("/exit", userHandler.loggedIn, function(req, res, next){
                 });
             });
         }
+    });
+});
+
+router.post("/invite", userHandler.loggedIn, function(req,res,next){
+    ifRequestFlatExists(req.body.flat_uuid, function(flat){
+        users.update({user_email: req.body.email}, {$set: {_is_admin: false, _current_flat: flat.flat_uuid}}, {}, function(){
+            res.json({
+                "response": "invitation send"
+            });
+        });
     });
 });
 

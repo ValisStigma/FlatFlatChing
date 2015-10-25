@@ -4,6 +4,8 @@ var flats = require(path.resolve("components/db-handler.js")).flats;
 var handler = {};
 var expenses = require(path.resolve("components/db-handler.js")).expenses;
 
+var req = require(path.resolve("components/reqres.js")).req;
+var res = require(path.resolve("components/reqres.js")).res;
 
 
 function ifRequestFlatExists(flat_uuid, next) {
@@ -11,7 +13,7 @@ function ifRequestFlatExists(flat_uuid, next) {
         if (!flat) {
             res().json(errors.not_found.flat);
         } else {
-            next();
+            next(flat);
         }
     });
 }
@@ -29,7 +31,7 @@ function getUserExpenses(flat_uuid, user_email, next){
             next([]);
         }else {
             var expenses = [];
-            found.forEach(function(ind, expense){
+            found.forEach(function(expense){
                 if(expense.expense_type === "static"){
                     var paybacktimes = 0;
                     var oldDate = expense.expense_start;
@@ -37,22 +39,32 @@ function getUserExpenses(flat_uuid, user_email, next){
                         paybacktimes++;
                         oldDate += expense.expense_interval;
                     }
-                    expenses._paybacks.forEach(function(i, payback){
-                        if(payback.payback_user === user_email){
-                            if(paybacktimes>0){
-                                expenses.push(expense);
+                    if(Array.isArray(expense._paybacks)) {
+                        expense._paybacks.forEach(function (payback) {
+                            if (payback.payback_user === user_email) {
+                                if (paybacktimes > 0) {
+                                    expenses.push(expense);
+                                    console.log("pusheda", expense);
+                                }
+                                paybacktimes--;
                             }
-                            paybacktimes--;
-                        }
-                    });
+                        });
+                    }
+                    for(var i = 0; i< paybacktimes; i++){
+                        expenses.push(expense);
+                        console.log("pushedi", expense);
+                    }
                 }else{
                     var foundUser = false;
-                    expense._paybacks.forEach(function(i, payback){
-                        if(payback.payback_user === user_email){
-                            foundUser = true;
-                        }
-                    });
+                    if(Array.isArray(expense._paybacks)) {
+                        expense._paybacks.forEach(function (payback) {
+                            if (payback.payback_user === user_email) {
+                                foundUser = true;
+                            }
+                        });
+                    }
                     if(!foundUser){
+                        console.log("pushedf", expense);
                         expenses.push(expense);
                     }
                 }

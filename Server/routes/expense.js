@@ -40,7 +40,7 @@ function generateExpenseModel(next) {
                 expnese_start: (Date.now() / 1000),
                 expense_amount: expense.expense_amount,
                 expense_users: [],
-                _paybacks: []
+                _paybacks: new Array()
             });
         }
     });
