@@ -42,17 +42,12 @@ function getUserExpenses(flat_uuid, user_email, next){
                     if(Array.isArray(expense._paybacks)) {
                         expense._paybacks.forEach(function (payback) {
                             if (payback.payback_user === user_email) {
-                                if (paybacktimes > 0) {
-                                    expenses.push(expense);
-                                    console.log("pusheda", expense);
-                                }
                                 paybacktimes--;
                             }
                         });
                     }
-                    for(var i = 0; i< paybacktimes; i++){
+                    for(var i = 0; i < paybacktimes; i++){
                         expenses.push(expense);
-                        console.log("pushedi", expense);
                     }
                 }else{
                     var foundUser = false;
@@ -64,7 +59,6 @@ function getUserExpenses(flat_uuid, user_email, next){
                         });
                     }
                     if(!foundUser){
-                        console.log("pushedf", expense);
                         expenses.push(expense);
                     }
                 }

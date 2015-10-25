@@ -37,7 +37,7 @@ function generateExpenseModel(next) {
                 expense_uuid: uuid.v4(),
                 expense_name: expense.expense_name,
                 expense_end: expense.expense_end,
-                expnese_start: (Date.now() / 1000),
+                expense_start: (Date.now() / 1000),
                 expense_amount: expense.expense_amount,
                 expense_users: [],
                 _paybacks: new Array()
@@ -141,17 +141,16 @@ router.post("/create/variable", userHandler.loggedIn, function (req, res, next) 
 
 function payback(){
     ifRequestFlatExists(function(){
-        expenses.findOne({expense_uuid: req().body.expense_id}, function(err, found){
-            if(found){
-                found._paybacks.push({
-                    payback_time: (Date.now() / 1000),
-                    payback_user: req().body.user_email
-                });
+        expenses.update({expense_uuid: req().body.expense_id}, {$push: {_paybacks: {
+            payback_time: (Date.now() / 1000),
+            payback_user: req().body.user_email
+        }}}, {}, function(err, found){
+            if(err || found === 0) {
+                res().json(errors.not_found.expense);
+            }else{
                 res().json({
                     "response": "Done!"
                 });
-            }else{
-                res().json(errors.not_found.expense);
             }
         });
     });
@@ -161,7 +160,7 @@ router.post("/payback/variable", userHandler.loggedIn, function(req,res,next){
     payback();
 });
 
-router.post("/payback/variable", userHandler.loggedIn, function(req,res,next){
+router.post("/payback/static", userHandler.loggedIn, function(req,res,next){
     payback();
 });
 

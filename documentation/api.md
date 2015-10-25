@@ -360,7 +360,7 @@ Wird aufgerufen wenn ein WG-Admin ein anderes WG Mitglied zum Admin machen möch
 "expnese_name": "<name>",
 "expense_amount": <amaount>,
 "expense_end": timestamplong,
-"expense_interval": interval_in_seconds(or not set),
+"expense_interval": interval_in_seconds,
 "expense_users": [<list of user objects below>]
 }
 
