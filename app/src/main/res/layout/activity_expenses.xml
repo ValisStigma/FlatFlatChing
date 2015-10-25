@@ -17,15 +17,54 @@
 <RelativeLayout
     style="@style/backgroundPane"
     >
-
-    <ListView
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/progressBarExpenses"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cardListExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonGoToExpenses"/>
+    <RelativeLayout
+        android:layout_width="@dimen/activity_horizontal_margin"
+        android:layout_height="@dimen/activity_vertical_margin"
+        android:layout_above="@+id/buttonGoToExpenses"
+        android:id="@+id/no_expenses_view"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/no_expenses_message"
+            android:id="@+id/textView2"
+            android:textColor="#555"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="116dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/expense"
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@+id/textView2" />
+    </RelativeLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/newExpenseTitle"
         android:id="@+id/buttonGoToExpenses"
@@ -34,7 +73,7 @@
         android:textColor="@color/white"
         android:background="@color/green"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/listView"
+        android:layout_alignEnd="@+id/cardListExpenses"
         android:layout_alignParentStart="true" />
 
 </RelativeLayout>

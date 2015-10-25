@@ -37,12 +37,11 @@ public class GetFlatMemberInfoTask extends AbstractAsyncTask {
 
     private void persistFlatMemberInfo(String res) throws JSONException, IOException {
         JSONArray response = new JSONArray(res);
-        ArrayList<String> flatMateNames = new ArrayList<>();
+        ArrayList<FlatMate> flatMateNames = new ArrayList<>();
         for (int i = 0; i < response.length(); i++) {
             JSONObject flatMember = response.getJSONObject(i);
             final FlatMate flatMate = new FlatMate(flatMember);
-            activity.persistObject(flatMate.getName(), flatMate);
-            flatMateNames.add(flatMate.getName());
+            flatMateNames.add(flatMate);
         }
         activity.persistObject(BaseActivity.FLAT_MATE_NAMES, flatMateNames);
     }

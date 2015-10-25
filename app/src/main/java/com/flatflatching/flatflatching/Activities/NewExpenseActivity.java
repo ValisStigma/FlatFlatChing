@@ -1,11 +1,15 @@
 package com.flatflatching.flatflatching.activities;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,11 +17,17 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
+import com.flatflatching.flatflatching.adapter.ContributorsAdapter;
+import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.Expense;
+import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.models.StaticExpense;
 import com.flatflatching.flatflatching.models.StaticUserExpense;
 import com.flatflatching.flatflatching.models.VariableExpense;
@@ -29,6 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class NewExpenseActivity extends BaseActivity implements AdapterView.OnItemSelectedListener{
@@ -40,6 +51,10 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
     private EditText dateEditText;
     private DatePickerDialog dueDateDialog;
     private Button createExpenseButton;
+    private RecyclerView contributorsGui;
+    private ProgressBar progressBar;
+    private TextView contributorsTextView;
+    private RelativeLayout noFlatMatesView;
     private BaseActivity self;
     private int currentInterval = StaticExpense.SECONDS_IN_MONTH;
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
@@ -47,29 +62,17 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_new_expense);
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
         setSupportActionBar(toolbar);
-        messageShower = (TextView) findViewById(R.id.messageShower);
-        layoutContainer = (LinearLayout) findViewById(R.id.newExpenseBackgroundContainer);
-        descriptionEditText = (EditText) findViewById(R.id.editTextDescription);
-        amountEditText = (EditText) findViewById(R.id.editTextAmount);
-        dateEditText = (EditText) findViewById(R.id.editTextDueDate);
-        dateEditText.setInputType(InputType.TYPE_NULL);
-        staticExpenseCheckBox = (CheckBox) findViewById(R.id.checkBoxStaticExpense);
-        staticExpenseArea = (LinearLayout) findViewById(R.id.flatAdminExpenseArea);
-        createExpenseButton = (Button) findViewById(R.id.buttonCreateExpense);
+        registerGuiElements();
         setupSpinner();
+        setupContributors();
         createExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Expense expense = parseForm();
-                    registerExpense(expense);
-
-                } catch (IOException e) {
-                    makeToast("Alle Angaben sind zwingend");
-                }
+                processExpense();
             }
         });
         staticExpenseCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -78,11 +81,17 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
                 if(((CheckBox) v).isChecked()) {
                     staticExpenseArea.setVisibility(View.VISIBLE);
                 } else {
-                    staticExpenseArea.setVisibility(View.GONE);
+                    staticExpenseArea.setVisibility(View.INVISIBLE);
                 }
             }
         });
-        self = this;
+        setupDatePicker();
+        checkPreConditions();
+    }
+
+
+
+    private void setupDatePicker() {
         Calendar newCalendar = Calendar.getInstance();
         dueDateDialog = new DatePickerDialog(self, new DatePickerDialog.OnDateSetListener() {
 
@@ -99,7 +108,87 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
                 selectDate();
             }
         });
-        checkPreConditions();
+    }
+
+    private void processExpense() {
+        try {
+            Expense expense = parseForm();
+            setWaitingLayout();
+            List<FlatMate> contributors = parseContributors();
+            registerExpense(expense, contributors);
+
+        } catch (IOException e) {
+            makeSnackbar("Alle Angaben sind zwingend");
+        }
+    }
+
+    private void setupContributors() {
+        List<FlatMate> flatMates = null;
+        try {
+            flatMates = getFlatMates();
+        } catch (IOException|ClassNotFoundException e) {
+            noFlatMatesView.setVisibility(View.VISIBLE);
+            contributorsGui.setVisibility(View.GONE);
+        }
+        if(flatMates != null ) {
+            if(flatMates.size() > 0) {
+                noFlatMatesView.setVisibility(View.GONE);
+                contributorsGui.setVisibility(View.VISIBLE);
+                contributorsGui.setHasFixedSize(true);
+                LinearLayoutManager llm = new LinearLayoutManager(this);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                contributorsGui.setLayoutManager(llm);
+                ContributorsAdapter ca = new ContributorsAdapter(flatMates);
+                contributorsGui.setAdapter(ca);
+            } else if(flatMates.size() > 2) {
+                noFlatMatesView.setVisibility(View.GONE);
+                contributorsGui.setVisibility(View.VISIBLE);
+                contributorsGui.setHasFixedSize(true);
+                LinearLayoutManager llm = new LinearLayoutManager(this);
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                contributorsGui.setLayoutManager(llm);
+                ContributorsAdapter ca = new ContributorsAdapter(flatMates);
+                contributorsGui.setAdapter(ca);
+            }
+        } else {
+            noFlatMatesView.setVisibility(View.VISIBLE);
+            contributorsGui.setVisibility(View.GONE);
+        }
+
+
+    }
+
+    private void registerGuiElements() {
+        messageShower = (TextView) findViewById(R.id.messageShower);
+        layoutContainer = (LinearLayout) findViewById(R.id.newExpenseBackgroundContainer);
+        descriptionEditText = (EditText) findViewById(R.id.editTextDescription);
+        amountEditText = (EditText) findViewById(R.id.editTextAmount);
+        dateEditText = (EditText) findViewById(R.id.editTextDueDate);
+        dateEditText.setInputType(InputType.TYPE_NULL);
+        staticExpenseCheckBox = (CheckBox) findViewById(R.id.checkBoxStaticExpense);
+        staticExpenseArea = (LinearLayout) findViewById(R.id.flatAdminExpenseArea);
+        createExpenseButton = (Button) findViewById(R.id.buttonCreateExpense);
+        contributorsGui = (RecyclerView) findViewById(R.id.cardListContributors);
+        progressBar = (ProgressBar) findViewById(R.id.progressBarCreateExpense);
+        contributorsTextView = (TextView) findViewById(R.id.textViewContributors);
+        noFlatMatesView = (RelativeLayout) findViewById(R.id.no_flat_mates_view);
+        self = this;
+    }
+
+    private List<FlatMate> parseContributors() {
+        ArrayList<FlatMate> flatMates = new ArrayList<>();
+        for(int i = 0; i < contributorsGui.getChildCount(); i++) {
+            View contributorsItem = contributorsGui.getChildAt(i);
+            Switch switcher = (Switch) contributorsItem.findViewById(R.id.switchContributes);
+            if(switcher.isChecked()) {
+                final String flatMateName = ((TextView)contributorsItem.findViewById(R.id.contributorNameTextView)).getText().toString();
+                final String flatMateEmail = ((TextView) contributorsItem.findViewById(R.id.flatMateEmailTextView)).getText().toString();
+                FlatMate flatMate = new FlatMate(flatMateName, flatMateEmail, false);
+                flatMates.add(flatMate);
+            }
+        }
+        flatMates.add(new FlatMate(getUserEmail(), getUserEmail(), false));
+        return flatMates;
     }
 
     private void setupSpinner() {
@@ -111,18 +200,16 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
         spinner.setOnItemSelectedListener(this);
     }
 
-    private void registerExpense(Expense expense) {
+    private void registerExpense(Expense expense, List<FlatMate> contributors) {
         final String flatId = getFlatId();
         if(!flatId.isEmpty()) {
             if (hasConnection()) {
                 switch (expense.getExpenseType()) {
                     case Variable:
-                        ExpenseService.createVariableExpense(self, flatId, (VariableExpense)expense);
+                        registerVariableExpense((VariableExpense) expense, contributors);
                         break;
                     case Static:
-                        StaticExpense staticExpense = (StaticExpense) expense;
-                        staticExpense.addInterval(currentInterval);
-                        ExpenseService.createStaticExpense(self, flatId, (StaticExpense)expense, new ArrayList<StaticUserExpense>());
+                        registerStaticExpense((StaticExpense) expense, contributors);
                         break;
                 }
             } else {
@@ -133,13 +220,35 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
         }
     }
 
-    private void makeToast(final String message) {
-        Snackbar.make(
+    private void registerStaticExpense(StaticExpense expense, List<FlatMate> contributors) {
+        expense.addInterval(currentInterval);
+        ArrayList<StaticUserExpense> staticUserExpenses = new ArrayList<>();
+        double contributorShare = 100.0 / contributors.size();
+        if(contributorShare > 0) {
+            for(FlatMate flatMate:contributors) {
+                staticUserExpenses.add(new StaticUserExpense(flatMate.getEmail(), contributorShare));
+            }
+        }
+        ExpenseService.createStaticExpense(self, getFlatId(), expense, staticUserExpenses);
+    }
+
+    private void registerVariableExpense(VariableExpense expense, List<FlatMate> contributors) {
+        for(FlatMate contributor: contributors) {
+            expense.addContributor(contributor);
+        }
+        String flatId = getFlatId();
+        ExpenseService.createVariableExpense(self, flatId, expense);
+    }
+
+    private void makeSnackbar(final String message) {
+
+        Snackbar snackbar = Snackbar.make(
                 findViewById(android.R.id.content),
                 message,
-                Snackbar.LENGTH_LONG)
-                .show();
+                Snackbar.LENGTH_LONG);
+        SnackBarStyler.alert(snackbar, this).show();
     }
+
     private Expense parseForm() throws IOException {
         final String description = descriptionEditText.getText().toString();
         double amount;
@@ -171,12 +280,18 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
 
     @Override
     public void setWaitingLayout() {
-
+        contributorsGui.setVisibility(View.GONE);
+        staticExpenseArea.setVisibility(View.GONE);
+        contributorsTextView.setVisibility(View.GONE);
+        staticExpenseCheckBox.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void reactToSuccess() {
-
+        Intent intent = new Intent(self, ExpensesActivity.class);
+        intent.putExtra(BaseActivity.INTENT_EXTRAS, BaseActivity.EXPENSE_WAS_CREATED);
+        startActivity(intent);
     }
 
     @Override

@@ -3,6 +3,10 @@ package com.flatflatching.flatflatching.services;
 import com.flatflatching.flatflatching.helpers.ServerConnector;
 import java.io.IOException;
 import com.flatflatching.flatflatching.helpers.ServerConnector.Method;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by rafael on 09.10.2015.
  *
@@ -17,8 +21,8 @@ public final class RequestService {
         return getResponse(serverConnector);
 
     }
-    public static String sendRequestWithData(final Method method, final String requestUrl, final String data) throws IOException {
-        ServerConnector serverConnector = new ServerConnector(requestUrl, data);
+    public static String sendRequestWithData(final Method method, final String requestUrl, final JSONObject data) throws IOException, JSONException {
+        ServerConnector serverConnector = new ServerConnector(requestUrl, data, method);
         return getResponse(serverConnector);
     }
 

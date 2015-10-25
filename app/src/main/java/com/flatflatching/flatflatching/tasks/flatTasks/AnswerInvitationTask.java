@@ -64,11 +64,11 @@ public class AnswerInvitationTask extends AbstractGetAuthTokenTask {
     }
 
     private String answerInvitation(String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getAnswerInvitationRequest(token, flatId, userEmail, adminEmail, accept).toString();
+            params = requestBuilder.getAnswerInvitationRequest(token, flatId, userEmail, adminEmail, accept);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -76,7 +76,7 @@ public class AnswerInvitationTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
-        } catch (IOException e) {
+        } catch (IOException| JSONException e) {
             status = Status.requestFailed;
         }
         return result;

@@ -7,6 +7,8 @@ import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.services.RequestService;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 
@@ -49,9 +51,9 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
             if(jsonObject == null || jsonObject.length == 0) {
                 result = RequestService.sendRequest(this.method, url);
             } else {
-                result = RequestService.sendRequestWithData(this.method, url, jsonObject[0].toString());
+                result = RequestService.sendRequestWithData(this.method, url, jsonObject[0]);
             }
-        } catch(IOException e) {
+        } catch(IOException | JSONException e) {
             status = Status.requestFailed;
         }
         return result;

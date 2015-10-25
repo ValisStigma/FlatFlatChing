@@ -17,9 +17,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 
-/**
- * Created by rafael on 14.10.2015.
- */
 public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
     private String flatId;
     private VariableExpense variableExpense;
@@ -29,6 +26,16 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
         super(activity, activity.getUserEmail());
         this.flatId = flatId;
         this.variableExpense = variableExpense;
+    }
+
+    @Override
+    protected final void onPostExecute(String result)  {
+        super.onPostExecute(result);
+        if(status == Status.okay) {
+            activity.reactToSuccess();
+        } else {
+            activity.notifyError(exceptionMessage);
+        }
     }
 
     @Override
@@ -43,7 +50,7 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     private String registerExpense(final String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
@@ -52,7 +59,7 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
                 userExpenses.put(requestBuilder.getUserEmail(contributor.getName()));
             }
             params = requestBuilder.getCreateVariableExpenseRequest(token,
-                    activity.getUserEmail(), flatId, variableExpense, userExpenses).toString();
+                    activity.getUserEmail(), flatId, variableExpense, userExpenses);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -60,7 +67,7 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, ExpenseService.CREATE_VARIABLE_EXPENSE_URL, params);
-        } catch (IOException e) {
+        } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }
         return result;

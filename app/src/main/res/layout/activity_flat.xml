@@ -7,18 +7,24 @@
     <include
         layout="@layout/tool_bar"
         />
-<LinearLayout
-    style="@style/backgroundPane"
-    >
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/messageShower"
         android:visibility="gone"
         android:textSize="@dimen/button_text_size"/>
+<LinearLayout
+    style="@style/backgroundPane"
+    >
 
 
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarFlatActivity"
+        android:visibility="gone" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

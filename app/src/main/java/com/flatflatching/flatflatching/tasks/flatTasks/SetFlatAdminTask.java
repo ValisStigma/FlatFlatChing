@@ -57,11 +57,11 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
     }
 
     private String setAdminRequest(String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getSetFlatAdminRequest(token, userEmail).toString();
+            params = requestBuilder.getSetFlatAdminRequest(token, userEmail);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -69,7 +69,7 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
-        } catch (IOException e) {
+        } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }
         return result;

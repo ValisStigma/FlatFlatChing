@@ -65,6 +65,7 @@ public final class AuthenticatorService {
         @Override
         protected void handleToken(String token) {
             UserProfileService.fillUserProfile(activity, token);
+
         }
         @Override
         protected void postToken() {

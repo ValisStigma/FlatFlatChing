@@ -14,11 +14,13 @@ import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.InternalStorage;
 import com.flatflatching.flatflatching.models.Flat;
+import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -36,11 +38,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String FLAT = "FLAT";
     public static final String FLAT_MATE_NAMES = "FLAT_MATE_NAMES";
     public static final int FLAT_WAS_CREATED = 8888;
+    public static final int EXPENSE_WAS_CREATED = 9999;
     public static final String INTENT_EXTRAS = "INTENT_EXTRAS";
-    public static final String BASE_URL = "http://192.168.0.106:3000/%s";
+    public static final String BASE_URL = "http://192.168.0.136:3000/%s";
     protected SharedPreferences settings;
-    protected String userName;
-    protected String flatId;
+    private String userName;
     protected ViewGroup layoutContainer;
     protected TextView messageShower;
 
@@ -131,13 +133,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         return myFlat.getName();
     }
 
+    protected final List<FlatMate> getFlatMates() throws IOException, ClassNotFoundException {
+        return (List<FlatMate>) getObject(BaseActivity.FLAT_MATE_NAMES);
+    }
     protected final boolean isFlatMember() {
         String flatId = getFlatId();
-        return !flatId.isEmpty();
+        return !flatId.isEmpty() && !flatId.equals("null");
     }
 
     protected final String getFlatId() {
-        return settings.getString(FLAT_ID, "");
+        final String flatId = settings.getString(FLAT_ID, "");
+        return flatId;
     }
     protected final boolean isAdmin() {
         //TODO:correct implementation
@@ -148,5 +154,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void reactToSuccess();
     public abstract void checkPreConditions();
 
+    public void reactToGet(Object response) {
 
+    }
 }

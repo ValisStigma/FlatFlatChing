@@ -16,4 +16,17 @@
         <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
         <item name="android:orientation">vertical</item>
     </style>
+    <style name="MyDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+    </style>
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">@color/ColorPrimary</item>
+<!--        <item name="android:dayOfWeekBackground">@color/ColorPrimaryDark</item>
+        <item name="android:headerMonthTextAppearance">@color/ColorPrimaryDark</item>
+        <item name="android:headerDayOfMonthTextAppearance">@color/ColorPrimaryDark</item>
+        <item name="android:headerYearTextAppearance">@color/ColorPrimaryDark</item>
+        <item name="android:yearListItemTextAppearance">@color/ColorPrimaryDark</item>
+        <item name="android:yearListSelectorColor">@color/ColorPrimaryDark</item>-->
+    </style>
+
 </resources>

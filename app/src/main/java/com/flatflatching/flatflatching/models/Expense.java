@@ -39,12 +39,12 @@ public abstract class Expense {
         name = jsonExpense.getString("expense_name");
         dueDate = new Date((long) MILLISECONDS_IN_SECONDS * jsonExpense.getInt("expense_end"));
         amount = jsonExpense.getDouble("expense_amount");
-        toPay = jsonExpense.getDouble("expense_user_amount");
+        //toPay = jsonExpense.getDouble("expense_user_amount");
         final JSONArray expenseContributors = jsonExpense.getJSONArray("expense_users");
         for (int j = 0; j < expenseContributors.length(); j++) {
             final JSONObject contributor = expenseContributors.getJSONObject(j);
             final String userEmail = contributor.getString("user_email");
-            contributors.add(new FlatMate(userEmail, false));
+            contributors.add(new FlatMate(userEmail, userEmail, false));
         }
     }
     public Expense(final String name, final Date dueDate, final double amount, final double toPay, final List<FlatMate> contributors) {

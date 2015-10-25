@@ -39,11 +39,11 @@ public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     private String payBackExpense(final String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getPayBackStaticExpenseRequest(token, flatId, expenseId, userEmail).toString();
+            params = requestBuilder.getPayBackStaticExpenseRequest(token, flatId, expenseId, userEmail);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -60,7 +60,7 @@ public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, serverUrl, params);
-        } catch (IOException e) {
+        } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }
         return result;

@@ -56,6 +56,7 @@ public class GetExpensesTask extends AbstractAsyncTask {
             expenseList.add(expense);
 
         }
+        activity.reactToGet(expenseList);
     }
 
 }

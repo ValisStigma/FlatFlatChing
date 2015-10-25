@@ -69,11 +69,11 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
     }
 
     private String registerFlat(final String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getCreateFlatRequest(token,activity.getUserEmail(), flat).toString();
+            params = requestBuilder.getCreateFlatRequest(token, activity.getUserEmail(), flat);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -81,7 +81,7 @@ public class CreateFlatTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, createFlatUrl, params);
-        } catch (IOException e) {
+        } catch (IOException|JSONException e) {
             status = Status.requestFailed;
             return result;
         }

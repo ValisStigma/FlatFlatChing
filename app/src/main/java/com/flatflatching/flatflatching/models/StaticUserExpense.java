@@ -10,7 +10,7 @@ public final class StaticUserExpense {
     private final double divisionKey;
     private static final double LOWER_BOUND = 0;
     private static final double UPPER_BOUND = 100;
-    StaticUserExpense(final String email, final double divisionKey) {
+    public StaticUserExpense(final String email, final double divisionKey) {
         Objects.requireNonNull(email);
         if(divisionKey < LOWER_BOUND || divisionKey > UPPER_BOUND) {
             throw new IllegalArgumentException("Divisionkey must be between 0 and 100");

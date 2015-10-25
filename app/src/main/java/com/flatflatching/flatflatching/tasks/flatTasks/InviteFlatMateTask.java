@@ -18,11 +18,13 @@ import java.io.IOException;
 public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
     private final String flatId;
     private final String email;
+    private final String inviteUrl;
 
     public InviteFlatMateTask(BaseActivity activity, String url, String flatId, String email) {
-        super(activity, url);
+        super(activity, activity.getUserEmail());
         this.flatId = flatId;
         this.email = email;
+        this.inviteUrl = url;
     }
 
     @Override
@@ -62,18 +64,18 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
     }
 
     private String inviteFlatMate(final String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getInvitationRequest(token, flatId, email).toString();
+            params = requestBuilder.getInvitationRequest(token, flatId, email);
         } catch (JSONException e) {
             status = Status.requestFailed;
             return result;
         }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
-        } catch (IOException e) {
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, inviteUrl, params);
+        } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }
         return result;

@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
+import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.Address;
 import com.flatflatching.flatflatching.models.Flat;
 import com.flatflatching.flatflatching.services.FlatService;
@@ -79,8 +80,8 @@ public final class CreateFlatActivity extends BaseActivity {
         try {
             flat = parseFlat();
         } catch(IOException e) {
-            Snackbar.make(findViewById(android.R.id.content), "Gib der WG einen Namen", Snackbar.LENGTH_LONG)
-                    .show();
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.error_no_name, Snackbar.LENGTH_LONG);
+            SnackBarStyler.alert(snackbar, this).show();
             return;
         }
         registerFlat(flat);

@@ -39,7 +39,7 @@ public final class ExpenseService {
         new CreateVariableExpenseTask(activity, flatId, variableExpense).execute();
     }
 
-    public static void getFlatInfo(BaseActivity activity, String flatId, String userEmail) {
+    public static void getExpenses(BaseActivity activity, String flatId, String userEmail) {
         try {
             JSONObject params = requestBuilder.getExpensesRequest(flatId, userEmail);
             new GetExpensesTask(activity, GET_EXPENSES_URL).execute(params);

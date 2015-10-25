@@ -42,6 +42,14 @@
     <string name="titlePeriod">Intervall</string>
     <string name="createTitle">Erfassen</string>
     <string name="newExpenseTitle">Neue Ausgabe</string>
+    <string name="error_no_name">Gib der WG einen Namen</string>
+    <string name="alert_flat_created">WG wurde erstellt</string>
+    <string name="error_invalid_email">Ungültige Emailadresse</string>
+    <string name="contributes_title">Beteiligt</string>
+    <string name="contributorsTitle">Beteiligte</string>
+    <string name="expense_created_message">Ausgabe erfasst</string>
+    <string name="no_expenses_message">Du hast anscheinend alle Ausgaben getätigt! Oder noch nicht alle erfasst?</string>
+    <string name="no_flatmates">Du hast leider noch keine Mitbewohner</string>
     <string-array name="interval_array">
         <item>Täglich</item>
         <item>Wöchentlich</item>

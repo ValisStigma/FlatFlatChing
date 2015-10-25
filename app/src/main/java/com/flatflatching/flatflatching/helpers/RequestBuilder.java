@@ -66,7 +66,7 @@ public final class RequestBuilder {
         final JSONObject requestParams = new JSONObject();
         requestParams.put(ACCOUNT_TOKEN, accountToken);
         requestParams.put(FLAT_ID, flatId);
-        requestParams.put(USER_EMAIL, userEmail);
+        requestParams.put("email", userEmail);
         return requestParams;
     }
 
@@ -109,7 +109,9 @@ public final class RequestBuilder {
         requestParams.put("expense_name", variableExpense.getName());
         requestParams.put("expense_amount", variableExpense.getAmount());
         requestParams.put("expense_end", variableExpense.getDueDateTimeStamp());
-        requestParams.put("expense_users", expenseUsers);
+        if(expenseUsers.length() > 0) {
+            requestParams.put("expense_users", expenseUsers);
+        }
         return requestParams;
     }
     public JSONObject getCreateStaticExpenseRequest(final String token, final String flatId,

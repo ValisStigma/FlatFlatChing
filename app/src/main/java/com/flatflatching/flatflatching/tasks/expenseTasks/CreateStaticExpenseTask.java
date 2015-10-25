@@ -31,6 +31,16 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     @Override
+    protected final void onPostExecute(String result)  {
+        super.onPostExecute(result);
+        if(status == Status.okay) {
+            activity.reactToSuccess();
+        } else {
+            activity.notifyError(exceptionMessage);
+        }
+    }
+
+    @Override
     protected final void handleToken(final String token) {
         String response = registerExpense(token);
         handleExpenseResponse(response);
@@ -71,7 +81,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
     }
 
     private String registerExpense(final String token) {
-        String params;
+        JSONObject params;
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
@@ -80,7 +90,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
                 userExpenses.put(requestBuilder.getStaticUserObject(expense.getEmail(), expense.getDivisionKey()));
             }
             params = requestBuilder.getCreateStaticExpenseRequest(token, flatId, activity.getUserEmail(),
-                    staticExpense, userExpenses).toString();
+                    staticExpense, userExpenses);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
@@ -88,7 +98,7 @@ public class CreateStaticExpenseTask extends AbstractGetAuthTokenTask {
         }
         try {
             result = RequestService.sendRequestWithData(ServerConnector.Method.POST, ExpenseService.CREATE_STATIC_EXPENSE_URL, params);
-        } catch (IOException e) {
+        } catch (IOException| JSONException e) {
             status = Status.requestFailed;
         }
         return result;
