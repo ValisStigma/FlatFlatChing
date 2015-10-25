@@ -8,11 +8,8 @@
         layout="@layout/tool_bar"
         />
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/messageShower"
-        android:visibility="gone"
-        android:textSize="@dimen/button_text_size"/>
+        style="@style/messageShower"
+        android:id="@+id/messageShower"/>
 
 <RelativeLayout
     style="@style/backgroundPane"

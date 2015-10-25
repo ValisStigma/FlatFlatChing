@@ -61,12 +61,13 @@ public final class RequestBuilder {
     }
 
     public JSONObject getInvitationRequest(final String accountToken,
-                                           final String flatId, final String userEmail) throws JSONException {
+                                           final String flatId, final String inviteEmail, final String userEmail) throws JSONException {
 
         final JSONObject requestParams = new JSONObject();
         requestParams.put(ACCOUNT_TOKEN, accountToken);
         requestParams.put(FLAT_ID, flatId);
-        requestParams.put("email", userEmail);
+        requestParams.put("email", inviteEmail);
+        requestParams.put(USER_EMAIL, userEmail);
         return requestParams;
     }
 

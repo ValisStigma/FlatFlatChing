@@ -141,11 +141,11 @@ router.post("/create/variable", userHandler.loggedIn, function (req, res, next) 
 
 function payback(){
     ifRequestFlatExists(function(){
-        expenses.findOne({expense_uuid: req.body.expense_id}, function(err, found){
+        expenses.findOne({expense_uuid: req().body.expense_id}, function(err, found){
             if(found){
                 found._paybacks.push({
                     payback_time: (Date.now() / 1000),
-                    payback_user: req.body.user_email
+                    payback_user: req().body.user_email
                 });
                 res().json({
                     "response": "Done!"

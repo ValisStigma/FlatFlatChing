@@ -62,10 +62,7 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_new_expense);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-        setSupportActionBar(toolbar);
+         setContentView(R.layout.activity_new_expense);
         registerGuiElements();
         setupSpinner();
         setupContributors();

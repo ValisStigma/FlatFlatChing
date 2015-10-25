@@ -4,13 +4,14 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by rafael on 28.09.2015.
  */
-public final class Flat {
+public final class Flat implements Serializable{
     private List<FlatMate> inhabitants = new ArrayList<>();
     private String name;
     private Address address;

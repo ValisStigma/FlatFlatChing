@@ -15,12 +15,26 @@ import java.io.IOException;
 /**
  * Created by rafael on 13.10.2015.
  */
-public class DeleteFlatTask extends AbstractGetAuthTokenTask {
+public class exitFlatTask extends AbstractGetAuthTokenTask {
     private String flatId;
+    private String userEmailToDelete;
+    private String deleteFlatUrl;
 
-    public DeleteFlatTask(BaseActivity activity, String flatId, String deleteFlatUrl) {
-        super(activity, deleteFlatUrl);
+    public exitFlatTask(BaseActivity activity, String flatId, String deleteFlatUrl, String userEmailToDelete) {
+        super(activity, activity.getUserEmail());
         this.flatId = flatId;
+        this.deleteFlatUrl = deleteFlatUrl;
+        this.userEmailToDelete = userEmailToDelete;
+    }
+
+    @Override
+    protected final void onPostExecute(String result) {
+        super.onPostExecute(result);
+        if (status == Status.requestFailed || result.isEmpty()) {
+            reactToError();
+        } else {
+            activity.checkPreConditions();
+        }
     }
 
     @Override
@@ -69,14 +83,14 @@ public class DeleteFlatTask extends AbstractGetAuthTokenTask {
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getDeleteFlatRequest(token, flatId, activity.getUserEmail());
+            params = requestBuilder.getDeleteFlatRequest(token, flatId, userEmailToDelete);
 
         } catch (JSONException e) {
             status = Status.requestFailed;
             return result;
         }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, deleteFlatUrl, params);
         } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }

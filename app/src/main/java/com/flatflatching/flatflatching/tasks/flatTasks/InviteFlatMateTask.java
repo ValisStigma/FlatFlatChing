@@ -68,7 +68,7 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
         String result = "";
         RequestBuilder requestBuilder = new RequestBuilder();
         try {
-            params = requestBuilder.getInvitationRequest(token, flatId, email);
+            params = requestBuilder.getInvitationRequest(token, flatId, email, activity.getUserEmail());
         } catch (JSONException e) {
             status = Status.requestFailed;
             return result;
@@ -86,6 +86,8 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
         super.onPostExecute(result);
         if (status == Status.requestFailed) {
             reactToError();
+        } else {
+            activity.reactToSuccess();
         }
     }
 }

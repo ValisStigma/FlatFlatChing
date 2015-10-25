@@ -48,9 +48,6 @@ public final class FlatActivity extends BaseActivity {
         flatMateButtonLayout = findViewById(R.id.layoutFlatMatesButton);
         createFlatButtonLayout = findViewById(R.id.layoutCreateFlatButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBarFlatActivity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-        setSupportActionBar(toolbar);
-
         shoppingListButtonLayout.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.GONE);
         flatMateButtonLayout.setVisibility(View.GONE);
@@ -98,6 +95,7 @@ public final class FlatActivity extends BaseActivity {
             switch (code) {
                 case BaseActivity.FLAT_WAS_CREATED:
                     notifyFlatCreation();
+                    FlatService.setAdmin(this, getUserEmail());
                 break;
             }
         }
@@ -137,7 +135,7 @@ public final class FlatActivity extends BaseActivity {
             reactToSuccess();
             FlatService.getFlatInfo(this, getFlatId());
             expenseButtonLayout.setVisibility(View.VISIBLE);
-            shoppingListButtonLayout.setVisibility(View.VISIBLE);
+            //shoppingListButtonLayout.setVisibility(View.VISIBLE);
             if(isAdmin()) {
                 flatMateButtonLayout.setVisibility(View.VISIBLE);
             }
@@ -208,7 +206,7 @@ public final class FlatActivity extends BaseActivity {
         SnackBarStyler.confirm(snackbar, this).show();
         messageShower.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.VISIBLE);
-        shoppingListButtonLayout.setVisibility(View.VISIBLE);
+        //shoppingListButtonLayout.setVisibility(View.VISIBLE);
         if(isAdmin()) {
             flatMateButtonLayout.setVisibility(View.VISIBLE);
         }

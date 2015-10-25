@@ -10,14 +10,9 @@
         layout="@layout/tool_bar"
         />
     <TextView
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/server_error"
+        style="@style/messageShower"
         android:id="@+id/textViewMessageHolder"
-        android:visibility="gone"/>
+    />
 <RelativeLayout
     style="@style/backgroundPane">
 

@@ -10,6 +10,10 @@
         layout="@layout/tool_bar"
         />
 
+    <TextView
+        style="@style/messageShower"
+        android:id="@+id/messageShower"
+        />
 
 <RelativeLayout
     style="@style/backgroundPane"
@@ -21,14 +25,14 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/linearLayout4"/>
+        android:layout_above="@+id/linearLayoutInvitation"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/no_flat_mates_view"
         android:visibility="gone"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/linearLayout4">
+        android:layout_above="@+id/linearLayoutInvitation">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,16 +52,23 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"/>
     </RelativeLayout>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cardListContributors"
+        android:id="@+id/progressBarInvitation"
+        android:visibility="gone"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayoutInvitation"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/newFlatMateTitle"
@@ -81,7 +92,8 @@
             android:id="@+id/editTextFlatMateEmail"
             android:hint="@string/email_title"
             android:layout_weight="0.80"
-            android:imeOptions="actionDone"/>
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <Button
             android:layout_width="match_parent"

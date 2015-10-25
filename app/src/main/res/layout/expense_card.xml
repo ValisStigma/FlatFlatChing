@@ -47,7 +47,12 @@
             android:layout_width="@dimen/activity_vertical_margin"
             android:layout_height="@dimen/activity_vertical_margin"
             android:visibility="gone"
-            android:id="@+id/amount_whole"/>
+            android:id="@+id/expense_id"/>
+        <TextView
+            android:layout_width="@dimen/activity_vertical_margin"
+            android:layout_height="@dimen/activity_vertical_margin"
+            android:visibility="gone"
+            android:id="@+id/expense_type"/>
 
     </LinearLayout>
 </android.support.v7.widget.CardView>

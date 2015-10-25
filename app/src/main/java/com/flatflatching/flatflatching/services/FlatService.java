@@ -6,7 +6,7 @@ import com.flatflatching.flatflatching.helpers.RequestBuilder;
 import com.flatflatching.flatflatching.models.Flat;
 import com.flatflatching.flatflatching.tasks.flatTasks.AnswerInvitationTask;
 import com.flatflatching.flatflatching.tasks.flatTasks.CreateFlatTask;
-import com.flatflatching.flatflatching.tasks.flatTasks.DeleteFlatTask;
+import com.flatflatching.flatflatching.tasks.flatTasks.exitFlatTask;
 import com.flatflatching.flatflatching.tasks.flatTasks.GetFlatMemberInfoTask;
 import com.flatflatching.flatflatching.tasks.flatTasks.GetFlatInfoTask;
 import com.flatflatching.flatflatching.tasks.flatTasks.InviteFlatMateTask;
@@ -62,8 +62,8 @@ public final class FlatService {
         new SetFlatAdminTask(activity, SET_FLAT_ADMIN_URL, userEmail).execute();
     }
 
-    public static void deleteFlat(BaseActivity activity, String flatId) {
-        new DeleteFlatTask(activity, flatId, DELETE_FLAT_URL).execute();
+    public static void exitFlat(BaseActivity activity, String flatId, String userEmailToDelete) {
+        new exitFlatTask(activity, flatId, DELETE_FLAT_URL, userEmailToDelete).execute();
     }
 
     public static void answerInvitation(BaseActivity activity, String userEmail, String flatAdminEmail, String flatId, boolean accept)  {

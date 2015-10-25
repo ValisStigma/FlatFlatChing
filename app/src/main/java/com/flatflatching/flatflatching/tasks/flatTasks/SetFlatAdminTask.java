@@ -17,10 +17,12 @@ import java.io.IOException;
  */
 public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
     private final String userEmail;
+    private final String setAdminUrl;
 
     public SetFlatAdminTask(BaseActivity activity, final String url, final String userEmail) {
-        super(activity, url);
+        super(activity, userEmail);
         this.userEmail = userEmail;
+        this.setAdminUrl = url;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
         try {
             res = new JSONObject(response);
             String state = res.getString("response");
-            if (state.equals("Done")) {
+            if (state.equals("Done!")) {
                 status = Status.okay;
             } else {
                 status = Status.requestFailed;
@@ -68,7 +70,7 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
             return result;
         }
         try {
-            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, url, params);
+            result = RequestService.sendRequestWithData(ServerConnector.Method.POST, setAdminUrl, params);
         } catch (IOException|JSONException e) {
             status = Status.requestFailed;
         }

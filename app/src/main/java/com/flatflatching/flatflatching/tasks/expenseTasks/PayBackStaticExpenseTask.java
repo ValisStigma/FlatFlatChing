@@ -27,6 +27,17 @@ public class PayBackStaticExpenseTask extends AbstractGetAuthTokenTask {
         this.expenseType = expenseType;
     }
 
+
+    @Override
+    protected final void onPostExecute(String result) {
+        super.onPostExecute(result);
+        if (status == Status.requestFailed || result.isEmpty()) {
+            reactToError();
+        } else {
+            activity.checkPreConditions();
+        }
+    }
+
     @Override
     protected final void handleToken(String token) {
         String response = payBackExpense(token);

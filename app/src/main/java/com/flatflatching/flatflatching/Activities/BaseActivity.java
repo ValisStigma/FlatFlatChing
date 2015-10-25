@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +87,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
+        setSupportActionBar(toolbar);
+        try {
+            toolbar.setTitle(getFlatName());
+        } catch (IOException|ClassNotFoundException e) {
+            toolbar.setTitle(R.string.flatName);
+        }
+    }
+    @Override
     protected void onCreate(final Bundle savedState) {
         super.onCreate(savedState);
+
+
 
         settings = getSharedPreferences(PREFERENCES, 0);
     }

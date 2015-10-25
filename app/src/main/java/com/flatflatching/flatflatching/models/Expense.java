@@ -26,6 +26,7 @@ public abstract class Expense {
     private List<FlatMate> contributors = new ArrayList<>();
     private Date dueDate;
     private double toPay;
+    private String id;
     private boolean outstanding = true;
 
     public Expense(final String name, final double amount, final Date dueDate) {
@@ -39,6 +40,7 @@ public abstract class Expense {
         name = jsonExpense.getString("expense_name");
         dueDate = new Date((long) MILLISECONDS_IN_SECONDS * jsonExpense.getInt("expense_end"));
         amount = jsonExpense.getDouble("expense_amount");
+        id = jsonExpense.getString("expense_uuid");
         //toPay = jsonExpense.getDouble("expense_user_amount");
         final JSONArray expenseContributors = jsonExpense.getJSONArray("expense_users");
         for (int j = 0; j < expenseContributors.length(); j++) {
@@ -104,5 +106,8 @@ public abstract class Expense {
 
     public final double getToPay() {
         return toPay;
+    }
+    public final String getId() {
+        return id;
     }
 }

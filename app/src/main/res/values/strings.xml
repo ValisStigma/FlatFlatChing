@@ -50,6 +50,10 @@
     <string name="expense_created_message">Ausgabe erfasst</string>
     <string name="no_expenses_message">Du hast anscheinend alle Ausgaben getätigt! Oder noch nicht alle erfasst?</string>
     <string name="no_flatmates">Du hast leider noch keine Mitbewohner</string>
+    <string name="invitation_sent">Einladung verschickt</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete_user_confirmation">Bist du sicher, dass du diesen Mitbewohner löschen willst?</string>
+    <string name="flatName">FlatFlatChing</string>
     <string-array name="interval_array">
         <item>Täglich</item>
         <item>Wöchentlich</item>

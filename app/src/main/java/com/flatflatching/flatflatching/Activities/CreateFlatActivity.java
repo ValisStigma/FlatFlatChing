@@ -43,8 +43,6 @@ public final class CreateFlatActivity extends BaseActivity {
         cityEditText = (EditText) findViewById(R.id.editTextCityName);
         postCodeEditText = (EditText) findViewById(R.id.editTextPostCode);
         messageShower = (TextView) findViewById(R.id.textViewMessageHolder);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-        setSupportActionBar(toolbar);
         progressBar = (ProgressBar) findViewById(R.id.progressBarCreateFlat);
         createFlatButton = (Button) findViewById(R.id.buttonCreateFlat);
         createFlatButton.setOnClickListener(new View.OnClickListener() {

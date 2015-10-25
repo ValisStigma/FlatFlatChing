@@ -9,12 +9,8 @@
         />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/titleAmount"
-        android:id="@+id/messageShower"
-        android:visibility="gone"/>
+        style="@style/messageShower"
+        android:id="@+id/messageShower"/>
     <RelativeLayout
         style="@style/backgroundPane"
         android:fitsSystemWindows="true"

@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -24,6 +25,8 @@ import com.flatflatching.flatflatching.models.Expense;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.ExpenseService;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,19 +37,19 @@ public final class ExpensesActivity extends BaseActivity {
     private ProgressBar progressBar;
     private RecyclerView cardListExpenses;
     private RelativeLayout noExpenseView;
+    private BaseActivity self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-        setSupportActionBar(toolbar);
         messageShower = (TextView) findViewById(R.id.messageShower);
         layoutContainer = (LinearLayout) findViewById(R.id.expensesBackgroundLayout);
         progressBar = (ProgressBar) findViewById(R.id.progressBarExpenses);
         cardListExpenses = (RecyclerView) findViewById(R.id.cardListExpenses);
         noExpenseView = (RelativeLayout) findViewById(R.id.no_expenses_view);
         Button goToNewExpenseButton = (Button) findViewById(R.id.buttonGoToExpenses);
+        self = this;
         final Activity self = this;
         goToNewExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,8 +86,8 @@ public final class ExpensesActivity extends BaseActivity {
 
     @Override
     public void setWaitingLayout() {
-        //progressBar.setVisibility(View.VISIBLE);
-        //cardListExpenses.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        cardListExpenses.setVisibility(View.GONE);
     }
 
     @Override
@@ -142,11 +145,43 @@ public final class ExpensesActivity extends BaseActivity {
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             cardListExpenses.setLayoutManager(llm);
-            ExpensesAdapter ea = new ExpensesAdapter(expenses);
+            ExpensesAdapter ea = new ExpensesAdapter(expenses, payExpense(), showExpense());
             cardListExpenses.setAdapter(ea);
             progressBar.setVisibility(View.GONE);
             cardListExpenses.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public View.OnClickListener payExpense() {
+        return  new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View expenseCard = (View)v.getParent();
+                TextView idText = (TextView) expenseCard.findViewById(R.id.expense_id);
+                String id = idText.getText().toString();
+                TextView typeText = (TextView) expenseCard.findViewById(R.id.expense_type);
+                switch (typeText.getText().toString()) {
+                    case "Variable":
+                        setWaitingLayout();
+                        ExpenseService.payBackStaticExpense(self, getFlatId(), id, getUserEmail(), Expense.ExpenseType.Variable);
+                        break;
+                    case "Static":
+                        setWaitingLayout();
+                        ExpenseService.payBackStaticExpense(self, getFlatId(), id, getUserEmail(), Expense.ExpenseType.Static);
+                        break;
+                }
+
+            }
+        };
+    }
+
+    public View.OnClickListener showExpense() {
+        return  new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        };
     }
 }

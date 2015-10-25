@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view_flatmates"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    card_view:cardCornerRadius="0dp"
+    android:layout_marginBottom="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:weightSum="1"
+        android:background="@color/ColorPrimaryDark"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:id="@+id/contributorNameTextView"
+            android:layout_height="20dp"
+            android:layout_width="0dp"
+            android:text="Flatmatename"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_weight="0.70"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/userEmailTextView"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/flatMateEmailTextView"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:id="@+id/deleteIcon"
+            android:src="@drawable/delete"
+            android:layout_weight="0.30"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>
