@@ -53,6 +53,9 @@ public final class CreateFlatActivity extends BaseActivity {
                 }
             }
         );
+        setupNavigation();
+
+        customizeNavigation();
     }
 
     @Override

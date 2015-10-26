@@ -56,9 +56,13 @@ public abstract class AbstractAsyncTask extends AsyncTask<JSONObject, Void, Stri
         } catch(IOException | JSONException e) {
             status = Status.requestFailed;
         }
+        handleResponse(result);
         return result;
     }
 
+    protected void handleResponse(String response) {
+
+    }
     protected final void reactToError() {
         final ViewGroup layoutContainer = activity.getLayoutContainer();
         for (int i = 0; i < layoutContainer.getChildCount(); i++) {

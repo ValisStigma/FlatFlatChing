@@ -82,6 +82,9 @@ public final class FlatActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+        setupNavigation();
+
+        customizeNavigation();
         saveFlatMates();
         checkPreConditions();
     }
@@ -106,6 +109,8 @@ public final class FlatActivity extends BaseActivity {
         setWaitingLayout();
         if(isAuthenticated()) {
             AuthenticatorService.register(self, getUserEmail());
+            AuthenticatorService.getAuth(self, getUserEmail());
+
             checkForFlat();
         } else {
             tryAuthenticate();

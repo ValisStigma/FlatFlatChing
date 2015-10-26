@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/expensesDrawerItem"
+            android:checked="false"
+            android:icon="@drawable/expense"
+            android:title="@string/expensesTitle" />
+
+        <item
+            android:id="@+id/flatmatesDrawerItem"
+            android:checked="false"
+            android:icon="@drawable/flatmates"
+            android:title="@string/flatMateTitle" />
+
+        <item
+            android:id="@+id/leaveFlatDrawerItem"
+            android:checked="false"
+            android:icon="@drawable/delete"
+            android:title="@string/leaveWgTitle" />
+
+    </group>
+</menu>

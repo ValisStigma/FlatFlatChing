@@ -1,30 +1,23 @@
-package com.flatflatching.flatflatching.activities;
+/*
+package com.flatflatching.flatflatching.fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.InternalStorage;
-import com.flatflatching.flatflatching.helpers.SerialBitmap;
-import com.flatflatching.flatflatching.helpers.SnackBarStyler;
-import com.flatflatching.flatflatching.models.Expense;
 import com.flatflatching.flatflatching.models.Flat;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
@@ -34,14 +27,19 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import java.io.IOException;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+*/
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link BaseFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link BaseFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ *//*
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseFragment extends Fragment {
 
-    private Toolbar toolbar;
-    private BaseActivity self;
-    private NavigationView navigationView;
-    private DrawerLayout drawerLayout;
+
     public static final String PREFERENCES = "local_preferences";
     public static final String FLAT_ID = "FLAT_ID";
     public static final String USER_NAME = "USER_NAME";
@@ -58,12 +56,76 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int FLAT_WAS_CREATED = 8888;
     public static final int EXPENSE_WAS_CREATED = 9999;
     public static final String INTENT_EXTRAS = "INTENT_EXTRAS";
-    public static final String BASE_URL = "http://152.96.236.13:3000/%s";
-    public static final String PROFILE_BITMAP = "PROFILE_BITMAP";
+    public static final String BASE_URL = "http://192.168.0.136:3000/%s";
     protected SharedPreferences settings;
     private String userName;
     protected ViewGroup layoutContainer;
     protected TextView messageShower;
+    private OnFragmentInteractionListener mListener;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        settings = getSharedPreferences(PREFERENCES, 0);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_base, container, false);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    */
+/**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     *//*
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+
+
+
+
+
+
+
+
 
     public final ViewGroup getLayoutContainer() {
         return layoutContainer;
@@ -76,6 +138,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -104,96 +169,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
+        setSupportActionBar(toolbar);
         try {
-            if(toolbar == null) {
-                toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-
-            }
             toolbar.setTitle(getFlatName());
-        } catch (IOException|ClassNotFoundException e) {
+        } catch (IOException |ClassNotFoundException e) {
             toolbar.setTitle(R.string.flatName);
         }
-
     }
     @Override
     protected void onCreate(final Bundle savedState) {
         super.onCreate(savedState);
-        self = this;
-        settings = getSharedPreferences(PREFERENCES, 0);
 
     }
 
-    void customizeNavigation() {
-        TextView userName = (TextView) findViewById(R.id.usernameHeader);
-        if(userName != null) {
-            userName.setText(getUserName());
-        }
-        CircleImageView circleImageView = (CircleImageView) findViewById(R.id.profile_image);
-        try {
-            if(circleImageView != null){
-                circleImageView.setImageBitmap(getProfileImage());
-            }
-        } catch (IOException|ClassNotFoundException e) {
-            Log.d("parse_error", "unable to find image");
-        }
-    }
-
-    void setupNavigation() {
-        toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
-        setSupportActionBar(toolbar);
-
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                if(menuItem.isChecked()){
-                    menuItem.setChecked(false);
-                }
-                else {
-                    menuItem.setChecked(true);
-                }
-                drawerLayout.closeDrawers();
-                switch (menuItem.getItemId()){
-                    case R.id.expensesDrawerItem:
-                        Intent intent = new Intent(self, ExpensesActivity.class);
-                        startActivity(intent);
-                        return true;
-                    case R.id.flatmatesDrawerItem:
-                        Intent intent2 = new Intent(self, ManageFlatMatesActivity.class);
-                        startActivity(intent2);
-                        return true;
-                    case R.id.leaveFlatDrawerItem:
-                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
-                        return true;
-                    default:
-                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.internal_error, Snackbar.LENGTH_LONG);
-                        SnackBarStyler.confirm(snackbar, self).show();
-                        messageShower.setVisibility(View.GONE);
-                        return true;
-                }
-            }
-        });
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawer_open, R.string.drawer_close){
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                customizeNavigation();
-            }
-        };
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-    }
-
-    /**Tests if the activity gets internet connection.
+    */
+/**Tests if the activity gets internet connection.
      * @return Boolean if connection is available
-     */
+     *//*
+
     public final boolean hasConnection() {
         final ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -228,12 +222,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected final String getFlatName() throws IOException, ClassNotFoundException {
-        Flat myFlat =(Flat)getObject(BaseActivity.FLAT);
+        Flat myFlat =(Flat)getObject(BaseFragment.FLAT);
         return myFlat.getName();
     }
 
     protected final List<FlatMate> getFlatMates() throws IOException, ClassNotFoundException {
-        return (List<FlatMate>) getObject(BaseActivity.FLAT_MATE_NAMES);
+        return (List<FlatMate>) getObject(BaseFragment.FLAT_MATE_NAMES);
     }
     protected final boolean isFlatMember() {
         String flatId = getFlatId();
@@ -249,15 +243,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    protected final String getUserName() {
-        final String userName = settings.getString(USER_NAME_GIVEN, "Superman");
-        return userName;
-    }
-
-    protected final Bitmap getProfileImage() throws IOException, ClassNotFoundException {
-        Bitmap profileImage = ((SerialBitmap) getObject(BaseActivity.PROFILE_BITMAP)).getImage();
-        return profileImage;
-    }
     public abstract void setWaitingLayout();
     public abstract void reactToSuccess();
     public abstract void checkPreConditions();
@@ -266,3 +251,4 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 }
+*/

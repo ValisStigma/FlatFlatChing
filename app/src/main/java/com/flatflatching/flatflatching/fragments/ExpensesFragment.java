@@ -1,16 +1,19 @@
-package com.flatflatching.flatflatching.activities;
+/*
+package com.flatflatching.flatflatching.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -18,31 +21,37 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
-import com.flatflatching.flatflatching.adapter.ContributorsAdapter;
+import com.flatflatching.flatflatching.activities.BaseActivity;
+import com.flatflatching.flatflatching.activities.NewExpenseActivity;
 import com.flatflatching.flatflatching.adapter.ExpensesAdapter;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.Expense;
-import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.ExpenseService;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public final class ExpensesActivity extends BaseActivity {
+public class ExpensesFragment extends Fragment {
 
-    private boolean mTwoPane;
-    private ProgressBar progressBar;
-    private RecyclerView cardListExpenses;
-    private RelativeLayout noExpenseView;
-    private BaseActivity self;
+
+    private OnFragmentInteractionListener mListener;
+
+
+    public ExpensesFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expenses);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_expenses, container, false);
+
         messageShower = (TextView) findViewById(R.id.messageShower);
         layoutContainer = (LinearLayout) findViewById(R.id.expensesBackgroundLayout);
         progressBar = (ProgressBar) findViewById(R.id.progressBarExpenses);
@@ -61,13 +70,60 @@ public final class ExpensesActivity extends BaseActivity {
         });
         setWaitingLayout();
         checkPreConditions();
+*/
 /*        if (findViewById(R.id.expense_detail_container) != null) {
 
             mTwoPane = true;
 
             ((ExpenseListFragment) getSupportFragmentManager().findFragmentById(
                     R.id.expense_list)).setActivateOnItemClick(true);
-        }*/
+        }*//*
+
+        return view;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+
+
+
+    private boolean mTwoPane;
+    private ProgressBar progressBar;
+    private RecyclerView cardListExpenses;
+    private RelativeLayout noExpenseView;
+    private BaseActivity self;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -99,6 +155,7 @@ public final class ExpensesActivity extends BaseActivity {
     @Override
     public void checkPreConditions() {
         loadExpenses();
+
     }
 
     private void loadExpenses() {
@@ -138,7 +195,6 @@ public final class ExpensesActivity extends BaseActivity {
         List<Expense> expenses = (List<Expense>) response;
         if(expenses == null || expenses.size() < 1) {
             noExpenseView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
         } else {
             noExpenseView.setVisibility(View.GONE);
             cardListExpenses.setHasFixedSize(true);
@@ -184,4 +240,7 @@ public final class ExpensesActivity extends BaseActivity {
             }
         };
     }
+
+
 }
+*/

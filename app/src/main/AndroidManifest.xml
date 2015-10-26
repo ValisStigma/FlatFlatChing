@@ -38,15 +38,15 @@
         </activity>
         <activity
             android:name=".activities.CreateFlatActivity"
-            android:label="@string/title_activity_create_flat"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/title_activity_create_flat">
         </activity>
         <activity
             android:name=".activities.ManageFlatMatesActivity"
-            android:label="@string/title_activity_manage_flat_mates"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/title_activity_manage_flat_mates">
         </activity>
         <activity android:name=".activities.NewExpenseActivity" >
+        </activity>
+        <activity android:name=".activities.CoordinatorActivity" >
         </activity>
     </application>
 
