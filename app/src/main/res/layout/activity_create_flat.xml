@@ -124,15 +124,12 @@
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/actionButton"
         android:text="@string/recordNewFlatTitleButton"
-        android:textSize="@dimen/button_text_size"
         android:id="@+id/buttonCreateFlat"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@color/green"
-        android:textColor="@color/white" />
+        />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"

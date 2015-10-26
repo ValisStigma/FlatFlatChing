@@ -4,6 +4,11 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/homeScreenDrawerItem"
+            android:checked="false"
+            android:icon="@drawable/ic_launcher"
+            android:title="@string/home"/>
+        <item
             android:id="@+id/expensesDrawerItem"
             android:checked="false"
             android:icon="@drawable/expense"

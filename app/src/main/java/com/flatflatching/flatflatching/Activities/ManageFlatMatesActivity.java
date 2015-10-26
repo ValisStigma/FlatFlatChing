@@ -25,6 +25,8 @@ import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.FlatService;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -36,13 +38,13 @@ public final class ManageFlatMatesActivity extends BaseActivity {
     private RecyclerView flatMatesList;
     private ProgressBar progressBar;
     private LinearLayout invitationGui;
+    private FlatMateAdapter flatMateAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_flat_mates);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         self = this;
         final Button inviteFlatMate = (Button) findViewById(R.id.buttonInviteFlatMate);
         newFlatMateEmail = (EditText) findViewById(R.id.editTextFlatMateEmail);
@@ -53,6 +55,8 @@ public final class ManageFlatMatesActivity extends BaseActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBarInvitation);
         setupContributors();
         messageShower = (TextView) findViewById(R.id.messageShower);
+        setupNavigation();
+        customizeNavigation();
         inviteFlatMate.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
@@ -92,8 +96,8 @@ public final class ManageFlatMatesActivity extends BaseActivity {
                 LinearLayoutManager llm = new LinearLayoutManager(this);
                 llm.setOrientation(LinearLayoutManager.VERTICAL);
                 flatMatesList.setLayoutManager(llm);
-                FlatMateAdapter fa = new FlatMateAdapter(flatMates, checkForDeletion());
-                flatMatesList.setAdapter(fa);
+                flatMateAdapter = new FlatMateAdapter(flatMates, checkForDeletion());
+                flatMatesList.setAdapter(flatMateAdapter);
             } else if(flatMates.size() > 2) {
                 noFlatMatesView.setVisibility(View.GONE);
                 flatMatesList.setVisibility(View.VISIBLE);
@@ -101,8 +105,8 @@ public final class ManageFlatMatesActivity extends BaseActivity {
                 LinearLayoutManager llm = new LinearLayoutManager(this);
                 llm.setOrientation(LinearLayoutManager.VERTICAL);
                 flatMatesList.setLayoutManager(llm);
-                FlatMateAdapter fa = new FlatMateAdapter(flatMates, checkForDeletion());
-                flatMatesList.setAdapter(fa);
+                flatMateAdapter = new FlatMateAdapter(flatMates, checkForDeletion());
+                flatMatesList.setAdapter(flatMateAdapter);
             }
         } else {
             noFlatMatesView.setVisibility(View.VISIBLE);
@@ -115,7 +119,7 @@ public final class ManageFlatMatesActivity extends BaseActivity {
     @Override
     public void setWaitingLayout() {
         progressBar.setVisibility(View.VISIBLE);
-        invitationGui.setVisibility(View.GONE);
+        invitationGui.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -134,12 +138,14 @@ public final class ManageFlatMatesActivity extends BaseActivity {
             public void onClick(View v) {
                 View flatMateCard = (View) v.getParent();
                 TextView userEmailView = (TextView)flatMateCard.findViewById(R.id.flatMateEmailTextView);
+                TextView positionView = (TextView)flatMateCard.findViewById(R.id.flatMatePosition);
+                final int position = Integer.parseInt(positionView.getText().toString());
                 final String userEmail = userEmailView.getText().toString();
                 AlertDialog.Builder builder = new AlertDialog.Builder(self);
                 builder.setMessage(R.string.delete_user_confirmation);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteUser(userEmail);
+                        deleteUser(userEmail, position);
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, null);
@@ -149,14 +155,20 @@ public final class ManageFlatMatesActivity extends BaseActivity {
         };
     }
 
-    private void deleteUser(String userEmail) {
+    private void deleteUser(String userEmail, int position) {
         setWaitingLayout();
+
         FlatService.exitFlat(this, getFlatId(), userEmail);
+        flatMateAdapter.removeItem(position);
     }
 
     @Override
     public void checkPreConditions() {
-
+        invitationGui.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.deletet_flatmate, Snackbar.LENGTH_LONG);
+        SnackBarStyler.confirm(snackbar, this).show();
+        messageShower.setVisibility(View.GONE);
     }
 
 }

@@ -56,18 +56,14 @@ public final class ExpensesActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(self, NewExpenseActivity.class);
                 startActivity(intent);
+                self.finish();
 
             }
         });
         setWaitingLayout();
         checkPreConditions();
-/*        if (findViewById(R.id.expense_detail_container) != null) {
-
-            mTwoPane = true;
-
-            ((ExpenseListFragment) getSupportFragmentManager().findFragmentById(
-                    R.id.expense_list)).setActivateOnItemClick(true);
-        }*/
+        setupNavigation();
+        customizeNavigation();
     }
 
     @Override

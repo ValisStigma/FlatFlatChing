@@ -24,7 +24,6 @@ import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.InternalStorage;
 import com.flatflatching.flatflatching.helpers.SerialBitmap;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
-import com.flatflatching.flatflatching.models.Expense;
 import com.flatflatching.flatflatching.models.Flat;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
@@ -57,6 +56,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String FLAT_MATE_NAMES = "FLAT_MATE_NAMES";
     public static final int FLAT_WAS_CREATED = 8888;
     public static final int EXPENSE_WAS_CREATED = 9999;
+    public static final int USER_EXITED = 7777;
+    public static final String FLAT_USER = "FLAT_USER";
     public static final String INTENT_EXTRAS = "INTENT_EXTRAS";
     public static final String BASE_URL = "http://152.96.236.13:3000/%s";
     public static final String PROFILE_BITMAP = "PROFILE_BITMAP";
@@ -154,6 +155,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
                 drawerLayout.closeDrawers();
                 switch (menuItem.getItemId()){
+                    case R.id.homeScreenDrawerItem:
+                        Intent intent4 = new Intent(self, FlatActivity.class);
+                        startActivity(intent4);
+                        return true;
                     case R.id.expensesDrawerItem:
                         Intent intent = new Intent(self, ExpensesActivity.class);
                         startActivity(intent);
@@ -163,8 +168,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                         startActivity(intent2);
                         return true;
                     case R.id.leaveFlatDrawerItem:
-                        Toast.makeText(getApplicationContext(),"Send Selected",Toast.LENGTH_SHORT).show();
+                        Intent intent3 = new Intent(self, ExitActivity.class);
+                        startActivity(intent3);
                         return true;
+
                     default:
                         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.internal_error, Snackbar.LENGTH_LONG);
                         SnackBarStyler.confirm(snackbar, self).show();
@@ -229,6 +236,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected final String getFlatName() throws IOException, ClassNotFoundException {
         Flat myFlat =(Flat)getObject(BaseActivity.FLAT);
+        if(myFlat == null)  {
+            throw new IOException("Flat is empty");
+        }
         return myFlat.getName();
     }
 
@@ -245,8 +255,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return flatId;
     }
     protected final boolean isAdmin() {
-        //TODO:correct implementation
-        return true;
+        FlatMate user;
+        try {
+            user = (FlatMate)getObject(FLAT_USER);
+        } catch (IOException|ClassNotFoundException e) {
+            return false;
+        }
+        return user.isAdmin();
     }
 
     protected final String getUserName() {
@@ -264,5 +279,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void reactToGet(Object response) {
 
+    }
+    public void persistFlatUser(FlatMate flatMate) throws IOException {
+        persistObject(FLAT_USER, flatMate);
+    }
+
+    public void setCurrentUserAdmin() throws IOException, ClassNotFoundException {
+        FlatMate user = (FlatMate) getObject(FLAT_USER);
+        user.setIsAdmin(true);
+        persistObject(FLAT_USER, user);
     }
 }

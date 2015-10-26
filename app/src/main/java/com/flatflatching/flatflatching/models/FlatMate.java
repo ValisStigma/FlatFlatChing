@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 public final class FlatMate implements Serializable{
-    private final String name;
+    private String name;
     private final String email;
     private boolean isAdmin;
 
@@ -21,6 +21,9 @@ public final class FlatMate implements Serializable{
         this.isAdmin = isAdmin;
     }
 
+    public void setName(final String name) {
+        this.name = name;
+    }
     public String getName() {
         return name;
     }

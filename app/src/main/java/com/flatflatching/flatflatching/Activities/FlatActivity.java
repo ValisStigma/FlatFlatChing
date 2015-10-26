@@ -100,6 +100,8 @@ public final class FlatActivity extends BaseActivity {
                     notifyFlatCreation();
                     FlatService.setAdmin(this, getUserEmail());
                 break;
+                case BaseActivity.USER_EXITED:
+                    notifyExit();
             }
         }
     }
@@ -162,6 +164,7 @@ public final class FlatActivity extends BaseActivity {
                 String selectedAccountEmail = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
                 persistToPreferences(BaseActivity.CHOSEN_USER_EMAIL, selectedAccountEmail);
                 if(hasConnection()){
+                    checkForFlat();
                     AuthenticatorService.getAuth(self, selectedAccountEmail);
                 }
                 else{
@@ -216,5 +219,13 @@ public final class FlatActivity extends BaseActivity {
             flatMateButtonLayout.setVisibility(View.VISIBLE);
         }
         createFlatButtonLayout.setVisibility(View.GONE);
+    }
+
+    protected void notifyExit() {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.exit_flat_confirmation, Snackbar.LENGTH_LONG);
+        SnackBarStyler.confirm(snackbar, this).show();
+        messageShower.setVisibility(View.GONE);
+        expenseButtonLayout.setVisibility(View.GONE);
+        createFlatButtonLayout.setVisibility(View.VISIBLE);
     }
 }

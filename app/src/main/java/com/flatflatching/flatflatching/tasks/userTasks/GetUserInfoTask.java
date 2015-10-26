@@ -7,10 +7,12 @@ import android.util.Log;
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractAsyncTask;
 import com.flatflatching.flatflatching.helpers.SerialBitmap;
+import com.flatflatching.flatflatching.models.FlatMate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class GetUserInfoTask extends AbstractAsyncTask {
@@ -39,10 +41,18 @@ public class GetUserInfoTask extends AbstractAsyncTask {
         final String name = userProfile.getString("name");
         final String profileLink = userProfile.getString("link");
         final String profileImageUrl = userProfile.getString("picture");
+        FlatMate user;
+        try {
+            user = (FlatMate)activity.getObject(activity.FLAT_USER);
+            user.setName(givenName);
+        } catch(IOException | ClassNotFoundException e) {
+            user = new FlatMate(givenName, activity.getUserEmail(), false);
+        }
         try {
             InputStream in = new java.net.URL(profileImageUrl).openStream();
             SerialBitmap profileImage = new SerialBitmap(in);
             activity.persistObject(BaseActivity.PROFILE_BITMAP, profileImage);
+            activity.persistFlatUser(user);
         } catch (Exception e) {
             Log.d("parse_error", "unable to parse Stream");
         }

@@ -27,10 +27,16 @@ public class FlatMateAdapter extends RecyclerView.Adapter<FlatMateAdapter.FlatMa
         return flatMateList.size();
     }
 
+    public void removeItem(int position) {
+        flatMateList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     @Override
     public void onBindViewHolder(FlatMateViewHolder contactViewHolder, int i) {
         FlatMate flatMate = flatMateList.get(i);
         contactViewHolder.flatMateNameTextView.setText(flatMate.getName());
+        contactViewHolder.positionTextView.setText(Integer.toString(i));
         contactViewHolder.flatMateEmailTextView.setText(flatMate.getEmail());
         contactViewHolder.flatMateDeleteBtn.setOnClickListener(this.delete);
     }
@@ -48,12 +54,14 @@ public class FlatMateAdapter extends RecyclerView.Adapter<FlatMateAdapter.FlatMa
         protected TextView flatMateNameTextView;
         protected TextView flatMateEmailTextView;
         protected ImageView flatMateDeleteBtn;
+        protected TextView positionTextView;
         protected View rootView;
         public FlatMateViewHolder(View v) {
             super(v);
             flatMateNameTextView =  (TextView) v.findViewById(R.id.contributorNameTextView);
             flatMateEmailTextView = (TextView) v.findViewById(R.id.flatMateEmailTextView);
             flatMateDeleteBtn = (ImageView) v.findViewById(R.id.deleteIcon);
+            positionTextView = (TextView) v.findViewById(R.id.flatMatePosition);
             rootView = v;
         }
     }

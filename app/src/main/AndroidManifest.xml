@@ -33,20 +33,16 @@
             android:label="@string/title_activity_shopping_list" >
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
-        <activity
             android:name=".activities.CreateFlatActivity"
-            android:label="@string/title_activity_create_flat">
+            android:label="@string/title_activity_create_flat" >
         </activity>
         <activity
             android:name=".activities.ManageFlatMatesActivity"
-            android:label="@string/title_activity_manage_flat_mates">
+            android:label="@string/title_activity_manage_flat_mates" >
         </activity>
         <activity android:name=".activities.NewExpenseActivity" >
         </activity>
-        <activity android:name=".activities.CoordinatorActivity" >
+        <activity android:name=".activities.ExitActivity" >
         </activity>
     </application>
 

@@ -1,5 +1,7 @@
 package com.flatflatching.flatflatching.tasks.flatTasks;
 
+import android.util.Log;
+
 import com.flatflatching.flatflatching.activities.BaseActivity;
 import com.flatflatching.flatflatching.helpers.AbstractGetAuthTokenTask;
 import com.flatflatching.flatflatching.helpers.ExceptionParser;
@@ -38,6 +40,11 @@ public class SetFlatAdminTask extends AbstractGetAuthTokenTask {
             String state = res.getString("response");
             if (state.equals("Done!")) {
                 status = Status.okay;
+                try {
+                    activity.setCurrentUserAdmin();
+                } catch (IOException|ClassNotFoundException e) {
+                    Log.d("error", "unable to persist admin");
+                }
             } else {
                 status = Status.requestFailed;
             }

@@ -69,14 +69,10 @@
     </RelativeLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/actionButton"
         android:text="@string/newExpenseTitle"
         android:id="@+id/buttonGoToExpenses"
         android:layout_gravity="end"
-        android:textSize="@dimen/button_text_size"
-        android:textColor="@color/white"
-        android:background="@color/green"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/cardListExpenses"
         android:layout_alignParentStart="true" />

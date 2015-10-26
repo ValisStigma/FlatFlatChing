@@ -67,5 +67,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+    <string name="leaveFlat">Du willst deine WG verlassen?</string>
+    <string name="exitButtonTxt">Austreten</string>
+    <string name="confirmExitString">Willst du wirklich aus der WG austreten?</string>
+    <string name="exit_flat_confirmation">Du bist ausgetreten</string>
+    <string name="home">Home</string>
+    <string name="deletet_flatmate">Mitbewohner entfernt</string>
 
 </resources>

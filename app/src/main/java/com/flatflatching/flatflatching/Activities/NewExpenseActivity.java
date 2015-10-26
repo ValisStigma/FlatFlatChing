@@ -66,6 +66,8 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
         registerGuiElements();
         setupSpinner();
         setupContributors();
+        setupNavigation();
+        customizeNavigation();
         createExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,6 +291,7 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
         Intent intent = new Intent(self, ExpensesActivity.class);
         intent.putExtra(BaseActivity.INTENT_EXTRAS, BaseActivity.EXPENSE_WAS_CREATED);
         startActivity(intent);
+        this.finish();
     }
 
     @Override
