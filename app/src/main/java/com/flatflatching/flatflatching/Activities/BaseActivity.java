@@ -40,9 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private Menu navigationDrawerMenu;
-    public static final int EXPENSES_SCREEN_INDEX = 2;
-    public static final int FLATMATES_SCREEN_INDEX = 3;
-    public static final int EXIT_SCREEN_INDEX = 4;
+    public static final int EXPENSES_SCREEN_INDEX = 1;
+    public static final int FLATMATES_SCREEN_INDEX = 2;
+    public static final int EXIT_SCREEN_INDEX = 3;
 
     public static final String PREFERENCES = "local_preferences";
     public static final String FLAT_ID = "FLAT_ID";
