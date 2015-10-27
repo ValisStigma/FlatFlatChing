@@ -56,7 +56,7 @@ public class CreateVariableExpenseTask extends AbstractGetAuthTokenTask {
         try {
             JSONArray userExpenses = new JSONArray();
             for (FlatMate contributor : this.variableExpense.getContributors()) {
-                userExpenses.put(requestBuilder.getUserEmail(contributor.getName()));
+                userExpenses.put(requestBuilder.getUserEmail(contributor.getEmail()));
             }
             params = requestBuilder.getCreateVariableExpenseRequest(token,
                     activity.getUserEmail(), flatId, variableExpense, userExpenses);

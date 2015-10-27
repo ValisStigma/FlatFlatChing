@@ -129,7 +129,8 @@ router.post("/create/static", userHandler.loggedIn, function (req, res, next) {
 
 
 router.post("/create/variable", userHandler.loggedIn, function (req, res, next) {
-    createVariableExpense(function (expense) {
+    createVariableExpense(function (expense){
+    console.log(expense);
         expenses.insert(expense, function (err, found) {
             res.json({
                 "response": "Done!",
