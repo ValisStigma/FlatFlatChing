@@ -2,9 +2,6 @@ package com.flatflatching.flatflatching.models;
 
 import java.util.Objects;
 
-/**
- * Created by rafael on 13.10.2015.
- */
 public final class StaticUserExpense {
     private final String email;
     private final double divisionKey;

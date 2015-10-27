@@ -9,9 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Created by rafael on 28.09.2015.
- */
 
 public abstract class Expense {
 
@@ -25,9 +22,7 @@ public abstract class Expense {
     private String name;
     private List<FlatMate> contributors = new ArrayList<>();
     private Date dueDate;
-    private double toPay;
     private String id;
-    private boolean outstanding = true;
 
     public Expense(final String name, final double amount, final Date dueDate) {
         this(name, amount);
@@ -41,7 +36,6 @@ public abstract class Expense {
         dueDate = new Date((long) MILLISECONDS_IN_SECONDS * jsonExpense.getInt("expense_end"));
         amount = jsonExpense.getDouble("expense_amount");
         id = jsonExpense.getString("expense_uuid");
-        //toPay = jsonExpense.getDouble("expense_user_amount");
         final JSONArray expenseContributors = jsonExpense.getJSONArray("expense_users");
         for (int j = 0; j < expenseContributors.length(); j++) {
             final JSONObject contributor = expenseContributors.getJSONObject(j);
@@ -49,14 +43,13 @@ public abstract class Expense {
             contributors.add(new FlatMate(userEmail, userEmail, false));
         }
     }
-    public Expense(final String name, final Date dueDate, final double amount, final double toPay, final List<FlatMate> contributors) {
+    public Expense(final String name, final Date dueDate, final double amount, final List<FlatMate> contributors) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(dueDate);
         Objects.requireNonNull(contributors);
         this.name = name;
         this.dueDate = new Date(dueDate.getTime());
         this.amount = amount;
-        this.toPay = toPay;
         this.contributors.addAll(contributors);
     }
 
@@ -78,17 +71,6 @@ public abstract class Expense {
     public final void addContributor(final FlatMate flatMate) {
         this.contributors.add(flatMate);
     }
-    public final void setDueDate(final Date dueDate) {
-        this.dueDate = new Date(dueDate.getTime());
-    }
-
-    public final boolean isOutstanding() {
-        return this.outstanding;
-    }
-
-    public final void process() {
-        this.outstanding = false;
-    }
 
     public abstract ExpenseType getExpenseType();
 
@@ -104,9 +86,6 @@ public abstract class Expense {
         return dueDate.getTime() / MILLISECONDS_IN_SECONDS;
     }
 
-    public final double getToPay() {
-        return toPay;
-    }
     public final String getId() {
         return id;
     }

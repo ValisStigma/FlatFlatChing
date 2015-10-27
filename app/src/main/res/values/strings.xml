@@ -2,7 +2,7 @@
     <string name="app_name">FlatFlatChing</string>
     <string name="ok">Okay</string>
     <string name="action_settings">Settings</string>
-    <string name="expensesTitle">My Expenses</string>
+    <string name="expensesTitle">Ausgaben</string>
     <string name="shoppingListsTitle">Shopping Lists</string>
     <string name="title_activity_expenses">ExpensesActivity</string>
     <string name="title_activity_shopping_list">ShoppingListActivity</string>
@@ -31,7 +31,7 @@
     <string name="newFlatMateTitle">Neuer Mitbewohner?</string>
     <string name="NewFlatMateTask">Lade ihn doch über seinen Googleaccount ein</string>
     <string name="inviteTitle">Einladen</string>
-    <string name="flatMateTitle">Flatmates</string>
+    <string name="flatMateTitle">Mitbewohner</string>
     <string name="create_flat_title">WG erfassen</string>
     <string name="without_flat_action_description">Erfasse deine eigene WG oder lasse dich von deinen Freunden einladen</string>
     <string name="titleDescription">Bezeichnung</string>
@@ -62,7 +62,6 @@
         <item>Monatlich</item>
         <item>Jährlich</item>
     </string-array>
-
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">open</string>
@@ -73,5 +72,6 @@
     <string name="exit_flat_confirmation">Du bist ausgetreten</string>
     <string name="home">Home</string>
     <string name="deletet_flatmate">Mitbewohner entfernt</string>
+    <string name="all_ressources_needed">Alle Angaben sind zwingend</string>
 
 </resources>

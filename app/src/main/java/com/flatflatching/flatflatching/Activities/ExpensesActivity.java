@@ -3,14 +3,11 @@ package com.flatflatching.flatflatching.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -18,22 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
-import com.flatflatching.flatflatching.adapter.ContributorsAdapter;
 import com.flatflatching.flatflatching.adapter.ExpensesAdapter;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.Expense;
-import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.ExpenseService;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public final class ExpensesActivity extends BaseActivity {
 
-    private boolean mTwoPane;
     private ProgressBar progressBar;
     private RecyclerView cardListExpenses;
     private RelativeLayout noExpenseView;
@@ -124,8 +113,7 @@ public final class ExpensesActivity extends BaseActivity {
     }
 
     protected void notifyExpenseCreation() {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.expense_created_message, Snackbar.LENGTH_LONG);
-        SnackBarStyler.confirm(snackbar, this).show();
+        SnackBarStyler.makeConfirmSnackBar(this, R.string.expense_created_message);
         messageShower.setVisibility(View.GONE);
     }
 

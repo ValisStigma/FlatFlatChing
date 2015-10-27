@@ -8,9 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-/**
- * Created by rafael on 09.10.2015.
- */
 public final class InternalStorage{
     private InternalStorage() {}
 

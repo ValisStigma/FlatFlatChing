@@ -29,10 +29,6 @@
             android:label="@string/title_activity_expenses" >
         </activity>
         <activity
-            android:name=".activities.ShoppingListActivity"
-            android:label="@string/title_activity_shopping_list" >
-        </activity>
-        <activity
             android:name=".activities.CreateFlatActivity"
             android:label="@string/title_activity_create_flat" >
         </activity>

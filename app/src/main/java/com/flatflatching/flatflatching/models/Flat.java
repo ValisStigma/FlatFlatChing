@@ -5,14 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by rafael on 28.09.2015.
- */
 public final class Flat implements Serializable{
-    private List<FlatMate> inhabitants = new ArrayList<>();
     private String name;
     private Address address;
 
@@ -42,24 +36,12 @@ public final class Flat implements Serializable{
         this.address = address;
     }
 
-    public List<FlatMate> getInhabitants() {
-        return new ArrayList<>(inhabitants);
-    }
-
     public String getName() {
         return name;
     }
 
     public Address getAddress() {
         return address;
-    }
-
-    public void addFlatMate(final FlatMate flatMate) {
-        this.inhabitants.add(flatMate);
-    }
-
-    public void removeFlatMate(final FlatMate flatMate) {
-        this.inhabitants.remove(flatMate);
     }
 
     public boolean hasAddress() {

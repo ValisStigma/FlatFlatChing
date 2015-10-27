@@ -1,5 +1,6 @@
 package com.flatflatching.flatflatching.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -36,12 +37,21 @@ public final class SnackBarStyler {
         return colorSnackBar(snackbar, blue, context);
     }
 
-    public static Snackbar alert(Snackbar snackbar, Context context) {
+    private static Snackbar alert(Snackbar snackbar, Context context) {
         return colorSnackBar(snackbar, red, context);
     }
 
-    public static Snackbar confirm(Snackbar snackbar, Context context) {
+    private static Snackbar confirm(Snackbar snackbar, Context context) {
         return colorSnackBar(snackbar, green, context);
     }
 
+    public static void makeConfirmSnackBar(Activity context, int messageId) {
+        Snackbar snackbar = Snackbar.make(context.findViewById(android.R.id.content), messageId, Snackbar.LENGTH_LONG);
+        SnackBarStyler.confirm(snackbar, context).show();
+    }
+
+    public static void makeAlertSnackBar(Activity context, int messageId) {
+        Snackbar snackbar = Snackbar.make(context.findViewById(android.R.id.content), messageId, Snackbar.LENGTH_LONG);
+        SnackBarStyler.alert(snackbar, context).show();
+    }
 }

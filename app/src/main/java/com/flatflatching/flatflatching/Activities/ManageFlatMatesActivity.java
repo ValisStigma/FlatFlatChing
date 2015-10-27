@@ -4,12 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,13 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flatflatching.flatflatching.R;
-import com.flatflatching.flatflatching.adapter.ContributorsAdapter;
 import com.flatflatching.flatflatching.adapter.FlatMateAdapter;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.FlatService;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,8 +64,7 @@ public final class ManageFlatMatesActivity extends BaseActivity {
                       setWaitingLayout();
                       FlatService.inviteFlatMate(self, flatId , emailAddress );
                   } else if(!android.util.Patterns.EMAIL_ADDRESS.matcher(emailAddress).matches()) {
-                      Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.error_invalid_email, Snackbar.LENGTH_LONG);
-                      SnackBarStyler.alert(snackbar, self).show();
+                      SnackBarStyler.makeAlertSnackBar(self, R.string.error_invalid_email);
                   }
               }
           }
@@ -127,8 +120,7 @@ public final class ManageFlatMatesActivity extends BaseActivity {
         invitationGui.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
         newFlatMateEmail.setText("");
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.invitation_sent, Snackbar.LENGTH_LONG);
-        SnackBarStyler.confirm(snackbar, this).show();
+        SnackBarStyler.makeConfirmSnackBar(self, R.string.invitation_sent);
         messageShower.setVisibility(View.GONE);
     }
 
@@ -157,7 +149,6 @@ public final class ManageFlatMatesActivity extends BaseActivity {
 
     private void deleteUser(String userEmail, int position) {
         setWaitingLayout();
-
         FlatService.exitFlat(this, getFlatId(), userEmail);
         flatMateAdapter.removeItem(position);
     }
@@ -166,8 +157,7 @@ public final class ManageFlatMatesActivity extends BaseActivity {
     public void checkPreConditions() {
         invitationGui.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.deletet_flatmate, Snackbar.LENGTH_LONG);
-        SnackBarStyler.confirm(snackbar, this).show();
+        SnackBarStyler.makeConfirmSnackBar(self, R.string.deletet_flatmate);
         messageShower.setVisibility(View.GONE);
     }
 

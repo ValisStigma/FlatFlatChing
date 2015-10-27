@@ -5,30 +5,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
-import com.flatflatching.flatflatching.models.FlatMate;
 import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.flatflatching.flatflatching.services.FlatService;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.AccountPicker;
 
-import java.io.IOException;
-import java.util.List;
-
 public final class FlatActivity extends BaseActivity {
 
     private BaseActivity self = this;
     private View expenseButtonLayout;
-    private View shoppingListButtonLayout;
     private View flatMateButtonLayout;
     private  View createFlatButtonLayout;
     private  ProgressBar progressBar;
@@ -37,29 +30,18 @@ public final class FlatActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flat);
-        Button shoppingListButton = (Button) findViewById(R.id.shoppingListButton);
         Button expensesButton = (Button) findViewById(R.id.expensesButton);
         Button flatMateButton = (Button) findViewById(R.id.flatMatesButton);
         Button createFlatButton = (Button) findViewById(R.id.createFlatButton);
         messageShower = (TextView) findViewById(R.id.messageShower);
         layoutContainer = (ViewGroup) findViewById(R.id.baseContainer);
-        shoppingListButtonLayout = findViewById(R.id.layoutShoppingListButton);
         expenseButtonLayout = findViewById(R.id.layoutExpenseButton);
         flatMateButtonLayout = findViewById(R.id.layoutFlatMatesButton);
         createFlatButtonLayout = findViewById(R.id.layoutCreateFlatButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBarFlatActivity);
-        shoppingListButtonLayout.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.GONE);
         flatMateButtonLayout.setVisibility(View.GONE);
         createFlatButtonLayout.setVisibility(View.GONE);
-
-        shoppingListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(self, ShoppingListActivity.class);
-                startActivity(intent);
-            }
-        });
 
         expensesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +110,6 @@ public final class FlatActivity extends BaseActivity {
         createFlatButtonLayout.setVisibility(View.GONE);
         flatMateButtonLayout.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.GONE);
-        shoppingListButtonLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -210,8 +191,7 @@ public final class FlatActivity extends BaseActivity {
     }
 
     protected void notifyFlatCreation() {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.alert_flat_created, Snackbar.LENGTH_LONG);
-        SnackBarStyler.confirm(snackbar, this).show();
+        SnackBarStyler.makeConfirmSnackBar(this, R.string.alert_flat_created);
         messageShower.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.VISIBLE);
         //shoppingListButtonLayout.setVisibility(View.VISIBLE);
@@ -222,8 +202,7 @@ public final class FlatActivity extends BaseActivity {
     }
 
     protected void notifyExit() {
-        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.exit_flat_confirmation, Snackbar.LENGTH_LONG);
-        SnackBarStyler.confirm(snackbar, this).show();
+        SnackBarStyler.makeConfirmSnackBar(this, R.string.exit_flat_confirmation);
         messageShower.setVisibility(View.GONE);
         expenseButtonLayout.setVisibility(View.GONE);
         createFlatButtonLayout.setVisibility(View.VISIBLE);

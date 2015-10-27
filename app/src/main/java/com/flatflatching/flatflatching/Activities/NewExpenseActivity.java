@@ -3,13 +3,10 @@ package com.flatflatching.flatflatching.activities;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -117,7 +114,7 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
             registerExpense(expense, contributors);
 
         } catch (IOException e) {
-            makeSnackbar("Alle Angaben sind zwingend");
+            SnackBarStyler.makeAlertSnackBar(self, R.string.all_ressources_needed);
         }
     }
 
@@ -200,22 +197,17 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
     }
 
     private void registerExpense(Expense expense, List<FlatMate> contributors) {
-        final String flatId = getFlatId();
-        if(!flatId.isEmpty()) {
-            if (hasConnection()) {
-                switch (expense.getExpenseType()) {
-                    case Variable:
-                        registerVariableExpense((VariableExpense) expense, contributors);
-                        break;
-                    case Static:
-                        registerStaticExpense((StaticExpense) expense, contributors);
-                        break;
-                }
-            } else {
-                notifyError(getResources().getString(R.string.connection_error));
+        if (hasConnection()) {
+            switch (expense.getExpenseType()) {
+                case Variable:
+                    registerVariableExpense((VariableExpense) expense, contributors);
+                    break;
+                case Static:
+                    registerStaticExpense((StaticExpense) expense, contributors);
+                    break;
             }
         } else {
-            //TODO: what if no flat registered
+            notifyError(getResources().getString(R.string.connection_error));
         }
     }
 
@@ -237,15 +229,6 @@ public class NewExpenseActivity extends BaseActivity implements AdapterView.OnIt
         }
         String flatId = getFlatId();
         ExpenseService.createVariableExpense(self, flatId, expense);
-    }
-
-    private void makeSnackbar(final String message) {
-
-        Snackbar snackbar = Snackbar.make(
-                findViewById(android.R.id.content),
-                message,
-                Snackbar.LENGTH_LONG);
-        SnackBarStyler.alert(snackbar, this).show();
     }
 
     private Expense parseForm() throws IOException {

@@ -7,18 +7,17 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.helpers.InternalStorage;
@@ -26,7 +25,6 @@ import com.flatflatching.flatflatching.helpers.SerialBitmap;
 import com.flatflatching.flatflatching.helpers.SnackBarStyler;
 import com.flatflatching.flatflatching.models.Flat;
 import com.flatflatching.flatflatching.models.FlatMate;
-import com.flatflatching.flatflatching.services.AuthenticatorService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
@@ -41,6 +39,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     private BaseActivity self;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private Menu navigationDrawerMenu;
+    public static final int EXPENSES_SCREEN_INDEX = 2;
+    public static final int FLATMATES_SCREEN_INDEX = 3;
+    public static final int EXIT_SCREEN_INDEX = 4;
+
     public static final String PREFERENCES = "local_preferences";
     public static final String FLAT_ID = "FLAT_ID";
     public static final String USER_NAME = "USER_NAME";
@@ -59,10 +62,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int USER_EXITED = 7777;
     public static final String FLAT_USER = "FLAT_USER";
     public static final String INTENT_EXTRAS = "INTENT_EXTRAS";
-    public static final String BASE_URL = "http://152.96.236.13:3000/%s";
+    public static final String BASE_URL = "http://152.96.239.56:3000/%s";
     public static final String PROFILE_BITMAP = "PROFILE_BITMAP";
     protected SharedPreferences settings;
-    private String userName;
     protected ViewGroup layoutContainer;
     protected TextView messageShower;
 
@@ -78,8 +80,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -92,10 +92,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         editor.putString(key, value);
         editor.apply();
 
-    }
-
-    protected final void register(final String userEmail) {
-        AuthenticatorService.register(this, userEmail);
     }
 
     public final String getUserEmail() {
@@ -140,6 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     void setupNavigation() {
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar_own);
         setSupportActionBar(toolbar);
 
@@ -158,14 +155,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case R.id.homeScreenDrawerItem:
                         Intent intent4 = new Intent(self, FlatActivity.class);
                         startActivity(intent4);
+                        self.finish();
                         return true;
                     case R.id.expensesDrawerItem:
                         Intent intent = new Intent(self, ExpensesActivity.class);
                         startActivity(intent);
+                        self.finish();
                         return true;
                     case R.id.flatmatesDrawerItem:
                         Intent intent2 = new Intent(self, ManageFlatMatesActivity.class);
                         startActivity(intent2);
+                        self.finish();
                         return true;
                     case R.id.leaveFlatDrawerItem:
                         Intent intent3 = new Intent(self, ExitActivity.class);
@@ -173,8 +173,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         return true;
 
                     default:
-                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.internal_error, Snackbar.LENGTH_LONG);
-                        SnackBarStyler.confirm(snackbar, self).show();
+                        SnackBarStyler.makeConfirmSnackBar(self, R.string.internal_error);
                         messageShower.setVisibility(View.GONE);
                         return true;
                 }
@@ -191,10 +190,23 @@ public abstract class BaseActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                if(!isAdmin()) {
+                    hideMenuItem(FLATMATES_SCREEN_INDEX);
+                } else {
+                    showMenuItem(FLATMATES_SCREEN_INDEX);
+                }
+                if(!isFlatMember()) {
+                    hideMenuItem(EXIT_SCREEN_INDEX);
+                    hideMenuItem(EXPENSES_SCREEN_INDEX);
+                } else {
+                    showMenuItem(EXIT_SCREEN_INDEX);
+                    showMenuItem(EXPENSES_SCREEN_INDEX);
+                }
                 customizeNavigation();
             }
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        navigationDrawerMenu = navigationView.getMenu();
         actionBarDrawerToggle.syncState();
     }
 
@@ -208,6 +220,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
+    public void hideMenuItem(int index) {
+        MenuItem item = navigationDrawerMenu.getItem(index);
+        item.setVisible(false);
+    }
+
+    public void showMenuItem(int index) {
+        MenuItem item = navigationDrawerMenu.getItem(index);
+        item.setVisible(true);
+    }
     public final void notifyError(String message) {
         for (int i = 0; i < layoutContainer.getChildCount(); i++) {
             layoutContainer.getChildAt(i).setVisibility(View.GONE);
@@ -230,7 +251,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected final boolean isAuthenticated() {
-        userName = settings.getString(USER_NAME_GIVEN, "");
+        String userName = settings.getString(USER_NAME_GIVEN, "");
         return !userName.isEmpty();
     }
 
@@ -251,8 +272,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected final String getFlatId() {
-        final String flatId = settings.getString(FLAT_ID, "");
-        return flatId;
+        return settings.getString(FLAT_ID, "");
     }
     protected final boolean isAdmin() {
         FlatMate user;
@@ -265,13 +285,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected final String getUserName() {
-        final String userName = settings.getString(USER_NAME_GIVEN, "Superman");
-        return userName;
+        return settings.getString(USER_NAME_GIVEN, "Superman");
     }
 
     protected final Bitmap getProfileImage() throws IOException, ClassNotFoundException {
-        Bitmap profileImage = ((SerialBitmap) getObject(BaseActivity.PROFILE_BITMAP)).getImage();
-        return profileImage;
+        return ((SerialBitmap) getObject(BaseActivity.PROFILE_BITMAP)).getImage();
     }
     public abstract void setWaitingLayout();
     public abstract void reactToSuccess();

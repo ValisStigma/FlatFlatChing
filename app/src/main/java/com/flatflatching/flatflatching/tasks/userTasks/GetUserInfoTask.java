@@ -1,7 +1,5 @@
 package com.flatflatching.flatflatching.tasks.userTasks;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.flatflatching.flatflatching.activities.BaseActivity;
@@ -43,7 +41,7 @@ public class GetUserInfoTask extends AbstractAsyncTask {
         final String profileImageUrl = userProfile.getString("picture");
         FlatMate user;
         try {
-            user = (FlatMate)activity.getObject(activity.FLAT_USER);
+            user = (FlatMate)activity.getObject(BaseActivity.FLAT_USER);
             user.setName(givenName);
         } catch(IOException | ClassNotFoundException e) {
             user = new FlatMate(givenName, activity.getUserEmail(), false);

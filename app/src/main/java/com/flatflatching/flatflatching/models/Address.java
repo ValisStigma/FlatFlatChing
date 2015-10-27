@@ -3,9 +3,6 @@ package com.flatflatching.flatflatching.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Created by rafael on 05.10.2015.
- */
 public class Address implements Serializable {
     private String streetName;
     private String streetNumber;

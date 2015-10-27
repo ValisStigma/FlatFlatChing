@@ -43,7 +43,11 @@ public class InviteFlatMateTask extends AbstractGetAuthTokenTask {
         try {
             result = new JSONObject(response);
             String invite = result.getString("response");
-            status = Status.okay;
+            if(invite != null && !invite.isEmpty()) {
+                status = Status.okay;
+            } else {
+                status = Status.requestFailed;
+            }
         } catch (JSONException e) {
             try {
                 if (result == null) {

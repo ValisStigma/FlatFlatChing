@@ -87,21 +87,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"/>
         </com.flatflatching.flatflatching.customLayouts.SquareLayout>
-        <com.flatflatching.flatflatching.customLayouts.SquareLayout
-            android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:id="@+id/layoutShoppingListButton"
-            >
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/shoppingListsTitle"
-                android:id="@+id/shoppingListButton"
-                android:background="@drawable/fancybutton_red"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text_size"/>
-        </com.flatflatching.flatflatching.customLayouts.SquareLayout>
     </LinearLayout>
 
 </LinearLayout>

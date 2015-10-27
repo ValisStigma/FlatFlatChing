@@ -2,8 +2,6 @@ package com.flatflatching.flatflatching.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,8 +79,7 @@ public final class CreateFlatActivity extends BaseActivity {
         try {
             flat = parseFlat();
         } catch(IOException e) {
-            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), R.string.error_no_name, Snackbar.LENGTH_LONG);
-            SnackBarStyler.alert(snackbar, this).show();
+            SnackBarStyler.makeAlertSnackBar(self, R.string.error_no_name);
             return;
         }
         registerFlat(flat);

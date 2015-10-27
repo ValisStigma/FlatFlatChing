@@ -10,13 +10,8 @@ import android.widget.TextView;
 import com.flatflatching.flatflatching.R;
 import com.flatflatching.flatflatching.models.Expense;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-/**
- * Created by rafael on 23.10.2015.
- */
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder>{
     private List<Expense> expenseList;
     private View.OnClickListener payExpense;
