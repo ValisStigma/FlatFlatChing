@@ -58,6 +58,8 @@ public final class ExpensesActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+        customizeNavigation();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             int code = extras.getInt(BaseActivity.INTENT_EXTRAS);
